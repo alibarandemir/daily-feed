@@ -1,18 +1,13 @@
-'use client'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { DisplayWeather } from './DisplayWeather'
 import { MoonFilled, SearchOutlined, SunFilled } from '@ant-design/icons'
 import GradientButton from '../ui/GradientButton'
 import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
 import { changeDarkMode } from '@/stores/Global/GlobalSlice'
 
-
-
 export default function Navbar() {
-  
-  const dispatch= useAppDispatch()
-  const isDarkMode:boolean = useAppSelector((state)=>state.global.isDarkMode)
-
+  const dispatch = useAppDispatch()
+  const isDarkMode: boolean = useAppSelector((state) => state.global.isDarkMode)
 
   const toggleDarkMode = () => {
     dispatch(changeDarkMode())
@@ -21,9 +16,9 @@ export default function Navbar() {
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.ctrlKey && event.key === "k") {
-      event.preventDefault(); 
+      event.preventDefault();
       if (searchInputRef.current) {
-        searchInputRef.current.focus(); 
+        searchInputRef.current.focus();
       }
     }
   }, []);
@@ -37,17 +32,17 @@ export default function Navbar() {
   }, [handleKeyPress]);
 
   return (
-    <div className='fixed flex  items-center border-b-2 border-appcolor w-full px-4 h-24'>
+    <div className='fixed flex items-center justify-between border-b-2 border-appcolor w-full px-4 h-24 '>
       {/* LEFT SIDE */}
-      <div className='flex items-center gap-5 gap-x-10 justify-end'>
+      <div className='flex justify-between items-center gap-5  max-w-[60%]'>
         {/* Search Bar */}
-        <div className='flex items-center text-main bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 transition-all duration-300'>
+        <div className='flex items-center text-main bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 transition-all duration-300 w-full'>
           <SearchOutlined className='text-2xl text-gray-500' />
           <input
             ref={searchInputRef}
             className='bg-transparent outline-none text-main px-2 w-full placeholder-gray-500 transition-all duration-300 focus:placeholder-gray-300 focus:ring-0'
             type='text'
-          placeholder='Haber, Konu veya Kaynak Ara...'
+            placeholder='Haber, Konu veya Kaynak Ara...'
           />
           <div className='text-sm text-main px-2'>Ctrl K</div>
         </div>
@@ -57,7 +52,7 @@ export default function Navbar() {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className='flex items-center'>
+      <div className='flex justify-between items-center gap-5'>
         {/* Dark Mode Toggle */}
         <button onClick={toggleDarkMode}>
           {isDarkMode ? (
@@ -68,8 +63,8 @@ export default function Navbar() {
         </button>
 
         {/* Register Link */}
-        <div className='text-lg font-medium  px-4 py-3 rounded-2xl' >
-          <GradientButton text='Kayıt Ol'/>
+        <div className='text-lg font-medium'>
+          <GradientButton text='Kayıt Ol' />
         </div>
       </div>
     </div>
