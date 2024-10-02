@@ -32,7 +32,7 @@ export default function Navbar() {
   }, [handleKeyPress]);
 
   return (
-    <div className='fixed flex items-center justify-between border-b-2 border-appcolor w-full px-4 h-24 '>
+    <div className='flex items-center justify-between border-b-2 border-appcolor w-full px-4 h-24 '>
       {/* LEFT SIDE */}
       <div className='flex justify-between items-center gap-5  max-w-[60%]'>
         {/* Search Bar */}

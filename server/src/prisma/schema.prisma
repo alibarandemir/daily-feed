@@ -1,23 +1,83 @@
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-   provider = "postgresql"
-    url      = env("DATABASE_URL")
-}
-model News{
-  id Int @id @default(autoincrement())
-
-  User User[]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  name String 
-  lastname String
-  email String @unique
-  password String
-  savednews News @relation(fields: [id],references: [id])
+model News {
+  id          Int         @id @default(autoincrement())
+  title       String
+  link        String      @unique
+  description String
+  image       String
+  upvote      Int
+  downvote    Int
+  sourceId    Int
+  createdAt   DateTime    @default(now())
+  source      Source      @relation(fields: [sourceId], references: [id])
+  savedNews   savedNews[]
+  categories  Category[]  @relation("CategoryToNews")
+}
+
+model User {
+  id         Int            @id @default(autoincrement())
+  name       String
+  lastname   String
+  email      String         @unique
+  password   String
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  categories UserCategory[]
+  savednews  savedNews[]
+}
+
+model Category {
+  id           Int            @id @default(autoincrement())
+  categoryName String
+  RssFeed      RssFeed[]
+  UserCategory UserCategory[]
+  news         News[]         @relation("CategoryToNews")
+}
+
+model UserCategory {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, categoryId])
+}
+
+model savedNews {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  newsId Int
+  news   News @relation(fields: [newsId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Source {
+  id        Int       @id @default(autoincrement())
+  name      String
+  sourceImg String
+  News      News[]
+  RssFeed   RssFeed[]
+}
+
+model RssFeed {
+  id         Int      @id @default(autoincrement())
+  rssUrl     String   @unique
+  categoryId Int
+  sourceId   Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  source     Source   @relation(fields: [sourceId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
