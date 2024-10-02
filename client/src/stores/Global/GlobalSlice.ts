@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getResourcesforSideBar } from "./actions";
 
 export interface GlobalState{
     isSideBarCollapsed:boolean,
@@ -25,8 +26,13 @@ const GlobalSlice= createSlice({
         setIsSideBarCollapsed:(state)=>{
             state.isSideBarCollapsed= !state.isSideBarCollapsed
         }
+    },
+    extraReducers:(builder)=>{
+        builder.addCase(getResourcesforSideBar.fulfilled,(state,action)=>{
+            console.log(action.payload)
+            state.sideBarSources=action.payload
+        })
     }
-    
 })
 
 

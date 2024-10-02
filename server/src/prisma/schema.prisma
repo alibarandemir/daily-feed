@@ -36,7 +36,7 @@ model User {
 
 model Category {
   id           Int            @id @default(autoincrement())
-  categoryName String
+  categoryName String @unique
   RssFeed      RssFeed[]
   UserCategory UserCategory[]
   news         News[]         @relation("CategoryToNews")
@@ -62,7 +62,7 @@ model savedNews {
 
 model Source {
   id        Int       @id @default(autoincrement())
-  name      String
+  name      String @unique
   sourceImg String
   News      News[]
   RssFeed   RssFeed[]

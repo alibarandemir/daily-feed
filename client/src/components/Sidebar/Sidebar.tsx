@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from './Footer'
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
@@ -7,11 +7,12 @@ import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
 import Sider from 'antd/es/layout/Sider'
 import { setIsSideBarCollapsed } from '@/stores/Global/GlobalSlice'
 import Link from 'next/link'
+import { getResourcesforSideBar } from '@/stores/Global/actions'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 export default function Sidebar() {
-  const isSideBarCollapsed = useAppSelector((state) => state.global.isSideBarCollapsed)
+  const {isSideBarCollapsed,sideBarSources} = useAppSelector((state) => state.global)
   const dispatch = useAppDispatch()
   const [openKey, setOpenKey] = useState<string[]>([]);
 
@@ -22,7 +23,9 @@ export default function Sidebar() {
       setOpenKey([keys[keys.length - 1]]);
     }
   };
-
+  useEffect(()=>{
+    dispatch(getResourcesforSideBar())
+  },[])
   const getIconColor = (menuKey: string) => {
     return openKey.includes(menuKey) ? '#229799' : '#000';
   };

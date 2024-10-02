@@ -10,7 +10,7 @@ export function Footer({
   }>) {
  
 
-   
+   //ant design layout tanımlanacak
     return (
       <div>
         {children}
