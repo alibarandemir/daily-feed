@@ -1,11 +1,17 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Router from 'next/router'
 import { NewsCard } from '@/components/Card/NewsCard'
 
+import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
+
 type Props = {}
 
-export default function NewsPage({}: Props) {
+export default function NewsPage() {
+  const dispatch= useAppDispatch()
+  useEffect(()=>{
+    //burada haberleri çekeceksin
+  },[])
   return (
     <div className='mt-24'>
       {/* Burada news card componentlerini render edeceksin */}
@@ -13,5 +19,9 @@ export default function NewsPage({}: Props) {
     
     </div>
   )
+
 }
+//app routerda ssr kullanılmaz
+
+
 

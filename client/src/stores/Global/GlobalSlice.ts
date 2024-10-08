@@ -8,7 +8,8 @@ export interface GlobalState{
     
 }
 interface SideBarSources {
-    sourceName:string,
+    id:number
+    name:string,
     sourceImg:string
 }
 const initalState:GlobalState={
@@ -30,7 +31,7 @@ const GlobalSlice= createSlice({
     extraReducers:(builder)=>{
         builder.addCase(getResourcesforSideBar.fulfilled,(state,action)=>{
             console.log(action.payload)
-            state.sideBarSources=action.payload
+            state.sideBarSources=action.payload.sources
         })
     }
 })

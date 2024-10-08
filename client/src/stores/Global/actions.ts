@@ -8,7 +8,7 @@ export const getResourcesforSideBar=createAsyncThunk('sources/sidebar',async(dat
         try{
             const response= await api.get('/getResourcesForSidebar')
             console.log(response.data.sources)
-            return response.data.data
+            return response.data
         }
         catch(error:any){
             console.error(error.message)

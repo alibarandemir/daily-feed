@@ -2,17 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { GithubFilled, LinkedinFilled, MediumCircleFilled } from '@ant-design/icons';
+import { Layout } from 'antd';
+
+const {Footer}= Layout
 
 
-
-
-export default function Footer() {
+export default function FooterSidebar() {
+    
     const [year,setYear]= useState<number>(new Date().getFullYear())
     useEffect(()=>{
         setYear(new Date().getFullYear())
     },[])
   return (
-    <div className='w-full flex items-center flex-col  text-main'>
+    <div className='w-full  bottom-0 flex items-center flex-col  text-main bg-gray-200'>
         
         <p>{`© ${year}.Ali Baran Demir.`}</p>
         <div className='flex gap-x-3'>

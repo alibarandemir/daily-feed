@@ -3,11 +3,13 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma= new PrismaClient()
 
-const getResourcesSome= (req:Request,res:Response)=>{
+const getResourcesSome= async (req:Request,res:Response)=>{
     try{
-        const resources= prisma.source.findMany({
+        console.log("a")
+        const resources= await prisma.source.findMany({
             take:3
         })
+        console.log(resources)
         //caching mantığı uygula
         res.status(200).json({
             sources:resources,

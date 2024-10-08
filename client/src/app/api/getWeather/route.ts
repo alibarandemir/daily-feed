@@ -13,7 +13,8 @@ export async function GET(request: NextRequest) {
       // Hava durumu verilerini çekiyoruz
       const weatherData = await fetchWeatherData(lat, long);
       return NextResponse.json(weatherData);
-    } else {
+    } 
+    else{
       return NextResponse.json({ error: "Lat ve Long değerleri eksik." }, { status: 400 });
     }
   } catch (error) {

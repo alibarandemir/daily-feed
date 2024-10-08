@@ -8,10 +8,13 @@ import Sider from 'antd/es/layout/Sider'
 import { setIsSideBarCollapsed } from '@/stores/Global/GlobalSlice'
 import Link from 'next/link'
 import { getResourcesforSideBar } from '@/stores/Global/actions'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 export default function Sidebar() {
+  const router= useRouter()
   const {isSideBarCollapsed,sideBarSources} = useAppSelector((state) => state.global)
   const dispatch = useAppDispatch()
   const [openKey, setOpenKey] = useState<string[]>([]);
@@ -29,16 +32,36 @@ export default function Sidebar() {
   const getIconColor = (menuKey: string) => {
     return openKey.includes(menuKey) ? '#229799' : '#000';
   };
-
+  const dynamicMenuItems: MenuItem[] = sideBarSources.map((source, index) => ({
+    key: `source-${index}`,
+    label: (
+      <div className="flex items-center gap-x-2">
+        <Image unoptimized quality={100} src={source.sourceImg} alt={source.name} width={30} height={30} style={{}}/>
+        <span>{source.name}</span>
+      </div>
+      
+    ),
+  }));
+  dynamicMenuItems.push({
+    key: 'see-all',
+    label: (
+      <div className="flex items-center justify-center text-appcolor font-bold">
+        <span>Tümünü Gör</span>
+      </div>
+    ),
+    onClick: () => {
+      console.log('Tümünü Gör tıklandı!');
+      router.prefetch('/resources')
+      router.push('/resources')
+      // Burada yönlendirme veya başka bir işlem yapılabilir
+    },
+  });
   const items: MenuItem[] = [
     {
       key: 'sub1',
-      label: <h2 className='text-2xl  text-black'>Kaynaklar</h2>,
+      label: <h2 style={{padding:0}} className='text-2xl  text-black'>Kaynaklar</h2>,
       icon: <AppstoreOutlined style={{ fontSize: '2rem', color: getIconColor('sub1'),marginLeft:'-10px' }} />,
-      children: [
-        { key: '1', label: <span className="text-xl">Option 1</span> },
-        { key: '2', label: <span className="text-xl">Option 2</span> },
-      ],
+      children:dynamicMenuItems
     }
   ];
 
@@ -89,25 +112,26 @@ export default function Sidebar() {
       )}
 
       {/* Menü */}
-      <div className='flex-grow flex items-center justify-center'>
+      <div className=' flex items-center justify-center '>
         <Menu
           mode='inline'
           items={items}
           className='text-xl'
           openKeys={openKey}
           onOpenChange={onOpenChange}
+        
         />
       </div>
       
       {/* Private routes */}
-      <div className='w-full flex flex-col justify-center text-lg'>
-        <div className='hover:text-xl flex items-center justify-start px-4 py-2 cursor-pointer'>
-          <RocketOutlined className='hover:text-appcolor' style={{ fontSize: '2rem', marginRight: '8px' }} />
+      <div className=' flex-grow w-full flex flex-col justify-start text-lg '>
+        <div className={`hover:text-xl flex items-center ${isSideBarCollapsed? 'justify-center':''} justify-start px-4 py-2 cursor-pointer`}>
+          <RocketOutlined className={`hover:text-appcolor`} style={{ fontSize: '2rem', marginRight: '8px' }} />
           <Link className={`${isSideBarCollapsed? 'hidden my-20':'block'}`} href=''>
             Akışım
           </Link>
         </div>
-        <div className='hover:text-xl flex items-center justify-start px-4 py-2 cursor-pointer '>
+        <div className={`hover:text-xl flex items-center  ${isSideBarCollapsed? 'justify-center':''}   px-4 py-2 cursor-pointer `}>
           <InboxOutlined className='hover:text-appcolor' style={{ fontSize: '2rem', marginRight: '8px' }} />
           <Link className={`${isSideBarCollapsed? 'hidden':'block'}`} href=''>
             Kaydedilenler
@@ -116,9 +140,9 @@ export default function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className='absolute bottom-0 w-full'>
+     
         {isSideBarCollapsed ? <div className='text-center'>Logo</div> : <Footer />}
-      </div>
+      
     </Sider>
   );
 }

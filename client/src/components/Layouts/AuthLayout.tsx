@@ -3,7 +3,7 @@ import Footer from '../Footer/Footer'
 
 
 
-export function Footer({
+export function AuthLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;
