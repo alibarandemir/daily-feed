@@ -14,3 +14,10 @@ const getNews= async (req:Request,res:Response)=>{
     })
 
 }
+
+const getNewsBySourceId=async(req:Request,res:Response)=>{
+
+}
+const getNewsByCategoryId=async(req:Request,res:Response)=>{
+
+}

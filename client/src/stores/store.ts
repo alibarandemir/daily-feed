@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import GlobalReducer from './Global/GlobalSlice'
 import NewsReducer from './News/NewsSlice'
+import ResourceReducer from './Resource/ResourceSlice'
 
 
 
 const store= configureStore({
     reducer:{
         global:GlobalReducer,
-        news:NewsReducer
+        news:NewsReducer,
+        source:ResourceReducer
     }
 })
 export type RootState = ReturnType<typeof store.getState>

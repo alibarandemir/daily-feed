@@ -133,7 +133,7 @@ export default function Sidebar() {
         </div>
         <div className={`hover:text-xl flex items-center  ${isSideBarCollapsed? 'justify-center':''}   px-4 py-2 cursor-pointer `}>
           <InboxOutlined className='hover:text-appcolor' style={{ fontSize: '2rem', marginRight: '8px' }} />
-          <Link className={`${isSideBarCollapsed? 'hidden':'block'}`} href=''>
+          <Link className={`${isSideBarCollapsed? 'hidden':'block'}`} href='/news/saved'>
             Kaydedilenler
           </Link>
         </div>
