@@ -15,6 +15,7 @@ model News {
   image       String
   upvote      Int
   downvote    Int
+  summary    String? 
   sourceId    Int
   createdAt   DateTime    @default(now())
   source      Source      @relation(fields: [sourceId], references: [id])

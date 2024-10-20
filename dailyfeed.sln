@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScrapingService", "ScrapingService\ScrapingService.csproj", "{538DAA53-2B54-4A68-94C3-109447CFE0BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{538DAA53-2B54-4A68-94C3-109447CFE0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{538DAA53-2B54-4A68-94C3-109447CFE0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{538DAA53-2B54-4A68-94C3-109447CFE0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{538DAA53-2B54-4A68-94C3-109447CFE0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1933DB0F-DE3C-4B25-A0F4-B4096C69D830}
+	EndGlobalSection
+EndGlobal
