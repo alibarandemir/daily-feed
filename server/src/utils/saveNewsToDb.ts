@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import axios from "axios"
 interface Inews{
     title:string,
     link:string,
@@ -15,7 +16,11 @@ export const saveNewsToDb=async(news:Inews[],sourceId:number)=>{
                 return
             }
             else{
-                
+                const response = await axios.get("api/summary/getSummary",{
+                params:{newsLink:anews.link}
+            })
+                const summary:string |null=response.data;
+    
                 const newNews= await prisma.news.create({
                     data:{
                         title:anews.title,
@@ -24,7 +29,8 @@ export const saveNewsToDb=async(news:Inews[],sourceId:number)=>{
                         image:anews.image,
                         upvote:0,
                         downvote:0,
-                        sourceId:sourceId
+                        sourceId:sourceId,
+                        summary:summary
 
                     }
                 })
@@ -32,7 +38,7 @@ export const saveNewsToDb=async(news:Inews[],sourceId:number)=>{
         }
     }
     catch(e:any){
-        
+        return e.message
     }
 
 }
