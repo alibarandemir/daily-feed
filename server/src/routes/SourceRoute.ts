@@ -6,7 +6,7 @@ const SourceRouter= express.Router()
 SourceRouter.get('/getResourcesForSidebar',getResourcesSome)
 SourceRouter.get('/getAllResources',getAllResources)
 
-SourceRouter.post('addResource')
+SourceRouter.post('/addResource')
 
 
 export  {SourceRouter};

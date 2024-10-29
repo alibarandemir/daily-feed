@@ -7,21 +7,25 @@ interface Inews{
     image:string
 }
 
-export const saveNewsToDb=async(news:Inews[],sourceId:number)=>{
+export const saveNewsToDb=async(news:Inews[],sourceId:number,categoryId:number)=>{
     const prisma= new PrismaClient()
     try{
         for(const anews  of news ){
             const existingNews= await prisma.news.findUnique({where:{link:anews.link}})
             if(existingNews){
-                return
+                continue
             }
+            
             else{
-                const response = await axios.get("api/summary/getSummary",{
-                params:{newsLink:anews.link}
+                console.log("saveNewsToDb içinde")
+                const response = await axios.get("http://localhost:5134/api/summary/getSummary",{
+                params:{newsUrl:anews.link}
             })
+                console.log(response)
                 const summary:string |null=response.data;
-    
-                const newNews= await prisma.news.create({
+                console.log(summary)
+                console.log("haberler dbye kaydediliyor..")
+                 await prisma.news.create({
                     data:{
                         title:anews.title,
                         link:anews.link,
@@ -30,10 +34,12 @@ export const saveNewsToDb=async(news:Inews[],sourceId:number)=>{
                         upvote:0,
                         downvote:0,
                         sourceId:sourceId,
-                        summary:summary
+                        summary:summary,
+                        categoryId:categoryId,
 
                     }
                 })
+               
             }
         }
     }

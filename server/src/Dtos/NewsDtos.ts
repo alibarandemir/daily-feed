@@ -1,0 +1,27 @@
+
+
+
+export class GetNewsDto{
+    title:string;
+    link:string;
+    description:string;
+    image:string;
+    upvote:number;
+    downvote:number;
+    sourceName:string;
+    summary:string
+
+
+    constructor(title:string,link:string,description:string,image:string,upvote:number,downvote:number,sourceName:string,summary:string){
+        this.title=title
+        this.link=link
+        this.description=description
+        this.image=image
+        this.upvote=upvote
+        this.downvote=downvote
+        this.sourceName=sourceName
+        this.summary=summary
+
+    }
+   
+}

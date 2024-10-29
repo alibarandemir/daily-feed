@@ -27,11 +27,13 @@ app.use('/',router)
 async function main (){
     console.log("rssden veriler geliyor")
     const rssFeeds=await prisma.rssFeed.findMany()
-    console.log(rssFeeds)
+    
 
     for(const rss of rssFeeds){
         const news=await fetchRssFeeds(rss.rssUrl)
-        //await saveNewsToDb(news,rss.sourceId,rss.categoryId)
+        console.log(news);
+
+        await saveNewsToDb(news,rss.sourceId,rss.categoryId)
     }
 }
 main()

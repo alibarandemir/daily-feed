@@ -8,48 +8,49 @@ type NewsProps = {
   link: string,
   description: string,
   image: string,
-  category: string,
-  source: string,
+  categoryName: string,
+  sourceName: string,
   upvote: number,
   downvote: number
+  summary:string
 }
 
-export const NewsCard: React.FC<NewsProps> = ({ title, link, description, image, category, source, upvote, downvote }) => {
+export const NewsCard: React.FC<NewsProps> = (newsContent) => {
   return (
-    <div className='flex flex-col w-80 h-96 border-2 border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl '>
+    <div className='flex flex-col w-96 min-h-[500px] border-2 border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl '>
       {/* Top segment */}
       <div className='w-full flex-col items-center justify-between mb-2'>
         <div className='flex justify-between items-center'>
-          <div className='text-gray-500 font-medium'>{source}</div>
+          <div className='text-gray-500 font-medium'>{newsContent.sourceName}</div>
 
-          <Link href={link} className='bg-main text-white text-sm flex items-center rounded px-3 py-1 cursor-pointer hover:bg-blue-600 transition-colors'>
+          <Link href={newsContent.link} className='bg-main text-white text-sm flex items-center rounded px-3 py-1 cursor-pointer hover:bg-blue-600 transition-colors'>
             Haberi Oku
             <ExportOutlined className='ml-1' />
           </Link>
         </div>
         
-        <h2 className='text-center font-bold text-lg mt-2'>{title}</h2>
+        <h2 className='text-center font-bold text-lg mt-2'>{newsContent.title}</h2>
       </div>
 
       {/* Image */}
       <div className='flex-grow mb-2'>
-        <Image src={image} alt={title} layout="responsive" width={300} height={150} className='rounded-lg' />
+        <Image src={newsContent.image} alt={newsContent.title} layout="responsive" width={300} height={150} className='rounded-lg' />
       </div>
 
       {/* Bottom segment */}
       <div className='flex flex-col flex-grow-0'>
-        <div className='text-sm text-gray-700 mb-2'>{description}</div>
+        <div className='text-sm text-gray-700 mb-2'>{newsContent.description}</div>
 
         <div className='flex items-center justify-between'>
           {/* Upvote/Downvote */}
           <div className='flex items-center gap-2'>
             <div className='flex items-center p-2 rounded text-green-500 hover:bg-green-700 transition-colors cursor-pointer'>
               <UpCircleOutlined />
-              <span className='ml-1'>{upvote}</span>
+              <span className='ml-1'>{newsContent.upvote}</span>
             </div>
             <div className='flex items-center p-2 rounded text-red-500 hover:bg-red-700 transition-colors cursor-pointer'>
               <DownCircleOutlined />
-              <span className='ml-1'>{downvote}</span>
+              <span className='ml-1'>{newsContent.downvote}</span>
             </div>
           </div>
 

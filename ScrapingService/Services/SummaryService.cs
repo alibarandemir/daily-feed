@@ -12,7 +12,7 @@ public class SummaryService:ISummaryService
     }
 
     public async Task<string?> GetSummaryAsync(string url){
-        Console.WriteLine(url);
+        
         var newsContent = await _scrapingService.GetNewsContentAsync(url);
         Console.WriteLine(newsContent);
           // İçerik bulunamamışsa uygun bir mesaj döndür

@@ -4,8 +4,13 @@ namespace ScrapingService.Services;
 
 public class AiSummaryService : IAiSummaryService
 {
-    public Task<string> GenerateSummaryAsync(string content)
+    private readonly HttpClient _httpClient;
+    public AiSummaryService(){
+        _httpClient= new HttpClient();
+    }
+    public async Task<string> GenerateSummaryAsync(string content)
     {
-        throw new NotImplementedException();
+        var prompt= $"Lütfen bu metni 200 karakterle özetle:{content}";
+        return "dd";
     }
 }

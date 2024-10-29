@@ -27,7 +27,7 @@ public class SummaryController : ControllerBase
             if(summary==null){
                 return Ok("summary is not found");
             }
-            return Ok(summary);
+            return Ok("");
         }
         catch (Exception ex)
         {

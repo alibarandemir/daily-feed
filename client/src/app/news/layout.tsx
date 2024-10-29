@@ -8,13 +8,9 @@ export default function NewsLayout({
     return (
         <AppLayout>
            {/*grid yapısı ve pagination buraya eklenecek*/}
-          <Row gutter={[24, 16]}>
-            <Col span={8}>{children}</Col>
-            <Col span={8}>{children}</Col>
-            <Col span={8}>{children}</Col>
-            <Col span={8}>{children}</Col>
+          <Row justify="center" gutter={[24, 40]}>
+            {children}
           </Row>
-          <Row justify={'center'}><Pagination/></Row>
         </AppLayout>
     );
   }

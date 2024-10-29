@@ -1,23 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getNews } from "./actions";
 
 
 interface NewsState {
-    news: { id: string; title: string; content: string }[];  // Örnek haber yapısı
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';  // Yükleme durumu
+    news: {title: string, link:string,description:string,image:string,
+      upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string }[];  // Örnek haber yapısı
+    loading:boolean,
     error: string | null;  // Hata mesajı
   }
   
   // Initial state
   const initialState: NewsState = {
     news: [],
-    status: 'idle',
+    loading:false,
     error: null,
   };
 
 const NewsSlice= createSlice({
     name:'news',
     initialState:initialState,
-    reducers:{}
+    reducers:{},
+    extraReducers:(builder)=>{
+        builder.addCase(getNews.pending,(state,action)=>{
+          state.loading=true;
+        })
+        builder.addCase(getNews.fulfilled,(state,action)=>{
+          state.loading=false;
+          state.news=action.payload.news
+        })
+        builder.addCase(getNews.rejected,(state,action)=>{
+          state.loading=false;
+          state.error=action.error.message||""
+        })
+    }
 
 })
 

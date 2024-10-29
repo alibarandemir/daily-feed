@@ -20,7 +20,8 @@ model News {
   createdAt   DateTime    @default(now())
   source      Source      @relation(fields: [sourceId], references: [id])
   savedNews   savedNews[]
-  categories  Category[]  @relation("CategoryToNews")
+  categoryId  Int
+  category   Category  @relation(fields: [categoryId],references: [id])
 }
 
 model User {
@@ -40,7 +41,7 @@ model Category {
   categoryName String @unique
   RssFeed      RssFeed[]
   UserCategory UserCategory[]
-  news         News[]         @relation("CategoryToNews")
+  news         News[]        
 }
 
 model UserCategory {
