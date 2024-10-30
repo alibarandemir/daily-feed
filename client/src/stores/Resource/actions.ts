@@ -17,3 +17,4 @@ export const getAllResources= createAsyncThunk('getResources', async ({page}:{pa
     
 
 })
+

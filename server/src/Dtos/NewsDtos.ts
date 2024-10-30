@@ -9,10 +9,11 @@ export class GetNewsDto{
     upvote:number;
     downvote:number;
     sourceName:string;
+    categoryName:string
     summary:string
 
 
-    constructor(title:string,link:string,description:string,image:string,upvote:number,downvote:number,sourceName:string,summary:string){
+    constructor(title:string,link:string,description:string,image:string,upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string){
         this.title=title
         this.link=link
         this.description=description
@@ -20,6 +21,7 @@ export class GetNewsDto{
         this.upvote=upvote
         this.downvote=downvote
         this.sourceName=sourceName
+        this.categoryName=categoryName
         this.summary=summary
 
     }

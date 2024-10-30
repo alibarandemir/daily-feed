@@ -19,3 +19,17 @@ export const getNews= createAsyncThunk('news/getNews',async (offset:number,{reje
         return rejectWithValue(e.response?.data)
     }
 })
+export const getNewsByCategoryName= createAsyncThunk('getNewsByCategoryName',async(data,{rejectWithValue})=>{
+    try{
+        const response= await api.get('getNewsByCategoryName',{
+            params:{
+                
+            }
+        })
+        console.log(response.data)
+        return response.data;
+    }
+    catch(e:any){
+        return rejectWithValue(e.response?.data)
+    }
+})

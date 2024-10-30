@@ -14,7 +14,7 @@ export default function FooterSidebar() {
         setYear(new Date().getFullYear())
     },[])
   return (
-    <div className='w-full  bottom-0 flex items-center flex-col  text-main bg-gray-200'>
+    <div className='w-full absolute  bottom-0 flex items-center flex-col  text-main'>
         
         <p>{`© ${year}.Ali Baran Demir.`}</p>
         <div className='flex gap-x-3'>

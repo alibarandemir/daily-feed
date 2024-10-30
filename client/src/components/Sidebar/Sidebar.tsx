@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { getResourcesforSideBar } from '@/stores/Global/actions'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import '../../app/globals.css'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -141,7 +142,7 @@ export default function Sidebar() {
 
       {/* Footer */}
      
-        {isSideBarCollapsed ? <div className='text-center'>Logo</div> : <Footer />}
+        {isSideBarCollapsed ? <div className='text-center absolute bottom-0 w-full'>Logo</div> : <Footer />}
       
     </Sider>
   );

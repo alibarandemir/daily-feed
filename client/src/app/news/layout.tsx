@@ -1,5 +1,6 @@
 import AppLayout from "@/components/Layouts/AppLayout";
 import { Col, Pagination, Row } from "antd";
+import '../globals.css'
 export default function NewsLayout({
     children,
   }: Readonly<{
@@ -8,7 +9,7 @@ export default function NewsLayout({
     return (
         <AppLayout>
            {/*grid yapısı ve pagination buraya eklenecek*/}
-          <Row justify="center" gutter={[24, 40]}>
+          <Row style={{marginTop:"30px"}} justify="start" gutter={[24, 40]}>
             {children}
           </Row>
         </AppLayout>

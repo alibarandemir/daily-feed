@@ -15,7 +15,7 @@ export default function NewsPage() {
   const [currentPage,setCurrentPage]= useState<number>(1)
 
   useEffect(() => {
-    dispatch(getNews((currentPage-1)*10));
+    dispatch(getNews((currentPage-1)*9));
   }, [dispatch,currentPage]);
   const onPageChange = (page: number) => {
     setCurrentPage(page); // Sayfa değiştiğinde mevcut sayfayı ayarla
@@ -32,7 +32,7 @@ export default function NewsPage() {
     <>
       {/* Burada news card componentlerini render edeceksin */}
       {news.map((item) => (
-      <Col xs={24} lg={8} span={8}>
+      <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8}>
         <NewsCard key={item.link} 
         title={item.title}
         link={item.link}
@@ -46,8 +46,8 @@ export default function NewsPage() {
       />
       </Col>
       ))}
-      <Row justify="center" style={{ marginTop: '24px' }}>
-        <Col span={24}>
+      
+        <Col style={{display:"flex",justifyItems:"center",justifyContent:"center"}}   span={24}>
           <Pagination
             current={currentPage}
             pageSize={10}
@@ -55,7 +55,7 @@ export default function NewsPage() {
             onChange={onPageChange}
           />
         </Col>
-      </Row>
+     
     </>
   );
 }

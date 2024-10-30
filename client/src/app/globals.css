@@ -29,3 +29,14 @@ body {
 .ant-menu-item{
   padding-left: 7px !important;
 }
+.ant-row{
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+.ant-layout-sider{
+  height: 100% !important;
+}
+.ant-layout-sider-children{
+  height: 100% !important;
+  position: relative;
+}

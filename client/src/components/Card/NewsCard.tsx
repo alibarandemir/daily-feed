@@ -53,9 +53,10 @@ export const NewsCard: React.FC<NewsProps> = (newsContent) => {
               <span className='ml-1'>{newsContent.downvote}</span>
             </div>
           </div>
-
+          <div className='text-appcolor w-full text-right mr-6 '>#{newsContent.categoryName}</div>
           {/* Save/Category */}
           <div className='flex items-center justify-center bg-gray-900 p-3 rounded gap-3'>
+            
             <InboxOutlined className='text-white text-lg hover:text-gray-700 transition-colors cursor-pointer' />
             
           </div>
