@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNews } from "./actions";
+import { getNews, getNewsByCategoryName, getNewsBySourceName } from "./actions";
 
 
 interface NewsState {
@@ -32,6 +32,29 @@ const NewsSlice= createSlice({
           state.loading=false;
           state.error=action.error.message||""
         })
+        builder.addCase(getNewsBySourceName.pending,(state,action)=>{
+          state.loading=true;
+        })
+        builder.addCase(getNewsBySourceName.fulfilled,(state,action)=>{
+          state.loading=false;
+          state.news=action.payload.news
+        })
+        builder.addCase(getNewsBySourceName.rejected,(state,action)=>{
+          state.loading=false;
+          state.error=action.error.message||""
+        })
+        builder.addCase(getNewsByCategoryName.pending,(state,action)=>{
+          state.loading=true;
+        })
+        builder.addCase(getNewsByCategoryName.fulfilled,(state,action)=>{
+          state.loading=false;
+          state.news=action.payload.news
+        })
+        builder.addCase(getNewsByCategoryName.rejected,(state,action)=>{
+          state.loading=false;
+          state.error=action.error.message||""
+        })
+        
     }
 
 })

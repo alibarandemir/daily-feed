@@ -10,16 +10,16 @@ import Pagination from '@/components/Pagination/Pagination';
 type Props = {};
 
 export default function NewsPage() {
+  const [currentPage,setCurrentPage]= useState<number>(1)
   const dispatch = useAppDispatch();
   const { loading, news, error } = useAppSelector((state) => state.news);
-  const [currentPage,setCurrentPage]= useState<number>(1)
-
   useEffect(() => {
     dispatch(getNews((currentPage-1)*9));
   }, [dispatch,currentPage]);
   const onPageChange = (page: number) => {
     setCurrentPage(page); // Sayfa değiştiğinde mevcut sayfayı ayarla
   };
+    
   if (loading) {
     return <Skeleton active />;
   }
@@ -27,13 +27,16 @@ export default function NewsPage() {
   if (error) {
     return <div>Hata: {error}</div>;
   }
+  
+  
+   
 
   return (
     <>
       {/* Burada news card componentlerini render edeceksin */}
       {news.map((item) => (
       <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8}>
-        <NewsCard key={item.link} 
+             <NewsCard key={item.link} 
         title={item.title}
         link={item.link}
         description={item.description}
@@ -44,10 +47,11 @@ export default function NewsPage() {
         downvote={item.downvote}
         summary={item.summary}
       />
+    
       </Col>
       ))}
       
-        <Col style={{display:"flex",justifyItems:"center",justifyContent:"center"}}   span={24}>
+      <Col style={{display:"flex",justifyItems:"center",justifyContent:"center",marginBottom:'20px'}}   span={24}>
           <Pagination
             current={currentPage}
             pageSize={10}
@@ -55,6 +59,10 @@ export default function NewsPage() {
             onChange={onPageChange}
           />
         </Col>
+    
+  
+      
+       
      
     </>
   );

@@ -46,9 +46,9 @@ const getNews = async (req: Request, res: Response) => {
     }
 };
 
-const getNewsBySourceId=async(req:Request,res:Response)=>{
+const getNewsBySourceName=async(req:Request,res:Response)=>{
     try {
-        const { offset } = req.query;
+        const { offset,sourceName } = req.query;
         const offsetValue = parseInt(offset as string, 10); // offset değerini tam sayıya çeviriyoruz
 
         if (isNaN(offsetValue)) {
@@ -57,6 +57,14 @@ const getNewsBySourceId=async(req:Request,res:Response)=>{
         const results = await prisma.news.findMany({
             skip: offsetValue, // Offset'i number olarak kullan
             take: 9,
+            where:{
+                source:{
+                    name:{
+                        equals:sourceName as string,
+                        mode:'insensitive'
+                    }
+                }
+            },
             include: {
                 source: true,
                 category:true 
@@ -84,9 +92,9 @@ const getNewsBySourceId=async(req:Request,res:Response)=>{
         return res.status(500).json({ error: e.message });
     }
 }
-const getNewsByCategoryId=async(req:Request,res:Response)=>{
+const getNewsByCategoryName=async(req:Request,res:Response)=>{
     try {
-        const { offset } = req.query;
+        const { offset,categoryName } = req.query;
         const offsetValue = parseInt(offset as string, 10); // offset değerini tam sayıya çeviriyoruz
 
         if (isNaN(offsetValue)) {
@@ -95,6 +103,14 @@ const getNewsByCategoryId=async(req:Request,res:Response)=>{
         const results = await prisma.news.findMany({
             skip: offsetValue, // Offset'i number olarak kullan
             take: 9,
+            where:{
+                category:{
+                    categoryName:{
+                        equals:categoryName as string,
+                        mode:'insensitive'
+                    }
+                }
+            },
             include: {
                 source: true,
                 category:true 
@@ -122,4 +138,4 @@ const getNewsByCategoryId=async(req:Request,res:Response)=>{
         return res.status(500).json({ error: e.message });
     }
 }
-export  {getNews,getNewsBySourceId,getNewsByCategoryId}
+export  {getNews,getNewsBySourceName,getNewsByCategoryName}

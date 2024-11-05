@@ -14,14 +14,14 @@ app.use(cors({
     origin: '*', 
 }));
 
-const limiter= rateLimit({
-    windowMs:15*60*1000,
-    limit:50,
-    message:'Çok fazla istek yapıldı',
-    standardHeaders:true,
-    legacyHeaders:false
-})
-app.use(limiter)
+// const limiter= rateLimit({
+//     windowMs:15*60*1000,
+//     limit:50,
+//     message:'Çok fazla istek yapıldı',
+//     standardHeaders:true,
+//     legacyHeaders:false
+// })
+// app.use(limiter)
 app.use('/',router)
 //node cron uygulanacak
 async function main (){

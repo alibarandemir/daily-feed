@@ -11,6 +11,7 @@ import { getResourcesforSideBar } from '@/stores/Global/actions'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import '../../app/globals.css'
+import { slugify } from '@/utils/slugify'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -28,6 +29,7 @@ export default function Sidebar() {
     }
   };
   useEffect(()=>{
+    
     dispatch(getResourcesforSideBar())
   },[])
   const getIconColor = (menuKey: string) => {
@@ -36,11 +38,12 @@ export default function Sidebar() {
   const dynamicMenuItems: MenuItem[] = sideBarSources.map((source, index) => ({
     key: `source-${index}`,
     label: (
-      <div className="flex items-center gap-x-2">
-        <Image unoptimized quality={100} src={source.sourceImg} alt={source.name} width={30} height={30} style={{}}/>
-        <span>{source.name}</span>
+      <div>
+        <Link href={`/news/source/${slugify(source.name)}`} className="flex items-center gap-x-2">
+          <Image unoptimized quality={100} src={source.sourceImg} alt={source.name} width={30} height={30} style={{}}/>
+          <span>{source.name}</span>
+        </Link>
       </div>
-      
     ),
   }));
   dynamicMenuItems.push({
@@ -89,22 +92,24 @@ export default function Sidebar() {
 
       {/* Sidebar Başlık */}
       {!isSideBarCollapsed && (
-        <div className='flex items-center justify-center text-secondary font-extrabold text-3xl mb-4'>
+        <Link href={`/news`} className='flex items-center justify-center text-secondary font-extrabold text-3xl mb-4'>
           Daily Feed
-        </div>
+        </Link>
       )}
 
       {/* Kategoriler */}
       {!isSideBarCollapsed && (
         <div className='flex flex-col items-center'>
-          <div className='w-full text-center text-3xl py-3'>
+          <Link href={'/news/category/gundem'} className='w-full text-center text-3xl py-3'>
             <span className={categoryClasname}>Gündem</span>
-          </div>
+          </Link>
           <div className='w-full text-center text-3xl'>
             <span className={categoryClasname}>Bilim</span>
           </div>
           <div className='w-full text-center text-3xl py-3'>
+          <Link href={`/news)}`}>
             <span className={categoryClasname}>Ekonomi</span>
+            </Link>
           </div>
           <div className='w-full text-center text-3xl py-3'>
             <span className={categoryClasname}>Yazılım</span>

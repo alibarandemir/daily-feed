@@ -10,6 +10,7 @@ export default function NewsLayout({
         <AppLayout>
            {/*grid yapısı ve pagination buraya eklenecek*/}
           <Row style={{marginTop:"30px"}} justify="start" gutter={[24, 40]}>
+            
             {children}
           </Row>
         </AppLayout>

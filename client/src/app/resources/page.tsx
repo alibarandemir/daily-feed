@@ -9,6 +9,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import InfiniteScroll from "react-infinite-scroll-component";
 import InfiniteScrollResources from "@/components/InfiniteScrollResources/InfiniteScrollResources";
+import '../globals.css'
 
 type Props = {};
 const { Content, Header } = Layout;
@@ -25,7 +26,7 @@ export default function ResourcesPage({}: Props) {
   };
 
   
-  const dispatch = useAppDispatch();
+  
   const router = useRouter();
 
  
