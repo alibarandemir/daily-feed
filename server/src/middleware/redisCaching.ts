@@ -38,11 +38,11 @@ export function redisCachingMiddleware(
           return res.send(data);
         };
 
-        // Controller fonksiyonuna devam et
+        
         next();
       }
     } else {
-      // Cache kullanmadan devam et
+      
       next();
     }
   };

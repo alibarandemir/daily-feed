@@ -1,5 +1,6 @@
 import { api } from "@/config/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const getNews= createAsyncThunk('news/getNews',async (offset:number,{rejectWithValue})=>{
     try{
@@ -42,6 +43,19 @@ export const getNewsBySourceName= createAsyncThunk('getNewsBySourceName',async(d
         })
         console.log(response.data)
         return response.data;
+    }
+    catch(e:any){
+        return rejectWithValue(e.response?.data)
+    }
+})
+
+export const searchNews= createAsyncThunk('search',async(data:{query:string,offset:number},{rejectWithValue})=>{
+    try{
+        console.log(data.query)
+        const response= await api.get(`search?offset=${data.offset}&q=${data.query}`
+        )
+        console.log(response.data)
+        return response.data
     }
     catch(e:any){
         return rejectWithValue(e.response?.data)

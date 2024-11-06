@@ -6,6 +6,7 @@ import cron from 'node-cron'
 import { PrismaClient } from "@prisma/client";
 import { fetchRssFeeds } from "./utils/fetchRssFeeds";
 import { saveNewsToDb } from "./utils/saveNewsToDb";
+import { initializeRedisClient } from "./cache/redis";
 const prisma= new PrismaClient()
 const app= express()
 app.use(express.json())
@@ -22,17 +23,15 @@ app.use(cors({
 //     legacyHeaders:false
 // })
 // app.use(limiter)
+
+//initializeRedisClient();
 app.use('/',router)
 //node cron uygulanacak
 async function main (){
-    console.log("rssden veriler geliyor")
     const rssFeeds=await prisma.rssFeed.findMany()
-    
-
     for(const rss of rssFeeds){
         const news=await fetchRssFeeds(rss.rssUrl)
         console.log(news);
-
         await saveNewsToDb(news,rss.sourceId,rss.categoryId)
     }
 }
