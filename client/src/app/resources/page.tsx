@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import InfiniteScroll from "react-infinite-scroll-component";
 import InfiniteScrollResources from "@/components/InfiniteScrollResources/InfiniteScrollResources";
 import '../globals.css'
+import { AuthLayout } from "@/components/Layouts/AuthLayout";
 
 type Props = {};
 const { Content, Header } = Layout;
@@ -32,35 +33,12 @@ export default function ResourcesPage({}: Props) {
  
   
   return (
-    <Layout style={{ minHeight: "100vh", backgroundColor: "#0E1217" }}>
-      <Header
-        style={{
-          backgroundColor: "#0E1217",
-          display: "flex",
-          alignItems: "end",
-        }}
-      >
-        <Row justify="start">
-          <Col
-            style={{ display: "flex", justifyContent: "center" }}
-            md={8}
-            xs={24}
-          >
-            <Button
-              type="link"
-              icon={<LeftOutlined />}
-              style={{ color: "#229799", fontSize: "18px" }}
-              onClick={() => router.back()}
-            >
-              Geri
-            </Button>
-          </Col>
-        </Row>
-      </Header>
+    <AuthLayout>
 
       <Content style={contentStyle}>
         <InfiniteScrollResources/>
       </Content>
-    </Layout>
+    </AuthLayout>
+    
   );
 }

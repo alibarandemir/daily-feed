@@ -1,11 +1,16 @@
 import React from 'react'
+import '../globals.css'
+import AuthForm from '@/components/AuthForm/AuthForm'
+import { AuthLayout } from '@/components/Layouts/AuthLayout'
 
 type Props = {}
 
-function page({}: Props) {
+function RegisterPage({}: Props) {
   return (
-    <div>page</div>
+    <AuthLayout>
+      <AuthForm isRegister={true}/>
+    </AuthLayout>
   )
 }
 
-export default page
+export default RegisterPage

@@ -5,11 +5,12 @@ import GradientButton from '../ui/GradientButton'
 import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
 import { changeDarkMode } from '@/stores/Global/GlobalSlice'
 import SearchInput from '../SearchInput/SearchInput'
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
   const dispatch = useAppDispatch()
   const isDarkMode: boolean = useAppSelector((state) => state.global.isDarkMode)
-
+  const router= useRouter()
   const toggleDarkMode = () => {
     dispatch(changeDarkMode())
   }
@@ -40,7 +41,7 @@ export default function Navbar() {
         </button>
 
         {/* Register Link */}
-        <div className='text-lg font-medium'>
+        <div onClick={()=>router.push('/register')} className='text-lg font-medium'>
           <GradientButton text='Kayıt Ol' />
         </div>
       </div>
