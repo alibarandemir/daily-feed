@@ -1,8 +1,14 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { EyeInvisibleOutlined, EyeOutlined, GoogleOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeOutlined, GoogleOutlined, LoadingOutlined } from '@ant-design/icons';
+import { toast } from 'react-toastify';
+import { useAppDispatch, useAppSelector } from '@/hooks/Redux';
+import { register as registerAction } from '@/stores/Auth/actions';
+import { showToast } from '@/utils/showToast';
+import { Spin } from 'antd';
+import { resetAuthState } from '@/stores/Auth/AuthSlice';
 
 
 type FormValues = {
@@ -14,19 +20,54 @@ type FormValues = {
 
 const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
   const router = useRouter();
+  const dispatch= useAppDispatch()
+  const {loading,error,success,message}= useAppSelector((state)=>state.auth)
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [showPassword, setShowPassword] = useState(false);
+  const displayToast = () => {
+    if (loading) showToast('info','Kayıt olunuyor...');
+    else if (error) showToast('error','Kayıt olurken hata oluştu');
+    else if (success) showToast('success','Başarıyla kayıt olundu');
+    else if (message) typeof message === 'string' && showToast('error',message);
+  };
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (isRegister) {
-      console.log("Kayıt işlemi: ", data);
+      try {
+        console.log(data)
+         await dispatch(registerAction(data));
+       
+        // if(success){
+          
+        // }
+      } catch (error) {
+        
+        showToast('error','Kayıt işlemi sırasında bir hata oluştu');
+      }
     } else {
       console.log("Giriş işlemi: ", data);
     }
   };
+  useEffect(() => {
+    
+    if (error){
+      showToast('error', 'Kayıt olurken hata oluştu');
+      dispatch(resetAuthState())
+    } 
 
+    if (success && typeof message === 'string'){
+      showToast('success', message);
+      router.push('/register/verifyEmail');
+      dispatch(resetAuthState())
+    } 
+
+    else {
+      showToast('error', message)
+      dispatch(resetAuthState())
+    };
+  }, [ error, success, message,onSubmit]);
   const togglePasswordVisibility = () => setShowPassword(prev => !prev);
-
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="w-full max-w-md p-6 bg-white shadow-md rounded-md">
@@ -99,7 +140,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
             type="submit"
             className="w-full py-2 mt-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            {isRegister ? "Kayıt Ol" : "Giriş Yap"}
+            {loading ? <Spin indicator={<LoadingOutlined spin />} size="large" /> : isRegister ? "Kayıt Ol" : "Giriş Yap"}
           </button>
         </form>
 

@@ -3,6 +3,7 @@ import cors from 'cors'
 import router from "./routes/route";
 import rateLimit from "express-rate-limit";
 import cron from 'node-cron'
+import cookieParser from 'cookie-parser';
 import { PrismaClient } from "@prisma/client";
 import { fetchRssFeeds } from "./utils/fetchRssFeeds";
 import { saveNewsToDb } from "./utils/saveNewsToDb";
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use(cors({
     origin: '*', 
 }));
+app.use(cookieParser())
 
 // const limiter= rateLimit({
 //     windowMs:15*60*1000,

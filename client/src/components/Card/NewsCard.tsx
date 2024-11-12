@@ -23,10 +23,10 @@ export const NewsCard: React.FC<NewsProps> = (newsContent) => {
         <div className='flex justify-between items-center'>
           <div className='text-gray-500 font-medium'>{newsContent.sourceName}</div>
 
-          <Link href={newsContent.link} className='bg-main text-white text-sm flex items-center rounded px-3 py-1 cursor-pointer hover:bg-blue-600 transition-colors'>
+          <a target='_blank' href={newsContent.link} className='bg-main text-white text-sm flex items-center rounded px-3 py-1 cursor-pointer hover:bg-blue-600 transition-colors'>
             Haberi Oku
             <ExportOutlined className='ml-1' />
-          </Link>
+          </a>
         </div>
         
         <h2 className='text-center font-bold text-lg mt-2'>{newsContent.title}</h2>

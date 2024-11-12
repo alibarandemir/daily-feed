@@ -15,33 +15,37 @@ model News {
   image       String
   upvote      Int
   downvote    Int
-  summary    String? 
   sourceId    Int
   createdAt   DateTime    @default(now())
+  summary     String?
+  categoryId  Int
+  category    Category    @relation(fields: [categoryId], references: [id])
   source      Source      @relation(fields: [sourceId], references: [id])
   savedNews   savedNews[]
-  categoryId  Int
-  category   Category  @relation(fields: [categoryId],references: [id])
 }
 
 model User {
-  id         Int            @id @default(autoincrement())
-  name       String
-  lastname   String
-  email      String         @unique
-  password   String
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  categories UserCategory[]
-  savednews  savedNews[]
+  id                         Int            @id @default(autoincrement())
+  name                       String
+  lastname                   String
+  email                      String         @unique
+  password                   String
+  createdAt                  DateTime       @default(now())
+  updatedAt                  DateTime       @updatedAt
+  role                       Role           @default(USER)
+  verificationToken          String?
+  verificationTokenExpiresAt DateTime?
+  isVerified                 Boolean?
+  categories                 UserCategory[]
+  savednews                  savedNews[]
 }
 
 model Category {
   id           Int            @id @default(autoincrement())
-  categoryName String @unique
+  categoryName String         @unique
+  news         News[]
   RssFeed      RssFeed[]
   UserCategory UserCategory[]
-  news         News[]        
 }
 
 model UserCategory {
@@ -64,7 +68,7 @@ model savedNews {
 
 model Source {
   id        Int       @id @default(autoincrement())
-  name      String @unique
+  name      String    @unique
   sourceImg String
   News      News[]
   RssFeed   RssFeed[]

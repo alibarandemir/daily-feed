@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import GlobalReducer from './Global/GlobalSlice'
 import NewsReducer from './News/NewsSlice'
 import ResourceReducer from './Resource/ResourceSlice'
+import AuthReducer from './Auth/AuthSlice'
 
 
 
@@ -9,7 +10,8 @@ const store= configureStore({
     reducer:{
         global:GlobalReducer,
         news:NewsReducer,
-        source:ResourceReducer
+        source:ResourceReducer,
+        auth:AuthReducer
     }
 })
 export type RootState = ReturnType<typeof store.getState>
