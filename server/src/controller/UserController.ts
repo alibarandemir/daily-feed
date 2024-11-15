@@ -3,6 +3,7 @@ import * as argon2 from "argon2";
 import { PrismaClient } from "@prisma/client";
 import jwt from 'jsonwebtoken'
 import sendVerificationEmail from "../utils/sendVerificationEmail";
+import generateToken from "../utils/generateToken";
 
 
 
@@ -71,7 +72,7 @@ const verifyEmail = async (req: Request, res: Response) => {
         const { code } = req.body;
         console.log(code)
         if(typeof(code)!=='string'){
-            return res.status(400).json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
+            return res.json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
         }
         // Doğrulama koduna ve süresine göre kullanıcıyı bul
         const user = await prisma.user.findFirst({
@@ -85,11 +86,11 @@ const verifyEmail = async (req: Request, res: Response) => {
         console.log(user)
 
         if (!user) {
-            return res.status(400).json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
+            return res.json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
         }
 
         if (user.isVerified) {
-            return res.status(400).json({ success: false, message: "Bu kullanıcı zaten doğrulanmış." });
+            return res.json({ success: false, message: "Bu kullanıcı zaten doğrulanmış." });
         }
 
         // Kullanıcıyı doğrula ve token bilgilerini temizle
@@ -101,6 +102,7 @@ const verifyEmail = async (req: Request, res: Response) => {
                 verificationTokenExpiresAt: null,
             },
         });
+        generateToken(res,updatedUser.id)
 
         res.status(200).json({ success: true, message: "Doğrulama başarılı", user: updatedUser });
 
@@ -126,19 +128,14 @@ const login = async (req: Request, res: Response) => {
         if (!isPasswordCorrect) {
             return res.status(401).json({ message: "Geçersiz şifre" });
         }
-        //jwt rs algoritmalarını kullan
-        const token = jwt.sign({email:user.email,userId:user.id},'dfdffd',{expiresIn:'1h'}) //hs256
-        res.cookie('token', token, {
-            httpOnly: true,              // Cookie’ye yalnızca sunucu tarafından erişilebilir
-            secure: process.env.NODE_ENV === 'production', // HTTPS üzerinden gönderilmesini sağlar (sadece production ortamında)
-            maxAge: 3600 * 1000,        
-            sameSite: 'strict'           
-          });
-        res.status(200).json({ message: "Giriş başarılı", user: user,token:token });
+        generateToken(res,user.id)
+        res.status(200).json({ message: "Giriş başarılı", user: user });
     } catch (error) {
         console.error("Giriş sırasında hata:", error);
         res.status(500).json({ message: "Sunucu hatası" });
     }
 };
+const logout=()=>{
 
+}
 export { register,verifyEmail ,login };

@@ -30,7 +30,6 @@ const sendVerificationEmail = async (email: string, verificationCode: string) =>
                 </div>
             `,
         });
-
         console.log("E-posta başarıyla gönderildi", info.messageId);
     } catch (e) {
         console.error("E-posta gönderim hatası:", e);

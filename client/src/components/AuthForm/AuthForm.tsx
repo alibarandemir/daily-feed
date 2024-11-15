@@ -9,6 +9,7 @@ import { register as registerAction } from '@/stores/Auth/actions';
 import { showToast } from '@/utils/showToast';
 import { Spin } from 'antd';
 import { resetAuthState } from '@/stores/Auth/AuthSlice';
+import Loading from '../Loading/Loading';
 
 
 type FormValues = {
@@ -24,23 +25,12 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
   const {loading,error,success,message}= useAppSelector((state)=>state.auth)
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [showPassword, setShowPassword] = useState(false);
-  const displayToast = () => {
-    if (loading) showToast('info','Kayıt olunuyor...');
-    else if (error) showToast('error','Kayıt olurken hata oluştu');
-    else if (success) showToast('success','Başarıyla kayıt olundu');
-    else if (message) typeof message === 'string' && showToast('error',message);
-  };
-
-
+  const [isLoading,setIsLoading]=useState<boolean>(false)
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (isRegister) {
       try {
         console.log(data)
          await dispatch(registerAction(data));
-       
-        // if(success){
-          
-        // }
       } catch (error) {
         
         showToast('error','Kayıt işlemi sırasında bir hata oluştu');
@@ -57,9 +47,11 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
     } 
 
     if (success && typeof message === 'string'){
-      showToast('success', message);
+      setIsLoading(true)
       router.push('/register/verifyEmail');
+      showToast('success', message);
       dispatch(resetAuthState())
+      setIsLoading(true)
     } 
 
     else {
@@ -68,6 +60,9 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
     };
   }, [ error, success, message,onSubmit]);
   const togglePasswordVisibility = () => setShowPassword(prev => !prev);
+  if(isLoading){
+    return (<Loading/>)
+  }
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="w-full max-w-md p-6 bg-white shadow-md rounded-md">

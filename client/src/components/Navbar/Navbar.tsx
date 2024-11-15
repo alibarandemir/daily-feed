@@ -6,11 +6,13 @@ import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
 import { changeDarkMode } from '@/stores/Global/GlobalSlice'
 import SearchInput from '../SearchInput/SearchInput'
 import { useRouter } from 'next/navigation'
+import useAuth from '@/hooks/useAuth'
 
 export default function Navbar() {
   const dispatch = useAppDispatch()
   const isDarkMode: boolean = useAppSelector((state) => state.global.isDarkMode)
   const router= useRouter()
+  const {isAuthenticated}= useAuth()
   const toggleDarkMode = () => {
     dispatch(changeDarkMode())
   }
@@ -42,7 +44,10 @@ export default function Navbar() {
 
         {/* Register Link */}
         <div onClick={()=>router.push('/register')} className='text-lg font-medium'>
-          <GradientButton text='Kayıt Ol' />
+          {
+            isAuthenticated? <div>Name</div>: <GradientButton text='Kayıt Ol' />
+          }
+          
         </div>
       </div>
     </div>

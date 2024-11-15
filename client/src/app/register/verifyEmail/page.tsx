@@ -49,21 +49,22 @@ const EmailVerificationPage = () => {
 		const verificationCode = code.join("");
 		try {
 			dispatch(verifyEmail(verificationCode));
-			if(success){
-				router.push("/");
-				showToast('success',message)
-				dispatch(resetAuthState())
-			}
-			else{
-				showToast('warning',message)
-				dispatch(resetAuthState())
-			}
+			
 			
 		} catch (error) {
 			console.log(error);
 		}
 	};
-
+	useEffect(() => {
+		if (success) {
+			showToast('success', message);
+			router.push("/"); // Başarılıysa yönlendirme
+			dispatch(resetAuthState()); // Redux durumunu sıfırla
+		} else {
+			showToast('warning', message);
+			dispatch(resetAuthState()); // Redux durumunu sıfırla
+		}
+	}, [success, error, message, dispatch, router]);
 	// Tüm alanlar dolu olduğunda otomatik gönderim
 	useEffect(() => {
 		if (code.every((digit) => digit !== "")) {
