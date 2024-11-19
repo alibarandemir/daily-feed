@@ -9,6 +9,6 @@ export default function LoginPage({}: Props) {
   return (
     <AuthLayout>
       <AuthForm isRegister={false}/>
-      </AuthLayout>
+    </AuthLayout>
   )
 }

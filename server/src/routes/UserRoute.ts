@@ -8,7 +8,6 @@ const UserRouter= express.Router()
 
 UserRouter.post('/register',register)
 UserRouter.post('/verifyEmail',verifyEmail)
-
 UserRouter.post('/login',login)
 UserRouter.get('/verifyToken',verifyTokenRoute)
 

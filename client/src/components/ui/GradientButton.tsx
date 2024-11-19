@@ -1,5 +1,4 @@
 import React from 'react';
-import { AntDesignOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button, ConfigProvider, Space } from 'antd';
 import { createStyles } from 'antd-style';
 
@@ -29,7 +28,12 @@ const useStyle = createStyles(({ prefixCls, css }) => ({
   `,
 }));
 
-const GradientButton = ({text}:{text:string}) => {
+interface GradientButtonProps {
+  text: string;
+  icon?: React.ReactNode;
+}
+
+const GradientButton: React.FC<GradientButtonProps> = ({ text, icon }) => {
   const { styles } = useStyle();
 
   return (
@@ -39,10 +43,9 @@ const GradientButton = ({text}:{text:string}) => {
       }}
     >
       <Space>
-        <Button type="primary" size="large" icon={<UserAddOutlined />}>
+        <Button type="primary" size="large" icon={icon}>
           {text}
         </Button>
-        
       </Space>
     </ConfigProvider>
   );

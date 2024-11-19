@@ -1,5 +1,6 @@
 using System;
 using OpenAI.Chat;
+using DotNetEnv;
 
 namespace ScrapingService.Services;
 
@@ -11,12 +12,21 @@ public class AiSummaryService : IAiSummaryService
         
     }
     public async Task<string> GenerateSummaryAsync(string content)
+
     {
+        try{
+             DotNetEnv.Env.Load();
         var prompt= $"Lütfen bu metni 200 karakterle özetle:{content}";
-        ChatClient client = new(model: "gpt-4o", apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
-        ChatCompletion completion = client.CompleteChat("Say 'this is a test.'");
+        ChatClient client = new(model: "gpt-3.5-turbo", apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+        ChatCompletion completion = client.CompleteChat(prompt);
         Console.WriteLine(completion);
 
         return "dd";
+        }
+       
+        catch (Exception ex)
+            {
+                return $"Hata oluştu: {ex.Message}";
+            }
     }
 }

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { EyeInvisibleOutlined, EyeOutlined, GoogleOutlined, LoadingOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@/hooks/Redux';
-import { register as registerAction } from '@/stores/Auth/actions';
+import { login, register as registerAction } from '@/stores/Auth/actions';
 import { showToast } from '@/utils/showToast';
 import { Spin } from 'antd';
 import { resetAuthState } from '@/stores/Auth/AuthSlice';
@@ -37,6 +37,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
       }
     } else {
       console.log("Giriş işlemi: ", data);
+      await dispatch(login(data))
     }
   };
   useEffect(() => {
@@ -48,7 +49,12 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
 
     if (success && typeof message === 'string'){
       setIsLoading(true)
-      router.push('/register/verifyEmail');
+      if(isRegister) {
+        router.push('/register/verifyEmail');
+      }
+      else {
+        router.push('/');
+      }
       showToast('success', message);
       dispatch(resetAuthState())
       setIsLoading(true)

@@ -37,7 +37,7 @@ namespace ScrapingService.Services
                     {
                         // İçeriği birleştirip döndür
                         string combinedContent = string.Join("\n", contentNodes.Select(node => node.InnerText.Trim()));
-                        
+                        Console.WriteLine(combinedContent);
                         return combinedContent;
                     }
                 }

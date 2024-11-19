@@ -2,9 +2,10 @@
 import { api } from '@/config/axios'
 import React, { useEffect, useState } from 'react'
 
+
 const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // Başlangıçta null
-  const [loading, setLoading] = useState(true); // Yüklenme durumu ekleniyor
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     checkAuth();
@@ -12,13 +13,14 @@ const useAuth = () => {
 
   const checkAuth = async () => {
     try {
-      const response = await api.get('/verifyToken', { withCredentials: true }); // Token doğrulama
-      const { isAuthenticated } = response.data;
-      setIsAuthenticated(isAuthenticated);
-    } catch (error) {
+      const response = await api.get('/verifyToken', { withCredentials: true });
+      console.log('Auth response:', response.data);
+      setIsAuthenticated(response.data.isAuthenticated);
+    } catch (error) { 
+      console.error('Auth check error:', error);
       setIsAuthenticated(false);
     } finally {
-      setLoading(false); // Doğrulama işlemi tamamlandığında yüklenme durumunu kapat
+      setLoading(false);
     }
   };
 

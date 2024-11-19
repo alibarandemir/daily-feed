@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import '../../app/globals.css'
 import { slugify } from '@/utils/slugify'
+import Loading from '../Loading/Loading'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -20,6 +21,7 @@ export default function Sidebar() {
   const {isSideBarCollapsed,sideBarSources} = useAppSelector((state) => state.global)
   const dispatch = useAppDispatch()
   const [openKey, setOpenKey] = useState<string[]>([]);
+  const [isLoading,setIsLoading]= useState<boolean>(false)
 
   const onOpenChange = (keys: string[]) => {
     if (keys.length === 0) {
@@ -54,10 +56,10 @@ export default function Sidebar() {
       </div>
     ),
     onClick: () => {
-      console.log('Tümünü Gör tıklandı!');
+      setIsLoading(true)
       router.prefetch('/resources')
       router.push('/resources')
-      // Burada yönlendirme veya başka bir işlem yapılabilir
+      setIsLoading(false)
     },
   });
   const items: MenuItem[] = [
@@ -70,6 +72,11 @@ export default function Sidebar() {
   ];
 
   const categoryClasname = "relative inline-block text-black before:absolute before:left-0 before:bottom-0 before:h-[2px] before:w-0 before:bg-appcolor before:transition-all before:duration-300 hover:before:w-full cursor-pointer";
+  if(isLoading){
+    return (
+      <Loading/>
+    )
+  }
 
   return (
     <Sider

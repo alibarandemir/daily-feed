@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { register, verifyEmail } from "./actions";
+import { login, register, verifyEmail } from "./actions";
 
 
 
@@ -53,6 +53,19 @@ const AuthSlice= createSlice({
         state.message=action.payload.message
       })
       builder.addCase(verifyEmail.rejected,(state,action)=>{
+        state.loading=false;
+        state.error=action.error.message||""
+        state.success=false
+      })
+      builder.addCase(login.pending,(state,action)=>{
+        state.loading=true;
+      })
+      builder.addCase(login.fulfilled,(state,action)=>{
+        state.loading=false;
+        state.success=action.payload.success
+        state.message=action.payload.message
+      })
+      builder.addCase(login.rejected,(state,action)=>{
         state.loading=false;
         state.error=action.error.message||""
         state.success=false

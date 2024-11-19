@@ -120,16 +120,16 @@ const login = async (req: Request, res: Response) => {
         });
 
         if (!user) {
-            return res.status(400).json({ message: "Böyle bir kullanıcı bulunamadı" });
+            return res.json({ message: "Böyle bir kullanıcı bulunamadı" });
         }
 
         const isPasswordCorrect = await argon2.verify(user.password, password);
 
         if (!isPasswordCorrect) {
-            return res.status(401).json({ message: "Geçersiz şifre" });
+            return res.json({ success:false,message: "Geçersiz şifre" });
         }
         generateToken(res,user.id)
-        res.status(200).json({ message: "Giriş başarılı", user: user });
+        res.status(200).json({success:true, message: "Giriş başarılı", user: user.name });
     } catch (error) {
         console.error("Giriş sırasında hata:", error);
         res.status(500).json({ message: "Sunucu hatası" });

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { DisplayWeather } from './DisplayWeather'
-import { MoonFilled, SearchOutlined, SunFilled } from '@ant-design/icons'
+import { MoonFilled, SearchOutlined, SunFilled, UserAddOutlined, UserOutlined } from '@ant-design/icons'
 import GradientButton from '../ui/GradientButton'
 import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
 import { changeDarkMode } from '@/stores/Global/GlobalSlice'
@@ -17,7 +17,7 @@ export default function Navbar() {
     dispatch(changeDarkMode())
   }
   
-
+  console.log(isAuthenticated)
   return (
     <div className='flex items-center justify-between border-b-2 border-appcolor w-full px-4 h-24 '>
       {/* LEFT SIDE */}
@@ -45,7 +45,7 @@ export default function Navbar() {
         {/* Register Link */}
         <div onClick={()=>router.push('/register')} className='text-lg font-medium'>
           {
-            isAuthenticated? <div>Name</div>: <GradientButton text='Kayıt Ol' />
+            isAuthenticated? <GradientButton icon={<UserOutlined/>} text={localStorage.getItem("userName")||""}/>: <GradientButton icon={<UserAddOutlined/>} text='Kayıt Ol' />
           }
           
         </div>

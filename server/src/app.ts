@@ -15,14 +15,20 @@ const app= express()
 app.use(express.json())
 
 app.use(cors({
-    origin: '*', 
-    credentials:true
-}));
+    origin: 'http://localhost:3000', // Frontend'in çalıştığı adres
+    credentials: true
+  }));
 app.use(cookieParser())
 
 // const limiter= rateLimit({
 //     windowMs:15*60*1000,
-//     limit:50,
+//     limit:50,import cors from 'cors';
+
+// ...
+
+
+
+// ...
 //     message:'Çok fazla istek yapıldı',
 //     standardHeaders:true,
 //     legacyHeaders:false
