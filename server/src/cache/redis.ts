@@ -1,6 +1,6 @@
 import redis, { createClient, RedisClientType } from 'redis';
 import hash from 'object-hash';
-import { Request } from 'express'; // veya kullandığınız framework'e göre değiştirin
+import { Request } from 'express'; 
 
 let redisClient: RedisClientType | undefined = undefined;
 

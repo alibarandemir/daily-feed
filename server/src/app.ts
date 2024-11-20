@@ -35,7 +35,7 @@ app.use(cookieParser())
 // })
 // app.use(limiter)
 
-//initializeRedisClient();
+initializeRedisClient();
 app.use('/',router)
 //node cron uygulanacak
 async function main (){
