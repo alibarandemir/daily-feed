@@ -7,8 +7,8 @@ export const getNews= createAsyncThunk('news/getNews',async (offset:number,{reje
         const response= await api.get('getNews',{
             params:{
                 offset:offset
-            }
-        })
+            },withCredentials:true
+        },)
         console.log(response.data)
         return response.data;
     }
@@ -49,10 +49,27 @@ export const getNewsBySourceName= createAsyncThunk('getNewsBySourceName',async(d
     }
 })
 
+
+//haber arama
 export const searchNews= createAsyncThunk('search',async(data:{query:string,offset:number},{rejectWithValue})=>{
     try{
         console.log(data.query)
         const response= await api.get(`search?offset=${data.offset}&q=${data.query}`
+        )
+        console.log(response.data)
+        return response.data
+    }
+    catch(e:any){
+        return rejectWithValue(e.response?.data)
+    }
+})
+export const getSavedNews= createAsyncThunk('getSavedNews',async(offset:number,{rejectWithValue})=>{
+    try{
+        const response= await api.get(`getSavedNews`,{
+           params: {
+                offset:offset
+            
+        },withCredentials:true}
         )
         console.log(response.data)
         return response.data

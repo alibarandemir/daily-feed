@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import { requestToKey, readData, isRedisWorking, writeData } from '../cache/redis';
+import { requestToKey, readData, isRedisConnected, writeData } from '../cache/redis';
 
 interface CacheOptions {
-  EX: number; // Expiration time in seconds
+  EX: number;
 }
 
 export function redisCachingMiddleware(
   options: CacheOptions = { EX: 21600 } // Varsayılan olarak 6 saat
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
-    if (isRedisWorking()) {
+    if (isRedisConnected()) {
       const key = requestToKey(req);
 
       // Eğer cache'de veri varsa, onu döndür
@@ -38,12 +38,12 @@ export function redisCachingMiddleware(
           return res.send(data);
         };
 
-        
         next();
       }
     } else {
-      
+      // Redis bağlantısı yoksa, caching'i atla ve normal akışa devam et
       next();
     }
   };
 }
+

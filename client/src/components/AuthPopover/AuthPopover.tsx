@@ -12,22 +12,26 @@ type AuthPopoverProps = {
 const AuthPopover: React.FC<AuthPopoverProps> = ({ children, triggerAction, message, isAuthenticated }) => {
   const [visible, setVisible] = useState(false);
 
+  let popoverContent: React.ReactElement|null=null;
+  
   const handleAction = () => {
-    if (!isAuthenticated) {
-      setVisible(true);
+    if (isAuthenticated) {
+      triggerAction()
+    }
+    else {
+      popoverContent = (
+        <div className='flex flex-col gap-y-3'>
+          <p>{message}</p>
+          <Link href="/login">
+            <Button className='bg-secondary text-white hover:bg-appcolor '>Giriş Yap</Button>
+          </Link>
+        </div>
+      );
       return;
     }
-    triggerAction();
   };
 
-  const popoverContent = (
-    <div className='flex flex-col gap-y-3'>
-      <p>{message}</p>
-      <Link href="/login">
-        <Button className='bg-secondary text-white hover:bg-appcolor '>Giriş Yap</Button>
-      </Link>
-    </div>
-  );
+   
 
   return (
     <Popover

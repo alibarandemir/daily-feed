@@ -4,28 +4,45 @@ import { Request } from 'express';
 
 let redisClient: RedisClientType | undefined = undefined;
 
+export  let redisConnected = false;
+
+
+
+export function isRedisConnected(): boolean {
+  return redisConnected;
+}
+
+export function setRedisConnected(status: boolean) {
+  redisConnected = status;
+}
+
+
+
 async function initializeRedisClient(): Promise<void> {
   const redisURL = process.env.REDIS_URI;
   if (redisURL) {
-    //redis url gelicek
     redisClient = createClient();
     redisClient.on("error", (e: Error) => {
       console.error(`Failed to create the Redis client with error:`);
       console.error(e);
+      setRedisConnected(false);
     });
   }
 
   try {
-    // Redis sunucusuna bağlan
     if (redisClient) {
       await redisClient.connect();
       console.log(`Connected to Redis successfully!`);
+      setRedisConnected(true);
     }
   } catch (e) {
     console.error(`Connection to Redis failed with error:`);
     console.error(e);
+    setRedisConnected(false);
   }
 }
+
+
 
 function requestToKey(req: Request): string {
   const reqDataToHash = {

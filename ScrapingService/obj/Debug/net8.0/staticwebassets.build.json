@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "UipoWzYTXGgNvmlBvRL7MeElKqP54KN1ujGXhe73Pyc=",
+  "Hash": "GYxxkqcSz07JOPwkWVg7nAFghvkcLSy/9uSx20tK+ac=",
   "Source": "ScrapingService",
   "BasePath": "_content/ScrapingService",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

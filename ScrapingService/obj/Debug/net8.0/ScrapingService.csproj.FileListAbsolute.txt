@@ -42,3 +42,6 @@ C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\System.ClientMo
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\System.Memory.Data.dll
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\DotNetEnv.dll
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\Sprache.dll
+C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\ScrapingService.staticwebassets.endpoints.json
+C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\staticwebassets\msbuild.ScrapingService.Microsoft.AspNetCore.StaticWebAssetEndpoints.props

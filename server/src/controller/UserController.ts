@@ -1,141 +1,255 @@
 import { Request, Response } from "express"
-import * as argon2 from "argon2";
-import { PrismaClient } from "@prisma/client";
-import jwt from 'jsonwebtoken'
-import sendVerificationEmail from "../utils/sendVerificationEmail";
-import generateToken from "../utils/generateToken";
-
-
-
-const prisma=new  PrismaClient();
-
-const register = async (req: Request, res: Response) => {
-    try {
-        const { name, surname, email, password } = req.body;
-        
-        const user = await prisma.user.findUnique({
-            where: { email: email }
+import { PrismaClient,Prisma,ActionType } from "@prisma/client";
+const prisma =new PrismaClient();
+const voteNews= async(req:Request,res:Response)=>{
+    try{
+        const {type,newsLink}= req.body;
+        console.log(newsLink);
+        console.log(type)
+        const userId=req.userId;
+        const news = await prisma.news.findUnique({
+            where: { link: newsLink },
+            select: { id: true },
         });
-        
-        if (user) {
-            if (user.isVerified) {
-                return res.status(400).json({ success: false, message: "Böyle bir kullanıcı kayıtlı" });
-            } else {
-                // Kullanıcı daha önce kayıt olmuş ama doğrulanmamış
-                const currentTime = new Date();
-                
-                // Kodun süresi dolmamışsa yönlendirme yapılacak
-                if (user.verificationTokenExpiresAt && currentTime < user.verificationTokenExpiresAt) {
-                    return res.status(200).json({ success: true, message: "E-posta doğrulamanız bekleniyor", redirect: "/register/verifyEmail" });
-                }
-                
-                // Kod süresi dolmuşsa, yeni bir kod gönderilecek
-                const newVerificationToken = Math.floor(100000 + Math.random() * 900000).toString();
-                await prisma.user.update({
-                    where: { email: email },
-                    data: {
-                        verificationToken: newVerificationToken,
-                        verificationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 saat
-                    }
-                });
-
-                await sendVerificationEmail(email, newVerificationToken);
-                return res.status(200).json({ success: true, message: "Doğrulama kodu yeniden gönderildi, lütfen e-posta adresinizi kontrol edin", redirect: "/register/verifyEmail" });
+        if(!news){
+            return res.status(404).json({ message: "Haber bulunamadı." });
+        }
+        //kullanıcı daha önce oy vermişmi onun kontrolünü yap
+        const existingVote = await prisma.votes.findFirst({
+            where: {
+                userId: userId,
+                newsId:news?.id
+            }
+        });
+        if(existingVote){
+            if(type===existingVote.type){
+                await undoVote(existingVote.id, existingVote.type, news.id,userId);
+                return res.status(200).json({ message: "Oy başarıyla geri alındı" });
+            }
+            
+            else  {
+                await undoVote(existingVote.id, existingVote.type, news.id,userId);
+                //burdan devam edip oy verilsin
             }
         }
 
-        // Yeni kullanıcı kaydı
-        const hashedPassword = await argon2.hash(password);
-        const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
-
-        const newUser = await prisma.user.create({
-            data: {
-                name: name,
-                lastname: surname,
-                email: email,
-                password: hashedPassword,
-                verificationToken: verificationToken,
-                verificationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 saat
-            }
-        });
-
-        await sendVerificationEmail(newUser.email, verificationToken);
-        res.status(201).json({success:true, message: "Kullanıcı başarıyla kaydedildi. E-posta adresinizi doğrulamak için gelen kutunuzu kontrol edin.", user: newUser });
-    } catch (e) {
-        console.error("Kayıt sırasında hata:", e);
-        res.status(500).json({ success: false, message: "Sunucu hatası" });
+        if(type=='upvote'){
+            const updatedNews=await prisma.$transaction([
+                prisma.news.update({
+                    where:{
+                        link:newsLink
+                    },
+                    data:{
+                        upvote: {
+                            increment: 1
+                            
+                        }
+                    }
+                }),
+                prisma.votes.create({
+                    data:{
+                        userId: userId,
+                        newsId: news.id,
+                        type: 'upvote'
+                    }
+                   
+                }),
+                prisma.userNewsActions.create({
+                    data:{
+                        userId: userId,
+                        newsId: news.id,
+                        actionType: type.toUpperCase(),
+                    }
+                })
+            ])
+            
+        }
+        else{
+            const updatedNews=await prisma.$transaction([
+                prisma.news.update({
+                    where:{
+                        link:newsLink
+                    },
+                    data:{
+                        downvote: {
+                            increment: 1
+                            
+                        }
+                    }
+                }),
+                prisma.votes.create({
+                    data:{
+                        userId: userId,
+                        newsId: news.id,
+                        type: 'downvote',
+                    }
+                   
+                }),
+                prisma.userNewsActions.create({
+                    data:{
+                        userId: userId,
+                        newsId: news.id,
+                        actionType: type.toUpperCase(),
+                    }
+                })
+            ])
+        }
+        return res.status(200).json({message:"Başarıyla Oy Verildi"})
+    }
+    catch(e:any){
+        console.error(e.message)
+        return res.status(404).json({message:"Oy verirken Hata oluştu"})
     }
 }
 
-const verifyEmail = async (req: Request, res: Response) => {
-    try {
-        const { code } = req.body;
-        console.log(code)
-        if(typeof(code)!=='string'){
-            return res.json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
+const undoVote=async(voteId:number,type:string,newsId:number,userId:number)=>{
+    try{
+        const actionType = type.toUpperCase() as ActionType;
+        await prisma.$transaction([
+            prisma.votes.delete({
+                where: {
+                    id: voteId
+                }
+            }),
+            prisma.news.update({
+                where: {
+                    id: newsId
+                },
+                data: {
+                    [type]: {
+                        decrement: 1
+                    }
+                }
+            }),
+            prisma.userNewsActions.deleteMany({
+                where: {
+                    userId: userId,
+                    newsId:newsId ,
+                    actionType: actionType,
+                },
+               
+            })
+        ])
+
+        // Update the news vote count
+       
+    }
+    catch(e:any){
+        throw e;
+    }
+}
+const saveNews=async(req:Request,res:Response)=>{
+    const {newsLink}=req.body;
+    const userId=req.userId
+    try{
+        const news = await prisma.news.findUnique({
+            where: { link: newsLink },
+            select: { id: true },
+        });
+
+        if (!news) {
+            return res.status(404).json({ message: "Haber bulunamadı." });
         }
-        // Doğrulama koduna ve süresine göre kullanıcıyı bul
-        const user = await prisma.user.findFirst({
-            where: {
-                verificationToken: code,
-                verificationTokenExpiresAt: {
-                    gt: new Date() // Şu anki zamandan büyük olmalı, yani süresi dolmamış olmalı
+
+        const newsId = news.id;
+        const existingSaved= await prisma.savedNews.findFirst(
+            {
+                where: {
+                    userId: userId,
+                    newsId: newsId
                 }
             }
-        });
-        console.log(user)
+        )
+        if(existingSaved){
+            await prisma.savedNews.delete({
+                where: {
+                    id: existingSaved.id
+                }
+            })
+            return res.status(200).json({ message: "Kaydetme başarıyla geri alındı" });
+        }
+        const savedNews=await prisma.$transaction([
+            prisma.savedNews.create({
+                data:{
+                    userId:userId,
+                    newsId:newsId,
+                }
+            }),
+            prisma.userNewsActions.create({
+                data:{
+                    userId:userId,
+                    newsId:newsId,
+                    actionType: "SAVE",
+                }
+            })
+        ])
+        return res.status(200).json({ message: "Kaydetme başarıyla gerçekleşti" });
+    }
+    catch(e){
 
-        if (!user) {
-            return res.json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
+    }
+}
+
+import { GetNewsDto } from "../Dtos/NewsDtos";
+
+const getSavedNews = async (req: Request, res: Response) => {
+    try {
+        const userId = req.userId;
+        const { offset } = req.query;
+        const offsetValue = parseInt(offset as string, 10);
+
+        if (isNaN(offsetValue)) {
+            return res.status(400).json({ message: "Geçersiz offset değeri" });
         }
 
-        if (user.isVerified) {
-            return res.json({ success: false, message: "Bu kullanıcı zaten doğrulanmış." });
-        }
-
-        // Kullanıcıyı doğrula ve token bilgilerini temizle
-        const updatedUser = await prisma.user.update({
-            where: { id: user.id },
-            data: {
-                isVerified: true,
-                verificationToken: null,
-                verificationTokenExpiresAt: null,
+        const savedNews = await prisma.savedNews.findMany({
+            where: {
+                userId: userId
+            },
+            skip: offsetValue,
+            take: 9,
+            include: {
+                news: {
+                    include: {
+                        source: true,
+                        category: true,
+                        actions: {
+                            where: { userId: userId },
+                            select: {
+                                actionType: true,
+                            },
+                        },
+                    },
+                },
             },
         });
-        generateToken(res,updatedUser.id)
 
-        res.status(200).json({ success: true, message: "Doğrulama başarılı", user: updatedUser });
+        const news = savedNews.map((item) => {
+            const newsItem = item.news;
+            const sourceName = newsItem.source ? newsItem.source.name : "";
+            const summary = newsItem.summary || "";
+            const actions = newsItem.actions.map((action) => action.actionType);
 
-    } catch (e) {
-        console.error("Email doğrulama sırasında hata:", e);
-        res.status(500).json({ success: false, message: "Sunucu hatası" });
-    }
-};
-
-const login = async (req: Request, res: Response) => {
-    try {
-        const { email, password } = req.body;
-        const user = await prisma.user.findUnique({
-            where: { email: email },
+            return new GetNewsDto(
+                newsItem.title,
+                newsItem.link,
+                newsItem.description,
+                newsItem.image,
+                newsItem.upvote,
+                newsItem.downvote,
+                sourceName,
+                newsItem.category.categoryName,
+                summary,
+                actions
+            );
         });
 
-        if (!user) {
-            return res.json({ message: "Böyle bir kullanıcı bulunamadı" });
-        }
-
-        const isPasswordCorrect = await argon2.verify(user.password, password);
-
-        if (!isPasswordCorrect) {
-            return res.json({ success:false,message: "Geçersiz şifre" });
-        }
-        generateToken(res,user.id)
-        res.status(200).json({success:true, message: "Giriş başarılı", user: user.name });
-    } catch (error) {
-        console.error("Giriş sırasında hata:", error);
-        res.status(500).json({ message: "Sunucu hatası" });
+        return res.status(200).json({ news: news });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Kaydedilen haberler çekilirken hata oluştu" });
     }
 };
-const logout=()=>{
 
-}
-export { register,verifyEmail ,login };
+
+export {voteNews,saveNews,getSavedNews}

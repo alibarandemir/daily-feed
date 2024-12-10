@@ -1,6 +1,9 @@
 import React from 'react';
-import { Button, ConfigProvider, Space } from 'antd';
+import { Button, ConfigProvider, Space,Dropdown } from 'antd';
 import { createStyles } from 'antd-style';
+import { DownOutlined, SettingOutlined } from '@ant-design/icons';
+
+
 
 const useStyle = createStyles(({ prefixCls, css }) => ({
   linearGradientButton: css`
@@ -31,9 +34,11 @@ const useStyle = createStyles(({ prefixCls, css }) => ({
 interface GradientButtonProps {
   text: string;
   icon?: React.ReactNode;
+  isAuthenticated?: boolean;
+  action?: () => void;
 }
 
-const GradientButton: React.FC<GradientButtonProps> = ({ text, icon }) => {
+const GradientButton: React.FC<GradientButtonProps> = ({ text, icon,isAuthenticated,action }) => {
   const { styles } = useStyle();
 
   return (
@@ -42,11 +47,16 @@ const GradientButton: React.FC<GradientButtonProps> = ({ text, icon }) => {
         className: styles.linearGradientButton,
       }}
     >
+     
       <Space>
-        <Button type="primary" size="large" icon={icon}>
+        <Button onClick={action} type="primary" size="large" icon={icon}>
           {text}
         </Button>
       </Space>
+      
+    
+
+     
     </ConfigProvider>
   );
 };

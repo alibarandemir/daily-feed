@@ -9,34 +9,55 @@ const prisma= new PrismaClient()
 
 const getNews = async (req: Request, res: Response) => {
     try {
+        const userId=(req as any).userId
+        console.log(userId)
+        const isAuthenticated= !!userId
+        console.log("haberler getirirken"+isAuthenticated)
         const { offset } = req.query;
         const offsetValue = parseInt(offset as string, 10); // offset değerini tam sayıya çeviriyoruz
 
         if (isNaN(offsetValue)) {
             return res.status(400).json({ message: "Geçersiz offset değeri" });
         }
+        //kullanıcı auth olmuşsa haber gönderirken yaptığı actionı da gönder
         const results = await prisma.news.findMany({
             skip: offsetValue, // Offset'i number olarak kullan
             take: 9,
             include: {
                 source: true,
-                category:true 
+                category:true,
+                actions: isAuthenticated
+          ? {
+              where: { userId: userId }, // Sadece auth olmuş kullanıcıya ait action bilgisi
+              select: {
+                actionType: true, // Action türünü alıyoruz
+              },
+            }
+          : false, 
             },
         });
+        console.log(results)
 
         const news = results.map((item) => {
             const sourceName = item.source ? item.source.name : "";
             const summary= item.summary? item.summary:"";
+            const actions = isAuthenticated
+            ? item.actions.map((action) => action.actionType)
+            : []; // Kullanıcı action bilgisi varsa ekle
+            const isVoted=actions.includes("UPVOTE")||actions.includes("DOWNVOTE");
+            const isSaved=actions.includes("SAVE");
+            console.log(actions)
             return new GetNewsDto(
                 item.title,
                 item.link,
-                item.description,
+                item.description,   
                 item.image,
                 item.upvote,
                 item.downvote,
                 sourceName,
                 item.category.categoryName,
-                summary
+                summary,
+                actions
             );
         });
 
@@ -48,6 +69,8 @@ const getNews = async (req: Request, res: Response) => {
 
 const getNewsBySourceName=async(req:Request,res:Response)=>{
     try {
+        const userId=(req as any).userId
+        const isAuthenticated= !!userId
         const { offset,sourceName } = req.query;
         const offsetValue = parseInt(offset as string, 10); // offset değerini tam sayıya çeviriyoruz
 
@@ -67,13 +90,17 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
             },
             include: {
                 source: true,
-                category:true 
+                category:true,
+                actions:isAuthenticated
             },
         });
 
         const news = results.map((item) => {
             const sourceName = item.source ? item.source.name : "";
             const summary= item.summary? item.summary:"";
+            const actions = isAuthenticated
+            ? item.actions.map((action) => action.actionType)
+            : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
                 item.title,
                 item.link,
@@ -83,7 +110,8 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
                 item.downvote,
                 sourceName,
                 item.category.categoryName,
-                summary
+                summary,
+                actions
             );
         });
 
@@ -94,6 +122,8 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
 }
 const getNewsByCategoryName=async(req:Request,res:Response)=>{
     try {
+        const userId=(req as any).userId
+        const isAuthenticated= !!userId
         const { offset,categoryName } = req.query;
         const offsetValue = parseInt(offset as string, 10); // offset değerini tam sayıya çeviriyoruz
 
@@ -113,13 +143,17 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
             },
             include: {
                 source: true,
-                category:true 
+                category:true,
+                actions:isAuthenticated
             },
         });
 
         const news = results.map((item) => {
             const sourceName = item.source ? item.source.name : "";
             const summary= item.summary? item.summary:"";
+            const actions = isAuthenticated
+            ? item.actions.map((action) => action.actionType)
+            : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
                 item.title,
                 item.link,
@@ -129,7 +163,8 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
                 item.downvote,
                 sourceName,
                 item.category.categoryName,
-                summary
+                summary,
+                actions
             );
         });
 
@@ -140,6 +175,8 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
 }
 const searchNews=async(req:Request,res:Response)=>{
     try {
+        const userId=(req as any).userId
+        const isAuthenticated= !!userId
         const { offset,q } = req.query;
         console.log(q)
         const offsetValue = parseInt(offset as string, 10);
@@ -183,13 +220,17 @@ const searchNews=async(req:Request,res:Response)=>{
             },
             include: {
                 source: true,
-                category:true 
+                category:true,
+                actions:isAuthenticated 
             },
         });
 
         const news = results.map((item) => {
             const sourceName = item.source ? item.source.name : "";
             const summary= item.summary? item.summary:"";
+            const actions = isAuthenticated
+            ? item.actions.map((action) => action.actionType)
+            : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
                 item.title,
                 item.link,
@@ -199,7 +240,8 @@ const searchNews=async(req:Request,res:Response)=>{
                 item.downvote,
                 sourceName,
                 item.category.categoryName,
-                summary
+                summary,
+                actions
             );
         });
 

@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNews, getNewsByCategoryName, getNewsBySourceName, searchNews } from "./actions";
+import { getNews, getNewsByCategoryName, getNewsBySourceName,  getSavedNews,  searchNews } from "./actions";
 
 
 interface NewsState {
     news: {title: string, link:string,description:string,image:string,
-      upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string }[];  // Örnek haber yapısı
+      upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string,actions:string[] }[];  // Örnek haber yapısı
     loading:boolean,
     error: string | null;  // Hata mesajı
   }
@@ -65,6 +65,18 @@ const NewsSlice= createSlice({
           state.loading=false;
           state.error=action.error.message||""
         })
+        builder.addCase(getSavedNews.pending,(state,action)=>{
+          state.loading=true;
+        })
+        builder.addCase(getSavedNews.fulfilled,(state,action)=>{
+          state.loading=false;
+          state.news=action.payload.news
+        })
+        builder.addCase(getSavedNews.rejected,(state,action)=>{
+          state.loading=false;
+          state.error=action.error.message||""
+        })
+        
         
     }
 

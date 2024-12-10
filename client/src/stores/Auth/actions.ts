@@ -34,7 +34,6 @@ export const verifyEmail= createAsyncThunk('/verifyEmail',async(code:string,{rej
 
 export const login= createAsyncThunk('/login',async(data:formDataType,{rejectWithValue})=>{
     try{
-        
         const response= await api.post(`/login`,data,{withCredentials:true})
         console.log(response.data)
         localStorage.setItem("userName",response.data.user)
@@ -42,5 +41,17 @@ export const login= createAsyncThunk('/login',async(data:formDataType,{rejectWit
     }
     catch(e:any){
         return rejectWithValue(e.response?.data)
+    }
+})
+
+export const logout=createAsyncThunk('/logout',async()=>{
+
+    try{
+        const response= await api.post(`/logout`)
+        console.log(response.data)
+        return response.data
+    }
+    catch(e:any){
+        return 
     }
 })

@@ -7,6 +7,7 @@ import { changeDarkMode } from '@/stores/Global/GlobalSlice'
 import SearchInput from '../SearchInput/SearchInput'
 import { useRouter } from 'next/navigation'
 import useAuth from '@/hooks/useAuth'
+import DropdownMenu from '../ui/Dropdown'
 
 export default function Navbar() {
   const dispatch = useAppDispatch()
@@ -43,9 +44,9 @@ export default function Navbar() {
         </button>
 
         {/* Register Link */}
-        <div onClick={()=>router.push('/register')} className='text-lg font-medium'>
+        <div  className='text-lg font-medium'>
           {
-            isAuthenticated? <GradientButton icon={<UserOutlined/>} text={localStorage.getItem("userName")||""}/>: <GradientButton icon={<UserAddOutlined/>} text='Kayıt Ol' />
+            isAuthenticated? <DropdownMenu text={localStorage.getItem('userName')||''}></DropdownMenu>: <GradientButton icon={<UserAddOutlined/>} text='Kayıt Ol' action={()=>{router.push('/register')}} />
           }
           
         </div>

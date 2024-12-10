@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import { PrismaClient } from "@prisma/client";
 import { fetchRssFeeds } from "./utils/fetchRssFeeds";
 import { saveNewsToDb } from "./utils/saveNewsToDb";
-import { initializeRedisClient } from "./cache/redis";
+import { initializeRedisClient,setRedisConnected } from "./cache/redis";
 import dotenv from 'dotenv';
 dotenv.config();
 const prisma= new PrismaClient()
@@ -20,25 +20,28 @@ app.use(cors({
   }));
 app.use(cookieParser())
 
-// const limiter= rateLimit({
-//     windowMs:15*60*1000,
-//     limit:50,import cors from 'cors';
-
-// ...
+const limiter= rateLimit({
+    windowMs:15*60*1000,
+    limit:1000,
 
 
+    message:'Çok fazla istek yapıldı',
+    standardHeaders:true,
+    legacyHeaders:false
+})
+app.use(limiter)
 
-// ...
-//     message:'Çok fazla istek yapıldı',
-//     standardHeaders:true,
-//     legacyHeaders:false
-// })
-// app.use(limiter)
 
-initializeRedisClient();
 app.use('/',router)
 //node cron uygulanacak
 async function main (){
+    try {
+        //redis olmadığında hata veriyor şuan
+       // await initializeRedisClient();
+      } catch (error) {
+        console.error("Redis connection failed, but the application will continue without caching:", error);
+        setRedisConnected(false);
+      }
     const rssFeeds=await prisma.rssFeed.findMany()
     for(const rss of rssFeeds){
         const news=await fetchRssFeeds(rss.rssUrl)

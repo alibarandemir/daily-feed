@@ -36,7 +36,6 @@ export const saveNewsToDb=async(news:Inews[],sourceId:number,categoryId:number)=
                         sourceId:sourceId,
                         summary:summary,
                         categoryId:categoryId,
-
                     }
                 })
                
