@@ -45,7 +45,6 @@ async function main (){
     const rssFeeds=await prisma.rssFeed.findMany()
     for(const rss of rssFeeds){
         const news=await fetchRssFeeds(rss.rssUrl)
-        console.log(news);
         await saveNewsToDb(news,rss.sourceId,rss.categoryId)
     }
 }

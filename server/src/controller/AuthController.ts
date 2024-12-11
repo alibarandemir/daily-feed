@@ -19,7 +19,7 @@ const register = async (req: Request, res: Response) => {
         
         if (user) {
             if (user.isVerified) {
-                return res.status(400).json({ success: false, message: "Böyle bir kullanıcı kayıtlı" });
+                return res.json({ success: false, message: "Böyle bir kullanıcı kayıtlı" });
             } else {
                 // Kullanıcı daha önce kayıt olmuş ama doğrulanmamış
                 const currentTime = new Date();
@@ -70,7 +70,6 @@ const register = async (req: Request, res: Response) => {
 const verifyEmail = async (req: Request, res: Response) => {
     try {
         const { code } = req.body;
-        console.log(code)
         if(typeof(code)!=='string'){
             return res.json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
         }
@@ -83,12 +82,15 @@ const verifyEmail = async (req: Request, res: Response) => {
                 }
             }
         });
-        console.log(user)
-
         if (!user) {
             return res.json({ success: false, message: "Geçersiz kod veya süresi dolmuş kod." });
         }
-
+        await prisma.preferences.create({
+            data:{
+                userId:user.id
+            }
+        })
+        
         if (user.isVerified) {
             return res.json({ success: false, message: "Bu kullanıcı zaten doğrulanmış." });
         }
@@ -102,6 +104,7 @@ const verifyEmail = async (req: Request, res: Response) => {
                 verificationTokenExpiresAt: null,
             },
         });
+        console.log("controller token"+updatedUser.id)
         generateToken(res,updatedUser.id)
 
         res.status(200).json({ success: true, message: "Doğrulama başarılı", user: updatedUser });
@@ -129,6 +132,11 @@ const login = async (req: Request, res: Response) => {
             return res.json({ success:false,message: "Geçersiz şifre" });
         }
         generateToken(res,user.id)
+        await prisma.preferences.create({
+            data:{
+                userId:user.id
+            }
+        })
         res.status(200).json({success:true, message: "Giriş başarılı", user: user.name });
     } catch (error) {
         console.error("Giriş sırasında hata:", error);

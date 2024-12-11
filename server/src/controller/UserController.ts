@@ -4,9 +4,8 @@ const prisma =new PrismaClient();
 const voteNews= async(req:Request,res:Response)=>{
     try{
         const {type,newsLink}= req.body;
-        console.log(newsLink);
-        console.log(type)
         const userId=req.userId;
+        console.log(userId)
         const news = await prisma.news.findUnique({
             where: { link: newsLink },
             select: { id: true },
@@ -252,4 +251,55 @@ const getSavedNews = async (req: Request, res: Response) => {
 };
 
 
-export {voteNews,saveNews,getSavedNews}
+const getPreferences= async(req:Request,res:Response)=>{
+    try{
+        const userId=req.userId;
+       
+        const preferences=await prisma.preferences.findFirst({
+            where:{
+                userId:userId,
+                
+            },
+            select:{
+                theme:true,
+                showVotePopup:true,
+                
+                
+            }
+        })
+        return res.status(200).json({success:true,preferences:preferences})
+
+    }
+    catch(e){
+
+    }
+}
+const changePreferences= async(req:Request,res:Response)=>{
+    try{
+        const userId=req.userId;
+        const {preferencesKey,value}=req.body;
+        const validKeys = Object.keys(Prisma.PreferencesScalarFieldEnum)
+
+        if (!preferencesKey || value === undefined) {
+            return res.status(400).json({ error: "preferencesKey ve value gereklidir." });
+        }
+        if (!validKeys.includes(preferencesKey)) {
+            return res.status(400).json({ error: "Geçersiz preferencesKey." });
+          }
+          const updatedPreference = await prisma.preferences.updateMany({
+            where: {
+              userId: userId,
+            },
+            data: {
+              [preferencesKey]: value,
+            },
+          });
+          return res.status(200).json({ message: "Tercih başarıyla güncellendi." });
+    }
+    catch(e:any){
+        console.error("Tercih güncellenirken bir hata oluştu:", e.message);
+        return res.status(500).json({ error: "Bir hata oluştu. Lütfen tekrar deneyin." });
+    }
+}
+
+export {voteNews,saveNews,getSavedNews,getPreferences,changePreferences}

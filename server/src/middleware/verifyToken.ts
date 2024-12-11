@@ -14,14 +14,14 @@ declare global {
 export const verifyTokenMiddleware=(req:Request, res:Response,next:NextFunction)=> {
   const secretKey: string = process.env.JWT_SECRET_KEY || "";
   const token = req.cookies.token;
-  console.log(token)
+  console.log("middleware:"+token)
   if (!token) {
     return res.json({ isAuthenticated: false });
   }
 
   try {
     const decoded = jwt.verify(token,secretKey) as JwtPayload;
-    console.log(decoded.userId);
+    console.log("middleware userId"+decoded.userId);
     req.userId=decoded.userId;
     
     next()

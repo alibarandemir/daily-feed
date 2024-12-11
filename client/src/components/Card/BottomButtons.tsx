@@ -5,6 +5,9 @@ import { DownCircleOutlined, InboxOutlined, UpCircleOutlined } from '@ant-design
 import React, { useEffect, useState } from 'react'
 import AuthPopover from '../AuthPopover/AuthPopover';
 import { showToast } from '@/utils/showToast';
+import { Modal } from 'antd';
+import InformationModal from '../Modal/Modal';
+import { toggleModal } from '@/stores/Global/GlobalSlice';
 
 type Props = {
     upvote:number,
@@ -20,7 +23,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
   const [isSaved,setIsSaved]=useState<boolean>(false)
   const [upvoteCount, setUpvoteCount] = useState(upvote);
   const [downvoteCount, setDownvoteCount] = useState(downvote);
-  const {success,error, message}=useAppSelector((state)=>state.user)
+  const {isModalVisible}=useAppSelector((state)=>state.global)
   const dispatch = useAppDispatch();
   useEffect(() => {
     // Kullanıcının daha önce yaptığı işlemi belirle
@@ -35,6 +38,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
     
   }, []);
   const handleVote = (type: 'upvote' | 'downvote') => {
+    console.log(isAuthenticated)
     if (actions.includes(type.toUpperCase())) {
         showToast('info', 'Daha önce aynı oyu verdiniz')
         return; // İşlemi durdur
@@ -64,6 +68,8 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
     try {
       // Örneğin, `newsContent.link` ile haberi oyla
        dispatch(voteNews({ newsLink: newsLink, type }));
+       dispatch(toggleModal())
+       console.log(isModalVisible)
        
     } catch (e: any) {
       console.error('Haberi oylarken bir hata oluştu:', e.message);
@@ -82,6 +88,8 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
   }
   return (
     <div className="flex items-center justify-between">
+      {isModalVisible&&<InformationModal title='Oy verdiğiniz için teşekkürler!' content='İlgilendiğiniz haberlere oy vererek size daha uygun bir akış oluşturacağız.' preferenceKey='showVotePopup'/>}
+         
           {/* Oy Seçimi */}
           <div className="flex gap-3">
             <label>

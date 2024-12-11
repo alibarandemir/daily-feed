@@ -15,3 +15,25 @@ export const getResourcesforSideBar=createAsyncThunk('sources/sidebar',async(dat
             return rejectWithValue(error.message)
         }
 })
+export const getPreferences=createAsyncThunk('getPreferences',async(data:{preferencesKey:string,value:string|boolean},{rejectWithValue})=>{
+    try{
+        const response= await api.get('changePreferences')
+        
+        return response.data
+    }
+    catch(error:any){
+        console.error(error.message)
+        return rejectWithValue(error.message)
+    }
+})
+export const changePreferences=createAsyncThunk('changePreferences',async(data:{preferencesKey:string,value:string|boolean},{rejectWithValue})=>{
+    try{
+        const response= await api.put('changePreferences',data)
+    
+        return response.data
+    }
+    catch(error:any){
+        console.error(error.message)
+        return rejectWithValue(error.message)
+    }
+})
