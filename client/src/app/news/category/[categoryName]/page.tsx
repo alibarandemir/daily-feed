@@ -54,6 +54,7 @@ export default function NewsSourcePage() {
             upvote={item.upvote}
             downvote={item.downvote}
             summary={item.summary}
+            actions={item.actions}
           />
         </Col>
       ))}

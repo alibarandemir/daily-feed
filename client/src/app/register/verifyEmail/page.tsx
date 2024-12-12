@@ -7,6 +7,7 @@ import '../../globals.css'
 import { verifyEmail } from "@/stores/Auth/actions";
 import { showToast } from "@/utils/showToast";
 import { resetAuthState } from "@/stores/Auth/AuthSlice";
+import { getPreferences } from "@/stores/Global/actions";
 
 const EmailVerificationPage = () => {
 	const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
@@ -60,6 +61,7 @@ const EmailVerificationPage = () => {
 			showToast('success', message);
 			router.push("/"); // Başarılıysa yönlendirme
 			dispatch(resetAuthState()); // Redux durumunu sıfırla
+			dispatch(getPreferences()); //
 		} else {
 			showToast('warning', message);
 			dispatch(resetAuthState()); // Redux durumunu sıfırla

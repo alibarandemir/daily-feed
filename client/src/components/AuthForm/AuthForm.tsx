@@ -10,6 +10,7 @@ import { showToast } from '@/utils/showToast';
 import { Spin } from 'antd';
 import { resetAuthState } from '@/stores/Auth/AuthSlice';
 import Loading from '../Loading/Loading';
+import { getPreferences } from '@/stores/Global/actions';
 
 
 type FormValues = {
@@ -54,6 +55,8 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
       }
       else {
         router.push('/');
+        dispatch(getPreferences())
+        console.log("getPreferences called")
       }
       showToast('success', message);
       dispatch(resetAuthState())

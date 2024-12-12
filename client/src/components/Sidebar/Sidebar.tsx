@@ -133,27 +133,25 @@ export default function Sidebar() {
       {/* Sidebar Başlık */}
       {!isSideBarCollapsed && (
         <Link href={`/news`} className='flex items-center justify-center text-secondary font-extrabold text-3xl mb-4'>
-          Daily Feed
+          SumFlood
         </Link>
       )}
 
       {/* Kategoriler */}
       {!isSideBarCollapsed && (
         <div className='flex flex-col items-center'>
-          <Link href={'/news/category/gundem'} className='w-full text-center text-3xl py-3'>
+          <Link href={'/news/category/gundem'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Gündem</span>
           </Link>
-          <div className='w-full text-center text-3xl'>
+          <Link href={'/news/category/bilim'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Bilim</span>
-          </div>
-          <div className='w-full text-center text-3xl py-3'>
-          <Link href={`/news)}`}>
+          </Link>
+          <Link href={'/news/category/ekonomi'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Ekonomi</span>
-            </Link>
-          </div>
-          <div className='w-full text-center text-3xl py-3'>
+          </Link>
+          <Link href={'/news/category/ekonomi'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Yazılım</span>
-          </div>
+          </Link>
         </div>
       )}
 

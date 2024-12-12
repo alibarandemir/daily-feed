@@ -69,7 +69,7 @@ const items: MenuProps['items'] = [
   {
     key: '2',
     label: 'Akış Oluştur',
-    onClick:()=>router.push('/')
+    onClick:()=>router.push('/myfeed/createFeed')
   },
   {
     key: '3',

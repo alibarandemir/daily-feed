@@ -44,8 +44,8 @@ const GlobalSlice= createSlice({
         })
         builder.addCase(getPreferences.fulfilled,(state,action)=>{
             console.log(action.payload)
-            state.preferences = action.payload;
-            localStorage.setItem('preferences', JSON.stringify(action.payload));
+            state.preferences = action.payload.preferences;
+            localStorage.setItem('preferences', JSON.stringify(action.payload.preferences));
         })
         builder.addCase(changePreferences.fulfilled,(state,action)=>{
             state.preferences = { ...state.preferences, ...action.payload };

@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/Redux';
 import { changePreferences } from '@/stores/Global/actions';
 import { toggleModal } from '@/stores/Global/GlobalSlice';
 import { Modal, Checkbox } from 'antd';
+import { parse } from 'path';
 import React, { useState, useEffect } from 'react';
 
 type Props = {
@@ -25,7 +26,7 @@ export default function InformationModal({
     // LocalStorage'dan preferences bilgisini al
     const preferences = localStorage.getItem("preferences");
     const parsedPreferences = preferences ? JSON.parse(preferences) : {};
-
+    console.log(parsedPreferences)
     // Eğer preferenceKey'e göre modal gösterilmemesi gerekiyorsa, modalı kapat
     if (parsedPreferences[preferenceKey] === false) {
       console.log("selamlar")
