@@ -171,7 +171,7 @@ export default function Sidebar() {
       <div className=' flex-grow w-full flex flex-col justify-start text-lg '>
         <div className={`hover:text-xl flex items-center ${isSideBarCollapsed? 'justify-center':''} justify-start px-4 py-2 cursor-pointer`}>
           <RocketOutlined className={`hover:text-appcolor`} style={{ fontSize: '2rem', marginRight: '8px' }} />
-          <Link className={`${isSideBarCollapsed? 'hidden my-20':'block'}`} href=''>
+          <Link className={`${isSideBarCollapsed? 'hidden my-20':'block'}`} href='/news/myfeed'>
             Akışım
           </Link>
         </div>
@@ -185,7 +185,7 @@ export default function Sidebar() {
 
       {/* Footer */}
 
-        {isSideBarCollapsed ? <div className='text-center absolute bottom-0 w-full'>Logo</div> : <Footer />}
+        {isSideBarCollapsed ? <div className='text-center flex justify-center absolute bottom-4 h-16 w-full'><Link href='/news'><Image objectFit='contain' width={60} height={40} quality={100} src='/assets/images/logo.png' alt='sumflood'/></Link></div> : <Footer />}
     </Sider>
   );
 }

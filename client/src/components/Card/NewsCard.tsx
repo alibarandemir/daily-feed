@@ -8,6 +8,7 @@ import { voteNews } from '@/stores/User/actions';
 import { saveNews } from '@/stores/User/actions';
 import { showToast } from '@/utils/showToast';
 import BottomButtons from './BottomButtons';
+import { api } from '@/config/axios';
 
 type NewsProps = {
   title: string;
@@ -25,6 +26,16 @@ type NewsProps = {
 export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
   
 
+  const trackClick=async()=>{
+    try{
+        const response=await api.post('api/track-click',{newsId:newsContent.link})
+        console.log(response.data)
+    }
+    catch(e:any){
+      console.error(e.message)
+    }
+  }
+
   return (
     <div className="flex flex-col w-96 min-h-[500px] border-2 border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl">
       {/* Top Segment */}
@@ -35,12 +46,13 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
             target="_blank"
             href={newsContent.link}
             className="bg-main text-white text-sm flex items-center rounded px-3 py-1 cursor-pointer hover:bg-blue-600 transition-colors"
+            onClick={trackClick}
           >
             Haberi Oku
             <ExportOutlined className="ml-1" />
           </a>
         </div>
-        <h2 className="text-center font-bold text-lg mt-2">{newsContent.title}</h2>
+        <h2 className="text-center font-bold text-title text-lg mt-2">{newsContent.title}</h2>
       </div>
 
       {/* Image */}

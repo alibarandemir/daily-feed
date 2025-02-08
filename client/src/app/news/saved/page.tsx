@@ -33,9 +33,11 @@ export default function NewsPage() {
    
 
   return (
-    <>
     <ProtectedRoute>
+    <>
+    
       {/* Burada news card componentlerini render edeceksin */}
+
       {news.map((item) => (
       <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8}>
              <NewsCard key={item.link} 
@@ -62,7 +64,8 @@ export default function NewsPage() {
             onChange={onPageChange}
           />
         </Col>
-        </ProtectedRoute>
+        
     </>
+    </ProtectedRoute>
   );
 }

@@ -37,12 +37,20 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
     setIsSaved(isSaved)
     
   }, []);
-  const handleVote = (type: 'upvote' | 'downvote') => {
+  const handleVote = (type:any) => {
     console.log(isAuthenticated)
-    if (actions.includes(type.toUpperCase())) {
-        showToast('info', 'Daha önce aynı oyu verdiniz')
-        return; // İşlemi durdur
-      }
+    
+    if(type===null){  
+      showToast('error','Oy veriniz')
+    }
+    else{
+   
+
+    
+    // if (actions.includes(type.toUpperCase())) {
+    //     showToast('info', 'Daha önce aynı oyu verdiniz')
+    //     return; // İşlemi durdur
+    //   }
     // Seçili bir değer varsa ve tekrar aynı değer seçiliyorsa oyu kaldır
     if (voteValue === type) {
       setVoteValue(null);
@@ -73,17 +81,21 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
        
     } catch (e: any) {
       console.error('Haberi oylarken bir hata oluştu:', e.message);
-    }
+    }} 
   };
   const handleSave=()=>{
     try{
+     
+     
         dispatch(saveNews(newsLink));
         setIsSaved((prev)=>!prev)
+      
+        
         
         
     }
     catch(e){
-
+      showToast('error','Haberi kaydederken bir hata oluştu')
     }
   }
   return (
@@ -97,7 +109,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
                 type="radio"
                 className="hidden"
                 checked={voteValue === 'upvote'}
-                onChange={() => handleVote('upvote')}
+                
               />
               <AuthPopover
                 isAuthenticated={isAuthenticated}
@@ -106,7 +118,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
               >
                 <div
                   className={`flex items-center p-2 ${
-                    voteValue === 'upvote' ? 'bg-green-700 text-white' : 'text-green-500'
+                    voteValue === 'upvote' ? 'bg-green-600 text-white' : 'text-green-500'
                   } rounded hover:bg-green-700 hover:text-white transition-colors cursor-pointer`}
                 >
                   <UpCircleOutlined />
@@ -120,7 +132,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
                 type="radio"
                 className="hidden"
                 checked={voteValue === 'downvote'}
-                onChange={() => handleVote('downvote')}
+                onChange={() => setVoteValue('downvote')}
               />
               <AuthPopover
                 isAuthenticated={isAuthenticated}
@@ -129,7 +141,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
               >
                 <div
                   className={`flex items-center p-2 ${
-                    voteValue === 'downvote' ? 'bg-red-700 text-white' : 'text-red-500'
+                    voteValue === 'downvote' ? 'bg-red-600 text-white' : 'text-red-500'
                   } rounded hover:bg-red-700 hover:text-white transition-colors cursor-pointer`}
                 >
                   <DownCircleOutlined />

@@ -18,7 +18,7 @@ export default function AppLayout({
  
 
   return (
-    <div className="w-full min-h-screen flex">
+    <div className="w-full  flex">
       <Sidebar />
       <main
         className={`flex flex-col w-full h-full ${
@@ -26,7 +26,7 @@ export default function AppLayout({
         } `}
       >
         <Navbar />
-        <div className="">
+        <div className="h-screen">
           {children}
         </div>
       </main>
