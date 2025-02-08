@@ -10,7 +10,6 @@ const generateToken = (res: Response, userId: number) => {
     }
 
     const token = jwt.sign({ userId }, secretKey, { expiresIn: '1h' });
-    console.log(token)
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',

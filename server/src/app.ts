@@ -7,8 +7,11 @@ import cookieParser from 'cookie-parser';
 import { PrismaClient } from "@prisma/client";
 import { fetchRssFeeds } from "./utils/fetchRssFeeds";
 import { saveNewsToDb } from "./utils/saveNewsToDb";
-import { initializeRedisClient,setRedisConnected } from "./cache/redis";
+import { incrementImpressionCounter, initializeRedisClient,setRedisConnected } from "./cache/redis";
+import { incrementClickCounter } from "./cache/redis";
+
 import dotenv from 'dotenv';
+import addHotTagToNews from "./utils/addHotTagToNews";
 dotenv.config();
 const prisma= new PrismaClient()
 const app= express()
@@ -20,19 +23,44 @@ app.use(cors({
   }));
 app.use(cookieParser())
 
-const limiter= rateLimit({
-    windowMs:15*60*1000,
-    limit:1000,
+// const limiter= rateLimit({
+//     windowMs:15*60*1000,
+//     limit:1000,
 
 
-    message:'Çok fazla istek yapıldı',
-    standardHeaders:true,
-    legacyHeaders:false
-})
-app.use(limiter)
+//     message:'Çok fazla istek yapıldı',
+//     standardHeaders:true,
+//     legacyHeaders:false
+// })
+// app.use(limiter)
 
 
 app.use('/',router)
+// kaç haber gerçekten okundu
+app.post('api/track-click',(req,res)=>{
+    try{
+        const {newsId}=req.body
+        incrementClickCounter(`click_count:${newsId}`)
+        res.status(200).json({message:"click count incremented"})
+
+    }
+    catch(e:any){
+      console.error(e.message)
+    }
+})
+
+app.post('/api/track-impression',(req,res)=>{
+    const {newsId}=req.body;
+    incrementImpressionCounter(`impression_count:${newsId}`)
+})
+cron.schedule("0 */2 * * *", () => {
+  console.log("Cron job çalıştı: addHotTagToNews");
+  addHotTagToNews(); // Eşik değeri 1000 olarak belirlendi
+});
+
+
+
+
 //node cron uygulanacak
 async function main (){
     try {

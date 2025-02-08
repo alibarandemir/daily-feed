@@ -22,12 +22,12 @@ public class SummaryController : ControllerBase
         
         try
         {
-            Console.WriteLine(newsUrl);
+            
             var summary = await _summaryService.GetSummaryAsync(newsUrl);
-            if(summary==null){
+            if(summary==null || summary=="İçerik bulunamadı"){
                 return Ok("summary is not found");
             }
-            return Ok("");
+            return Ok(summary);
         }
         catch (Exception ex)
         {

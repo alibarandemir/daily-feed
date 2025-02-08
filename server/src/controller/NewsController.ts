@@ -36,7 +36,7 @@ const getNews = async (req: Request, res: Response) => {
           : false, 
             },
         });
-        console.log(results)
+        
 
         const news = results.map((item) => {
             const sourceName = item.source ? item.source.name : "";
@@ -57,7 +57,8 @@ const getNews = async (req: Request, res: Response) => {
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString(),
             );
         });
 
@@ -111,7 +112,8 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString(),
             );
         });
 
@@ -164,7 +166,8 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString()
             );
         });
 
@@ -241,7 +244,8 @@ const searchNews=async(req:Request,res:Response)=>{
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString()
             );
         });
 
@@ -250,5 +254,6 @@ const searchNews=async(req:Request,res:Response)=>{
         return res.status(500).json({ error: e.message });
     }
 }
+
 
 export  {getNews,getNewsBySourceName,getNewsByCategoryName,searchNews}

@@ -239,7 +239,8 @@ const getSavedNews = async (req: Request, res: Response) => {
                 sourceName,
                 newsItem.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.news.createdAt.toISOString()
             );
         });
 
@@ -301,5 +302,83 @@ const changePreferences= async(req:Request,res:Response)=>{
         return res.status(500).json({ error: "Bir hata oluştu. Lütfen tekrar deneyin." });
     }
 }
+//infinite scroll da kullanabilirsin
+const getUserFeed = async (req: Request, res: Response) => {
+    try {
+        const userId = req.userId; // Kullanıcı ID'si (JWT ya da middleware ile alınır)
+        const page = typeof req.query.page === "string" ? parseInt(req.query.page, 10) : 1;
+        console.log(req.query.page);
+        const take = 10
+        const skip = (page - 1) * take;
 
-export {voteNews,saveNews,getSavedNews,getPreferences,changePreferences}
+        if (!userId) {
+            return res.status(401).json({ message: "Kullanıcı oturum açmamış." })
+        }
+
+        // Kullanıcının seçtiği kategorileri al
+        const userCategories = await prisma.userCategory.findMany({
+            where: { userId },
+            select: { categoryId: true },
+        });
+
+        const categoryIds = userCategories.map((uc) => uc.categoryId);
+
+        if (categoryIds.length === 0) {
+            return res.status(404).json({ news: [], message: "Hiç kategori seçilmemiş." });
+        }
+
+        // Seçilen kategorilere ait haberleri getir
+        const news = await prisma.news.findMany({
+            where: { categoryId: { in: categoryIds } },
+            orderBy: [
+                { createdAt: "desc" }, // En yeni haberler önce
+                { upvote: "desc" },    // Daha çok beğeni alan haberler sonra
+            ],
+            skip: skip,
+            take: take + 1, // Bir sonraki sayfada daha fazla haber olup olmadığını kontrol etmek için bir fazladan al
+            select: {
+                id: true,
+                title: true,
+                link: true,
+                description: true,
+                image: true,
+                upvote: true,
+                downvote: true,
+                category: { select: { categoryName: true } },
+                source: { select: { name: true } },
+                createdAt: true,
+                actions: true,
+                summary: true
+            },
+        });
+
+        const hasMore = news.length > take;
+        const results = news.slice(0, take).map((item) => {
+            const sourceName = item.source ? item.source.name : "";
+            const categoryName = item.category.categoryName;
+            const summary = item.summary ? item.summary : "";
+            const actions = item.actions ? item.actions.map((action: { actionType: string }) => action.actionType) : []; // Kullanıcı action bilgisi varsa ekle
+            return new GetNewsDto(
+                item.title,
+                item.link,
+                item.description,
+                item.image,
+                item.upvote,
+                item.downvote,
+                sourceName,
+                categoryName,
+                summary,
+                actions,
+                item.createdAt.toISOString()
+            );
+        });
+
+        return res.status(200).json({ news: results, hasMore: hasMore });
+    } catch (error) {
+        console.error("Feed oluşturulurken hata:", error);
+        return res.status(500).json({ message: "Sunucu hatası." });
+    }
+};
+
+
+export {voteNews,saveNews,getSavedNews,getPreferences,changePreferences,getUserFeed}
