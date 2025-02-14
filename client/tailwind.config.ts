@@ -17,6 +17,20 @@ const config: Config = {
         title:"#EDEDED"
 
       },
+      animation: {
+        fire: "fire 2s ease-in-out infinite",
+        pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
+      keyframes: {
+        fire: {
+          "0%, 100%": { opacity: "0.5", transform: "scale(1)" },
+          "50%": { opacity: "0.8",  },
+        },
+        pulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
+      },
     },
   },
   plugins: [],

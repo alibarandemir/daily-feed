@@ -1,7 +1,5 @@
-
-
-
 export class GetNewsDto{
+    id: string;
     title:string;
     link:string;
     description:string;
@@ -15,7 +13,8 @@ export class GetNewsDto{
     createdDate?:string
 
 
-    constructor(title:string,link:string,description:string,image:string,upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string,actions:string[],createdAt:string){
+    constructor(id: string, title: string, link: string, description: string, image: string, upvote: number, downvote: number, sourceName: string, categoryName: string, summary: string, actions: string[], createdAt: string){
+        this.id = id;
         this.title=title
         this.link=link
         this.description=description

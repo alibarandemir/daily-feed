@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import { PrismaClient } from "@prisma/client";
 import { fetchRssFeeds } from "./utils/fetchRssFeeds";
 import { saveNewsToDb } from "./utils/saveNewsToDb";
-import { incrementImpressionCounter, initializeRedisClient,setRedisConnected } from "./cache/redis";
+import {  initializeRedisClient,setRedisConnected } from "./cache/redis";
 import { incrementClickCounter } from "./cache/redis";
 
 import dotenv from 'dotenv';
@@ -19,7 +19,8 @@ app.use(express.json())
 
 app.use(cors({
     origin: 'http://localhost:3000', // Frontend'in çalıştığı adres
-    credentials: true
+    credentials: true,
+    methods:'GET,POST,PUT,DELETE'
   }));
 app.use(cookieParser())
 
@@ -37,11 +38,14 @@ app.use(cookieParser())
 
 app.use('/',router)
 // kaç haber gerçekten okundu
-app.post('api/track-click',(req,res)=>{
+app.post('/api/track-click',(req,res)=>{
     try{
         const {newsId}=req.body
+        console.log(newsId)
+        console.log("bbb")
         incrementClickCounter(`click_count:${newsId}`)
-        res.status(200).json({message:"click count incremented"})
+        console.log("track click!!")
+        
 
     }
     catch(e:any){
@@ -49,14 +53,13 @@ app.post('api/track-click',(req,res)=>{
     }
 })
 
-app.post('/api/track-impression',(req,res)=>{
-    const {newsId}=req.body;
-    incrementImpressionCounter(`impression_count:${newsId}`)
-})
-cron.schedule("0 */2 * * *", () => {
+
+
+cron.schedule("*/2 * * * *", () => {
   console.log("Cron job çalıştı: addHotTagToNews");
-  addHotTagToNews(); // Eşik değeri 1000 olarak belirlendi
+  addHotTagToNews(); 
 });
+
 
 
 
@@ -65,10 +68,10 @@ cron.schedule("0 */2 * * *", () => {
 async function main (){
     try {
         //redis olmadığında hata veriyor şuan
-       // await initializeRedisClient();
+        //await initializeRedisClient();
       } catch (error) {
         console.error("Redis connection failed, but the application will continue without caching:", error);
-        setRedisConnected(false);
+       
       }
     const rssFeeds=await prisma.rssFeed.findMany()
     for(const rss of rssFeeds){

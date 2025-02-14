@@ -14,7 +14,7 @@ interface SideBarSources {
     name:string,
     sourceImg:string
 }
-const savedPreferences = localStorage.getItem("preferences");
+const savedPreferences = typeof window !== 'undefined' ? localStorage.getItem("preferences") : null;
 const parsedPreferences = savedPreferences ? JSON.parse(savedPreferences) : {};
 const initalState:GlobalState={
     isSideBarCollapsed:false,

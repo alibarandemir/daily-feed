@@ -78,14 +78,17 @@ async function readData(key: string): Promise<string | null> {
 }
 async function incrementClickCounter(key:string){
   try{
+    console.log("fonksiyonun ici")
       if(isRedisWorking()){
           const newValue= await redisClient?.INCR(key)
+          console.log(newValue)
           return newValue ??null
       }
+      console.log("redis çalışmıyorken")
       return null
   }
-  catch(e){
-    
+  catch(e:any){
+    console.error(e.message)
   }
 }
 async function getClickCountValue(key:string):Promise<number|null>{
@@ -100,29 +103,6 @@ async function getClickCountValue(key:string):Promise<number|null>{
   }
   return null
 }
-async function incrementImpressionCounter(key:string){
-  try{
-    if(isRedisWorking()){
-      const newValue= await redisClient?.INCR(key)
-      return newValue ??null
-    }
-    return null
-  }
-  catch(e){
 
-  }
-}
-async function getImpressionCountValue(key:string):Promise<number|null>{
-  if(isRedisWorking()){
-    try{
-      const value= await redisClient?.get(key)
-      return value ? parseInt(value,10):null
-    }
-    catch(e){
 
-    }
-  }
-  return null
-}
-
-export  { readData, writeData, isRedisWorking, requestToKey, initializeRedisClient ,incrementClickCounter,incrementImpressionCounter,getClickCountValue,getImpressionCountValue};
+export  { readData, writeData, isRedisWorking, requestToKey, initializeRedisClient ,incrementClickCounter,getClickCountValue};

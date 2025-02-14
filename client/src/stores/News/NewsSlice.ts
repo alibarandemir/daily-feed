@@ -3,8 +3,8 @@ import { getNews, getNewsByCategoryName, getNewsBySourceName,  getSavedNews,  ge
 
 
 interface NewsState {
-    news: {title: string, link:string,description:string,image:string,
-      upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string,actions:string[],createdDate:string }[];  // Örnek haber yapısı
+    news: {id:string,title: string, link:string,description:string,image:string,
+      upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string,actions:string[],createdDate:string,isHot:boolean }[];  // Örnek haber yapısı
     loading:boolean,
     error: string | null,
     hasMore:boolean  // Hata mesajı

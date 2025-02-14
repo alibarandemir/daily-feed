@@ -230,6 +230,7 @@ const getSavedNews = async (req: Request, res: Response) => {
             const actions = newsItem.actions.map((action) => action.actionType);
 
             return new GetNewsDto(
+                newsItem.id.toString(),
                 newsItem.title,
                 newsItem.link,
                 newsItem.description,
@@ -359,6 +360,7 @@ const getUserFeed = async (req: Request, res: Response) => {
             const summary = item.summary ? item.summary : "";
             const actions = item.actions ? item.actions.map((action: { actionType: string }) => action.actionType) : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,

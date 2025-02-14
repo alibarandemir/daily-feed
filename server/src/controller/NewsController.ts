@@ -48,6 +48,7 @@ const getNews = async (req: Request, res: Response) => {
             const isSaved=actions.includes("SAVE");
             console.log(actions)
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,   
@@ -103,6 +104,7 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
             ? item.actions.map((action) => action.actionType)
             : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,
@@ -157,6 +159,7 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
             ? item.actions.map((action) => action.actionType)
             : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,
@@ -235,6 +238,7 @@ const searchNews=async(req:Request,res:Response)=>{
             ? item.actions.map((action) => action.actionType)
             : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,

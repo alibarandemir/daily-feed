@@ -109,6 +109,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
                 type="radio"
                 className="hidden"
                 checked={voteValue === 'upvote'}
+                onChange={() => setVoteValue('upvote')}
                 
               />
               <AuthPopover
