@@ -13,37 +13,29 @@ namespace ScrapingService.Services
         {
             _httpClient = new HttpClient();
         }
+
         public async Task<string> GetNewsContentAsync(string url)
         {
             try
             {
-                Console.WriteLine(url);
                 // URL'den HTML içeriğini indir
                 var response = await _httpClient.GetStringAsync(url);
-
-               
+                
                 // HTML içeriğini yükle
                 HtmlDocument htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(response);
-               
-               //rss kaynaklarına göre buraya xpath ekle
-                string[] possibleSelectors= new string[]{
-                    "//*div[@class='article-body']//p", //sozcu kontrol edilecek
-                    "//*[@id='content']//p",    // article-body sınıfına sahip div içindeki p etiketleri evrimagaci
-                };
-                foreach(var selector in possibleSelectors){
-                    var contentNodes= htmlDoc.DocumentNode.SelectNodes(selector);
-                     if (contentNodes != null && contentNodes.Count > 0)
-                    {
-                        // İçeriği birleştirip döndür
-                        string combinedContent = string.Join("\n", contentNodes.Select(node => node.InnerText.Trim()));
-                        Console.WriteLine(combinedContent);
-                        return combinedContent;
-                    }
+
+                // XPath ile id="content" olan div içindeki p etiketlerini seç
+                var contentNodes = htmlDoc.DocumentNode.SelectNodes("//*[@id='content']//p");
+
+                if (contentNodes != null && contentNodes.Count > 0)
+                {
+                    // İçeriği birleştirip döndür
+                    string combinedContent = string.Join("\n", contentNodes.Select(node => node.InnerText.Trim()));
+                    return combinedContent;
                 }
-                return "İçerik oluşturulamadı";
-                
-                
+
+                return "İçerik bulunamadı.";
             }
             catch (Exception ex)
             {

@@ -76,5 +76,33 @@ async function readData(key: string): Promise<string | null> {
   }
   return null;
 }
+async function incrementClickCounter(key:string){
+  try{
+    console.log("fonksiyonun ici")
+      if(isRedisWorking()){
+          const newValue= await redisClient?.INCR(key)
+          console.log(newValue)
+          return newValue ??null
+      }
+      console.log("redis çalışmıyorken")
+      return null
+  }
+  catch(e:any){
+    console.error(e.message)
+  }
+}
+async function getClickCountValue(key:string):Promise<number|null>{
+  if(isRedisWorking()){
+    try{
+      const value= await redisClient?.get(key)
+      return value ? parseInt(value,10):null
+    }
+    catch(e){
 
-export  { readData, writeData, isRedisWorking, requestToKey, initializeRedisClient };
+    }
+  }
+  return null
+}
+
+
+export  { readData, writeData, isRedisWorking, requestToKey, initializeRedisClient ,incrementClickCounter,getClickCountValue};

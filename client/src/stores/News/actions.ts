@@ -78,3 +78,18 @@ export const getSavedNews= createAsyncThunk('getSavedNews',async(offset:number,{
         return rejectWithValue(e.response?.data)
     }
 })
+export const getUserFeed=createAsyncThunk('getUserFeed',async({page}:{page:number}, {rejectWithValue})=>{ 
+    try{
+        console.log(page+"actionun içinde")
+        const response= await api.get('getUserFeed',{
+            params:{
+                page:page
+            },withCredentials:true
+        },)
+        console.log(response.data)
+        return response.data;
+    }
+    catch(e:any){
+        return rejectWithValue(e.response?.data)
+    }   
+})

@@ -35,7 +35,7 @@ export function AuthLayout({
               type="link"
               icon={<LeftOutlined />}
               style={{ color: "#229799", fontSize: "18px" }}
-              onClick={() => router.back()}
+              onClick={() => router.push('/')}
             >
               Geri
             </Button>

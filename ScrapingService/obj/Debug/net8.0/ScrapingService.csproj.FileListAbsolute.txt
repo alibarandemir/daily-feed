@@ -34,14 +34,9 @@ C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\refint\Scraping
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\ScrapingService.pdb
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\ScrapingService.genruntimeconfig.cache
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\ref\ScrapingService.dll
-C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\Azure.AI.OpenAI.dll
-C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\Azure.Core.dll
-C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\OpenAI.dll
-C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\System.ClientModel.dll
-C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\System.Memory.Data.dll
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\DotNetEnv.dll
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\Sprache.dll
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\ScrapingService.staticwebassets.endpoints.json
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\staticwebassets\msbuild.ScrapingService.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\Newtonsoft.Json.dll

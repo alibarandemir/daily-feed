@@ -133,27 +133,25 @@ export default function Sidebar() {
       {/* Sidebar Başlık */}
       {!isSideBarCollapsed && (
         <Link href={`/news`} className='flex items-center justify-center text-secondary font-extrabold text-3xl mb-4'>
-          Daily Feed
+          SumFlood
         </Link>
       )}
 
       {/* Kategoriler */}
       {!isSideBarCollapsed && (
         <div className='flex flex-col items-center'>
-          <Link href={'/news/category/gundem'} className='w-full text-center text-3xl py-3'>
+          <Link href={'/news/category/gundem'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Gündem</span>
           </Link>
-          <div className='w-full text-center text-3xl'>
+          <Link href={'/news/category/bilim'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Bilim</span>
-          </div>
-          <div className='w-full text-center text-3xl py-3'>
-          <Link href={`/news)}`}>
+          </Link>
+          <Link href={'/news/category/ekonomi'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Ekonomi</span>
-            </Link>
-          </div>
-          <div className='w-full text-center text-3xl py-3'>
+          </Link>
+          <Link href={'/news/category/ekonomi'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Yazılım</span>
-          </div>
+          </Link>
         </div>
       )}
 
@@ -173,7 +171,7 @@ export default function Sidebar() {
       <div className=' flex-grow w-full flex flex-col justify-start text-lg '>
         <div className={`hover:text-xl flex items-center ${isSideBarCollapsed? 'justify-center':''} justify-start px-4 py-2 cursor-pointer`}>
           <RocketOutlined className={`hover:text-appcolor`} style={{ fontSize: '2rem', marginRight: '8px' }} />
-          <Link className={`${isSideBarCollapsed? 'hidden my-20':'block'}`} href=''>
+          <Link className={`${isSideBarCollapsed? 'hidden my-20':'block'}`} href='/news/myfeed'>
             Akışım
           </Link>
         </div>
@@ -187,7 +185,7 @@ export default function Sidebar() {
 
       {/* Footer */}
 
-        {isSideBarCollapsed ? <div className='text-center absolute bottom-0 w-full'>Logo</div> : <Footer />}
+        {isSideBarCollapsed ? <div className='text-center flex justify-center absolute bottom-4 h-16 w-full'><Link href='/news'><Image objectFit='contain' width={60} height={40} quality={100} src='/assets/images/logo.png' alt='sumflood'/></Link></div> : <Footer />}
     </Sider>
   );
 }

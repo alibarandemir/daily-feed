@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNews, getNewsByCategoryName, getNewsBySourceName,  getSavedNews,  searchNews } from "./actions";
+import { getNews, getNewsByCategoryName, getNewsBySourceName,  getSavedNews,  getUserFeed,  searchNews } from "./actions";
 
 
 interface NewsState {
-    news: {title: string, link:string,description:string,image:string,
-      upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string,actions:string[] }[];  // Örnek haber yapısı
+    news: {id:string,title: string, link:string,description:string,image:string,
+      upvote:number,downvote:number,sourceName:string,categoryName:string,summary:string,actions:string[],createdDate:string,isHot:boolean }[];  // Örnek haber yapısı
     loading:boolean,
-    error: string | null;  // Hata mesajı
+    error: string | null,
+    hasMore:boolean  // Hata mesajı
   }
   
   // Initial state
@@ -14,6 +15,7 @@ interface NewsState {
     news: [],
     loading:false,
     error: null,
+    hasMore:true
   };
 
 const NewsSlice= createSlice({
@@ -75,6 +77,19 @@ const NewsSlice= createSlice({
         builder.addCase(getSavedNews.rejected,(state,action)=>{
           state.loading=false;
           state.error=action.error.message||""
+        })
+        builder.addCase(getUserFeed.pending,(state,action)=>{
+          state.loading=true;
+        })
+        builder.addCase(getUserFeed.fulfilled,(state,action)=>{
+          state.loading=false;
+          state.news = [...state.news, ...action.payload.news]
+          state.hasMore=action.payload.hasMore  
+         
+        })
+        builder.addCase(getUserFeed.rejected,(state,action)=>{
+          state.loading=false;
+         
         })
         
         

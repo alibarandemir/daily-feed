@@ -36,7 +36,7 @@ const getNews = async (req: Request, res: Response) => {
           : false, 
             },
         });
-        console.log(results)
+        
 
         const news = results.map((item) => {
             const sourceName = item.source ? item.source.name : "";
@@ -48,6 +48,7 @@ const getNews = async (req: Request, res: Response) => {
             const isSaved=actions.includes("SAVE");
             console.log(actions)
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,   
@@ -57,7 +58,8 @@ const getNews = async (req: Request, res: Response) => {
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString(),
             );
         });
 
@@ -102,6 +104,7 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
             ? item.actions.map((action) => action.actionType)
             : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,
@@ -111,7 +114,8 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString(),
             );
         });
 
@@ -155,6 +159,7 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
             ? item.actions.map((action) => action.actionType)
             : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,
@@ -164,7 +169,8 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString()
             );
         });
 
@@ -232,6 +238,7 @@ const searchNews=async(req:Request,res:Response)=>{
             ? item.actions.map((action) => action.actionType)
             : []; // Kullanıcı action bilgisi varsa ekle
             return new GetNewsDto(
+                item.id.toString(),
                 item.title,
                 item.link,
                 item.description,
@@ -241,7 +248,8 @@ const searchNews=async(req:Request,res:Response)=>{
                 sourceName,
                 item.category.categoryName,
                 summary,
-                actions
+                actions,
+                item.createdAt.toISOString()
             );
         });
 
@@ -250,5 +258,6 @@ const searchNews=async(req:Request,res:Response)=>{
         return res.status(500).json({ error: e.message });
     }
 }
+
 
 export  {getNews,getNewsBySourceName,getNewsByCategoryName,searchNews}

@@ -5,6 +5,9 @@ import { DownCircleOutlined, InboxOutlined, UpCircleOutlined } from '@ant-design
 import React, { useEffect, useState } from 'react'
 import AuthPopover from '../AuthPopover/AuthPopover';
 import { showToast } from '@/utils/showToast';
+import { Modal } from 'antd';
+import InformationModal from '../Modal/Modal';
+import { toggleModal } from '@/stores/Global/GlobalSlice';
 
 type Props = {
     upvote:number,
@@ -20,7 +23,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
   const [isSaved,setIsSaved]=useState<boolean>(false)
   const [upvoteCount, setUpvoteCount] = useState(upvote);
   const [downvoteCount, setDownvoteCount] = useState(downvote);
-  const {success,error, message}=useAppSelector((state)=>state.user)
+  const {isModalVisible}=useAppSelector((state)=>state.global)
   const dispatch = useAppDispatch();
   useEffect(() => {
     // Kullanıcının daha önce yaptığı işlemi belirle
@@ -34,11 +37,20 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
     setIsSaved(isSaved)
     
   }, []);
-  const handleVote = (type: 'upvote' | 'downvote') => {
-    if (actions.includes(type.toUpperCase())) {
-        showToast('info', 'Daha önce aynı oyu verdiniz')
-        return; // İşlemi durdur
-      }
+  const handleVote = (type:any) => {
+    console.log(isAuthenticated)
+    
+    if(type===null){  
+      showToast('error','Oy veriniz')
+    }
+    else{
+   
+
+    
+    // if (actions.includes(type.toUpperCase())) {
+    //     showToast('info', 'Daha önce aynı oyu verdiniz')
+    //     return; // İşlemi durdur
+    //   }
     // Seçili bir değer varsa ve tekrar aynı değer seçiliyorsa oyu kaldır
     if (voteValue === type) {
       setVoteValue(null);
@@ -64,24 +76,32 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
     try {
       // Örneğin, `newsContent.link` ile haberi oyla
        dispatch(voteNews({ newsLink: newsLink, type }));
+       dispatch(toggleModal())
+       console.log(isModalVisible)
        
     } catch (e: any) {
       console.error('Haberi oylarken bir hata oluştu:', e.message);
-    }
+    }} 
   };
   const handleSave=()=>{
     try{
+     
+     
         dispatch(saveNews(newsLink));
         setIsSaved((prev)=>!prev)
+      
+        
         
         
     }
     catch(e){
-
+      showToast('error','Haberi kaydederken bir hata oluştu')
     }
   }
   return (
     <div className="flex items-center justify-between">
+      {isModalVisible&&<InformationModal title='Oy verdiğiniz için teşekkürler!' content='İlgilendiğiniz haberlere oy vererek size daha uygun bir akış oluşturacağız.' preferenceKey='showVotePopup'/>}
+         
           {/* Oy Seçimi */}
           <div className="flex gap-3">
             <label>
@@ -89,7 +109,8 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
                 type="radio"
                 className="hidden"
                 checked={voteValue === 'upvote'}
-                onChange={() => handleVote('upvote')}
+                onChange={() => setVoteValue('upvote')}
+                
               />
               <AuthPopover
                 isAuthenticated={isAuthenticated}
@@ -98,7 +119,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
               >
                 <div
                   className={`flex items-center p-2 ${
-                    voteValue === 'upvote' ? 'bg-green-700 text-white' : 'text-green-500'
+                    voteValue === 'upvote' ? 'bg-green-600 text-white' : 'text-green-500'
                   } rounded hover:bg-green-700 hover:text-white transition-colors cursor-pointer`}
                 >
                   <UpCircleOutlined />
@@ -112,7 +133,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
                 type="radio"
                 className="hidden"
                 checked={voteValue === 'downvote'}
-                onChange={() => handleVote('downvote')}
+                onChange={() => setVoteValue('downvote')}
               />
               <AuthPopover
                 isAuthenticated={isAuthenticated}
@@ -121,7 +142,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
               >
                 <div
                   className={`flex items-center p-2 ${
-                    voteValue === 'downvote' ? 'bg-red-700 text-white' : 'text-red-500'
+                    voteValue === 'downvote' ? 'bg-red-600 text-white' : 'text-red-500'
                   } rounded hover:bg-red-700 hover:text-white transition-colors cursor-pointer`}
                 >
                   <DownCircleOutlined />

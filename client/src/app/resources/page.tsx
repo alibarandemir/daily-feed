@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/hooks/Redux";
 import { LeftOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import InfiniteScroll from "react-infinite-scroll-component";
-import InfiniteScrollResources from "@/components/InfiniteScrollResources/InfiniteScrollResources";
+import InfiniteScrollResources from "@/components/InfiniteScroll/InfiniteScrollForFeed";
 import '../globals.css'
 import { AuthLayout } from "@/components/Layouts/AuthLayout";
 
@@ -26,17 +26,17 @@ export default function ResourcesPage({}: Props) {
     flexDirection: "column",
   };
 
-  
+  const { loading, sources, hasMore } = useAppSelector((state) => state.source);
   
   const router = useRouter();
 
- 
+  const dispatch=useAppDispatch()
   
   return (
     <AuthLayout>
 
       <Content style={contentStyle}>
-        <InfiniteScrollResources/>
+        <InfiniteScrollResources items={sources} Card={ResourceCard} loading={loading} hasMore={hasMore} getCallback={(page)=>dispatch(getAllResources({ page }))}/>
       </Content>
     </AuthLayout>
     

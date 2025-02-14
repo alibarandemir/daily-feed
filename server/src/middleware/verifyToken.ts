@@ -14,20 +14,20 @@ declare global {
 export const verifyTokenMiddleware=(req:Request, res:Response,next:NextFunction)=> {
   const secretKey: string = process.env.JWT_SECRET_KEY || "";
   const token = req.cookies.token;
-  console.log(token)
+  console.log("middleware:"+token)
   if (!token) {
     return res.json({ isAuthenticated: false });
   }
 
   try {
     const decoded = jwt.verify(token,secretKey) as JwtPayload;
-    console.log(decoded.userId);
+    
     req.userId=decoded.userId;
     
     next()
   } catch (error) {
     console.error('Token verification error:', error);
-    return res.status(401).json({ isAuthenticated: false });
+    return res.status(401).json({ isAuthenticated: false,message:'Kullanıcı giriş yapmalı' });
   }
 }
 
@@ -36,8 +36,8 @@ export const verifyTokenRoute=(req: Request, res: Response)=>{
     const secretKey: string = process.env.JWT_SECRET_KEY || "";
     const token = req.cookies.token;
 
-    console.log('Cookies:', req.cookies);
-    console.log('Token:', token);
+    
+    
     if (!token) {
       return res.json({ isAuthenticated: false, message: 'No token found' });
     }
@@ -62,7 +62,7 @@ export const verifyTokenRoute=(req: Request, res: Response)=>{
 export const optionalAuthMiddleware=(req: Request, res: Response,next:NextFunction)=>{
     const secretKey: string = process.env.JWT_SECRET_KEY || "";
     const token=req.cookies.token;
-    console.log("optionalAuthMiddleware"+token)
+   
     if(!token){
       (req as any).userId =null;
       return next();

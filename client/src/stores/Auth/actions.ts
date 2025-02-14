@@ -23,7 +23,7 @@ export const register= createAsyncThunk('/register',async(data:formDataType,{rej
 export const verifyEmail= createAsyncThunk('/verifyEmail',async(code:string,{rejectWithValue})=>{
     try{
         console.log(code)
-        const response= await api.post(`/verifyEmail`,{code})
+        const response= await api.post(`/verifyEmail`,{code},{withCredentials:true})
         console.log(response.data)
         return response.data
     }
@@ -47,7 +47,7 @@ export const login= createAsyncThunk('/login',async(data:formDataType,{rejectWit
 export const logout=createAsyncThunk('/logout',async()=>{
 
     try{
-        const response= await api.post(`/logout`)
+        const response= await api.post(`/logout`,null,{withCredentials:true})
         console.log(response.data)
         return response.data
     }

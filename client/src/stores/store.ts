@@ -4,6 +4,7 @@ import NewsReducer from './News/NewsSlice'
 import ResourceReducer from './Resource/ResourceSlice'
 import AuthReducer from './Auth/AuthSlice'
 import UserReducer from './User/UserSlice'
+import CategoryReducer from './Category/CategorySlice'
 
 
 
@@ -14,6 +15,7 @@ const store= configureStore({
         source:ResourceReducer,
         auth:AuthReducer,
         user:UserReducer,
+        category:CategoryReducer
     }
 })
 export type RootState = ReturnType<typeof store.getState>

@@ -38,6 +38,7 @@ export default function Search({}: Props) {
         {news.map((item) => (
         <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8}>
                <NewsCard key={item.link} 
+               id={item.id}
           title={item.title}
           link={item.link}
           description={item.description}
@@ -47,6 +48,8 @@ export default function Search({}: Props) {
           upvote={item.upvote}
           downvote={item.downvote}
           summary={item.summary}
+          actions={item.actions}
+          isHot={item.isHot}
         />
       
         </Col>

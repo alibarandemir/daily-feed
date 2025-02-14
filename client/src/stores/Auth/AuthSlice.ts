@@ -77,7 +77,7 @@ const AuthSlice= createSlice({
         state.loading=false;
         state.success=action.payload.success
         state.message=action.payload.message
-        resetAuthState()
+       
       })
       builder.addCase(logout.rejected,(state,action)=>{
         state.loading=false;

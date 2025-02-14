@@ -12,20 +12,18 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const isAuth = useAuth(); 
-  console.log(isAuth)
   const router = useRouter(); 
 
   useEffect(() => {
-    console.log(isAuth)
-    if (!isAuth) {
-      showToast('error','Bu sayfaya erişmek için giriş yapmalısınız')
+    if (isAuth.isAuthenticated === false) {
+      showToast('error', 'Bu sayfaya erişmek için giriş yapmalısınız');
       router.push('/login'); 
     }
   }, [isAuth, router]);
 
-  if (isAuth==null) {
-    return <Loading/>
+  if (isAuth.isAuthenticated === null) {
+    return <Loading />;
   }
 
-  return children; 
+  return <>{children}</>; 
 }
