@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 
 //haber oy verme
-export const voteNews= createAsyncThunk('vote',async(data:{newsLink:string,type:string},{rejectWithValue})=>{
+export const voteNews= createAsyncThunk('vote',async(data:{newsLink:string,type:string|null},{rejectWithValue})=>{
     try{
         const response= await api.post(`voteNews`,{
            
