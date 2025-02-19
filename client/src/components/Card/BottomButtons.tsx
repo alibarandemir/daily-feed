@@ -27,61 +27,61 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
   const dispatch = useAppDispatch();
   useEffect(() => {
     // Kullanıcının daha önce yaptığı işlemi belirle
-    console.log(actions)
+    console.log("actions dizisi:", actions);
     if (actions?.includes('UPVOTE')) {
       setVoteValue('upvote');
     } else if (actions?.includes('DOWNVOTE')) {
       setVoteValue('downvote');
     }
+    else{
+      setVoteValue(null)
+    }
     const isSaved=actions?.includes("SAVE")
     setIsSaved(isSaved)
     
-  }, []);
-  const handleVote = (type:any) => {
-    console.log(isAuthenticated)
-    
-    if(type===null){  
-      showToast('error','Oy veriniz')
-    }
-    else{
-   
+  }, [actions]);
 
-    
-    // if (actions.includes(type.toUpperCase())) {
-    //     showToast('info', 'Daha önce aynı oyu verdiniz')
-    //     return; // İşlemi durdur
-    //   }
-    // Seçili bir değer varsa ve tekrar aynı değer seçiliyorsa oyu kaldır
+  useEffect(()=>{
+      console.log("vote value değişti"+voteValue)
+  },[voteValue])
+  const handleVote = (type: 'upvote' | 'downvote' | null) => {
+    if (!isAuthenticated) {
+      showToast('error', 'Oy vermek için giriş yapmalısınız.');
+      return;
+    }
+  
+    // Eğer aynı oy tekrar basılırsa, oyu kaldır
     if (voteValue === type) {
-      setVoteValue(null);
       console.log(`${type} kaldırıldı!`);
       if (type === 'upvote') setUpvoteCount((prev) => prev - 1);
       if (type === 'downvote') setDownvoteCount((prev) => prev - 1);
+      setVoteValue(null); // Oy değerini null olarak güncelle
+      dispatch(voteNews({ newsLink: newsLink, type: type })); // Oy değerini null olarak güncelle
       return;
     }
-
-    // Yeni bir oy seçildiğinde durumu güncelle
+  
+    // Yeni bir oy verildiğinde
     const isUpvote = type === 'upvote';
-    setVoteValue(type);
-
-    // Oy sayısını güncelle
+  
+    // Oy sayılarını güncelle
     if (isUpvote) {
       setUpvoteCount((prev) => prev + 1);
-      if (voteValue === 'downvote') setDownvoteCount((prev) => prev - 1); // Downvote kaldırılır
+      if (voteValue === 'downvote') setDownvoteCount((prev) => prev - 1); // Eski downvote'u kaldır
     } else {
       setDownvoteCount((prev) => prev + 1);
-      if (voteValue === 'upvote') setUpvoteCount((prev) => prev - 1); // Upvote kaldırılır
+      if (voteValue === 'upvote') setUpvoteCount((prev) => prev - 1); // Eski upvote'u kaldır
     }
-
+  
+    // Yeni oy değerini güncelle
+    setVoteValue(type);
+  
+    // API'ye yeni oy değerini gönder
     try {
-      // Örneğin, `newsContent.link` ile haberi oyla
-       dispatch(voteNews({ newsLink: newsLink, type }));
-       dispatch(toggleModal())
-       console.log(isModalVisible)
-       
+      dispatch(voteNews({ newsLink: newsLink, type }));
+      dispatch(toggleModal());
     } catch (e: any) {
       console.error('Haberi oylarken bir hata oluştu:', e.message);
-    }} 
+    }
   };
   const handleSave=()=>{
     try{
@@ -105,13 +105,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
           {/* Oy Seçimi */}
           <div className="flex gap-3">
             <label>
-              <input
-                type="radio"
-                className="hidden"
-                checked={voteValue === 'upvote'}
-                onChange={() => setVoteValue('upvote')}
-                
-              />
+             
               <AuthPopover
                 isAuthenticated={isAuthenticated}
                 triggerAction={() => handleVote('upvote')}
@@ -129,12 +123,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
             </label>
 
             <label>
-              <input
-                type="radio"
-                className="hidden"
-                checked={voteValue === 'downvote'}
-                onChange={() => setVoteValue('downvote')}
-              />
+             
               <AuthPopover
                 isAuthenticated={isAuthenticated}
                 triggerAction={() => handleVote('downvote')}
