@@ -12,7 +12,8 @@ export const defaultToastOptions: ToastOptions = {
   theme: "colored",
   transition: Slide,
 };
-
+// Toast mesajlarını birleştirerek gösterme
+const displayedToasts: Set<string> = new Set();
 type ToastType = "success" | "error" | "info" | "warning" | "default";
 
 /**
@@ -21,15 +22,33 @@ type ToastType = "success" | "error" | "info" | "warning" | "default";
  * @param {ToastType} type
  * @param {ToastContent} content
  * @param {ToastOptions} [options=defaultToastOption]
- * @return {Id}
+ * @return {Id | undefined}
  */
 export const showToast = (
   type: ToastType,
-  content: ToastContent,
+  content: ToastContent | null | undefined,
   options: Partial<ToastOptions> = {},
-): Id => {
+): Id | undefined => {
   const optionsToApply = { ...defaultToastOptions, ...options };
 
+  if (!content) {
+    console.error("Toast içeriği geçersiz!");
+    return;
+  }
+
+  // Her toast mesajına benzersiz bir ID atamak için içeriği kullan
+  const toastId = content.toString();
+
+  // Aynı mesaj daha önce gösterildiyse, tekrar gösterme
+  if (displayedToasts.has(toastId)) {
+    return;
+  }
+
+  // Önceki toast mesajlarını silme
+  toast.dismiss();
+
+  // Yeni toast mesajını göster
+  displayedToasts.add(toastId);
   switch (type) {
     case "success":
       return toast.success(content, optionsToApply);
