@@ -15,6 +15,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter(); 
 
   useEffect(() => {
+    console.log(isAuth)
     if (isAuth.isAuthenticated === false) {
       showToast('error', 'Bu sayfaya erişmek için giriş yapmalısınız');
       router.push('/login'); 

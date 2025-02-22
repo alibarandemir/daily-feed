@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/Redux';
 import { getNews } from '@/stores/News/actions';
 import { Col, Row, Skeleton } from 'antd';
 import Pagination from '@/components/Pagination/Pagination';
+import NoNewsFound from '@/components/NoNewsFound';
 
 type Props = {};
 
@@ -34,7 +35,7 @@ export default function NewsPage() {
   return (
     <>
       {/* Burada news card componentlerini render edeceksin */}
-      {news.map((item) => (
+      {news&&news.length>0 ?(news.map((item) => (
       <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8} key={item.id}>
              <NewsCard key={item.id}
              id={item.id} 
@@ -52,7 +53,7 @@ export default function NewsPage() {
       />
     
       </Col>
-      ))}
+      ))):<NoNewsFound/>}
       
       <Col style={{display:"flex",justifyItems:"center",justifyContent:"center",marginBottom:'20px'}}   span={24}>
           <Pagination
