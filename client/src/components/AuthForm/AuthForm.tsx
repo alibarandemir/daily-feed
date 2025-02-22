@@ -138,7 +138,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
             </div>
             {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
           </div>
-
+            {!isRegister && <p onClick={()=>router.push('/login/forgot-password')} className='text-appcolor font-bold cursor-pointer'>Şifremi unuttum</p>}
           {/* Form gönderim butonu */}
           <button
             type="submit"

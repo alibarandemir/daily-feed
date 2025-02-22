@@ -36,4 +36,32 @@ const sendVerificationEmail = async (email: string, verificationCode: string) =>
     }
 };
 
-export default sendVerificationEmail;
+const sendResetPasswordEmail=async(email:string,resetLink:string)=>{
+    try{
+
+        const info = await transporter.sendMail({
+            from: 'alibarandemir798@gmail.com',
+            to: email,
+            subject: "Şifre Sıfırlama",
+            text: `Merhaba, Şifre sıfırlamak istiyorsanız linke tıklayın: ${resetLink}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+                    <h2 style="color: #229799;">Şifre Sıfırlama</h2>
+                    <p>Merhaba,</p>
+                    <p>Şifrenizi sıfırlamak için aşağıdaki linke tıklayınız:</p>
+                    <div style="font-size: 24px; font-weight: bold; padding: 10px; border-radius: 5px; background-color: #f9f9f9; border: 1px solid #ddd; text-align: center; color: #333;">
+                        ${resetLink}
+                    </div>
+                    <p>Bu kodun geçerlilik süresi 1 saattir. Eğer bu isteği siz yapmadıysanız, lütfen bu mesajı göz ardı edin.</p>
+                    <p style="margin-top: 20px;">Teşekkürler, <br> Ali Baran Demir</p>
+                </div>
+            `,
+        });
+        console.log("E-posta başarıyla gönderildi", info.messageId);
+    }
+    catch(e:any){
+        console.error("Eposta gönderim hatası",e.message)
+    }
+}
+
+export { sendVerificationEmail,sendResetPasswordEmail};
