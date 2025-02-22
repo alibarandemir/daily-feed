@@ -10,6 +10,7 @@ import { api } from '@/config/axios';
 import debounce from "lodash.debounce";
 import { motion, AnimatePresence } from "framer-motion";
 import { showToast } from '@/utils/showToast';
+import { convertDateToString } from '@/utils/convertDateToString';
 
 
 type NewsProps = {
@@ -24,7 +25,8 @@ type NewsProps = {
   downvote: number;
   summary: string;
   actions:string[]
-  isHot:boolean
+  isHot:boolean,
+  createdDate:string
 };
 
 export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
@@ -33,7 +35,7 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [summary,setSummary]=useState('')
-
+  console.log(newsContent.createdDate)
   const trackClick = debounce(async () => {
     try {
       const response = await api.post("api/track-click", {
@@ -129,6 +131,7 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
         
         <div className="flex justify-between items-center">
           <div className="text-gray-500 font-medium">{newsContent.sourceName}</div>
+          <div className='text-appcolor text-opacity-80'>{convertDateToString(newsContent.createdDate)}</div>
           <a
             target="_blank"
             href={newsContent.link}
