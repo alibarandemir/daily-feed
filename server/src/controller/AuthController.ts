@@ -1,9 +1,10 @@
 import { Request, Response } from "express"
 import * as argon2 from "argon2";
 import { PrismaClient } from "@prisma/client";
-import jwt from 'jsonwebtoken'
-import sendVerificationEmail from "../utils/sendVerificationEmail";
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import {sendResetPasswordEmail, sendVerificationEmail} from "../utils/sendVerificationEmail";
 import generateToken from "../utils/generateToken";
+import 'dotenv/config'
 
 
 
@@ -167,4 +168,81 @@ const logout=(req:Request,res:Response)=>{
         res.status(500).json({ success: false, message: "Sunucu hatası" });
     }
 }
-export { register,verifyEmail ,login,logout };
+
+
+const forgotPassword=async(req:Request,res:Response)=>{
+    const {email}=req.body;
+    if(!email&&email==''){
+        return res.json({message:'lütfen geçerli email giriniz '})
+    }
+    const user=await prisma.user.findUnique({
+        where:{
+            email:email
+        }
+    })
+    if(!user){
+         return res.json({message:'Böyle bir kullanıcı bulunamadı. Tam kayıt olma zamanı!',success:false})
+    }
+   
+   
+     // 1 saat geçerli olacak JWT token oluştur
+    const token = jwt.sign({ id: user.id }, process.env.JWT_RESET_PASS??'SLALSDDLSDSL', { expiresIn: '1h' });
+
+    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+
+
+    
+
+    try{
+        await sendResetPasswordEmail(email,resetLink);
+        res.status(200).json({message:"Şifre sıfırlama e postası gönderildi!",success:true})
+    }
+    catch(e){
+        return res.status(500).json({message:'E-posta gönderim hatası'})
+    }
+
+
+
+}
+
+const resetPassword = async (req: Request, res: Response) => {
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword) {
+        return res.json({ message: 'Şifre Güncellenemedi', success: false });
+    }
+    try {
+        console.log(process.env.JWT_RESET_PASS)
+        const decoded = jwt.verify(token, process.env.JWT_RESET_PASS ?? '') as JwtPayload; // 
+        if (!decoded.id) {
+            console.log(decoded.id)
+            return res.json({ message: 'Geçersiz token', success: false });
+        }
+
+        const userId = parseInt(decoded.id); // Burada artık id'yi güvenle alabiliriz
+
+        const user = await prisma.user.findUnique({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            return res.json({ message: 'Şifre güncellenemedi, geçersiz token', success: false });
+        }
+        const hashedPassword = await argon2.hash(newPassword);
+
+        const updatedUser=await prisma.user.update({
+            where:{id:userId},
+            data:{
+                password:hashedPassword
+            }
+        })
+        return res.status(200).json({message:'Şifre başarıyla güncellendi',success:true})
+
+
+        // Şifre güncelleme işlemi burada yapılabilir
+    } catch (e) {
+        console.error(e+"catch bloğunda");
+        return res.json({ message: 'Geçersiz token,yeni token alın', success: false });
+    }
+};
+
+export { register,verifyEmail ,login,logout,forgotPassword,resetPassword };

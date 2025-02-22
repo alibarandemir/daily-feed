@@ -37,18 +37,10 @@ export const showToast = (
   }
 
   // Her toast mesajına benzersiz bir ID atamak için içeriği kullan
-  const toastId = content.toString();
-
-  // Aynı mesaj daha önce gösterildiyse, tekrar gösterme
-  if (displayedToasts.has(toastId)) {
-    return;
-  }
-
-  // Önceki toast mesajlarını silme
-  toast.dismiss();
+ 
 
   // Yeni toast mesajını göster
-  displayedToasts.add(toastId);
+ 
   switch (type) {
     case "success":
       return toast.success(content, optionsToApply);

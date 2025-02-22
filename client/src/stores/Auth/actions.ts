@@ -1,5 +1,6 @@
 import { api } from "@/config/axios"
 import { createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 
 interface formDataType{
     name?:string,
@@ -55,3 +56,29 @@ export const logout=createAsyncThunk('/logout',async()=>{
         return 
     }
 })
+
+export const forgotPassword=createAsyncThunk('/forgotPassword',async(email:string)=>{
+
+    try{
+        const response=await api.post('/forgotPassword',{email})
+        return response.data;
+    }
+    catch(e){
+
+    }
+})
+
+export const resetPassword = createAsyncThunk(
+    "/resetPassword",
+    async ({ token, newPassword }: { token: string | null; newPassword: string }, { rejectWithValue }) => {
+      try {
+        const response = await api.post("/resetPassword", { token, newPassword });
+        return response.data;
+      } catch (error: any) {
+        console.error("Şifre sıfırlama hatası:", error);
+  
+        // Sunucudan gelen hata mesajını almak için
+        return rejectWithValue(error.response?.data?.message || "Bilinmeyen bir hata oluştu.");
+      }
+    }
+  );

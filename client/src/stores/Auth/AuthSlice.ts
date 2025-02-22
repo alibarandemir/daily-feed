@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, logout, register, verifyEmail } from "./actions";
+import { forgotPassword, login, logout, register, resetPassword, verifyEmail } from "./actions";
 
 
 
@@ -80,6 +80,34 @@ const AuthSlice= createSlice({
        
       })
       builder.addCase(logout.rejected,(state,action)=>{
+        state.loading=false;
+        state.error=action.error.message||""
+        state.success=false
+      })
+      builder.addCase(forgotPassword.pending,(state,action)=>{
+        state.loading=true;
+      })
+      builder.addCase(forgotPassword.fulfilled,(state,action)=>{
+        state.loading=false;
+        state.success=action.payload.success
+        state.message=action.payload.message
+       
+      })
+      builder.addCase(forgotPassword.rejected,(state,action)=>{
+        state.loading=false;
+        state.error=action.error.message||""
+        state.success=false
+      })
+      builder.addCase(resetPassword.pending,(state,action)=>{
+        state.loading=true;
+      })
+      builder.addCase(resetPassword.fulfilled,(state,action)=>{
+        state.loading=false;
+        state.success=action.payload.success
+        state.message=action.payload.message
+       
+      })
+      builder.addCase(resetPassword.rejected,(state,action)=>{
         state.loading=false;
         state.error=action.error.message||""
         state.success=false
