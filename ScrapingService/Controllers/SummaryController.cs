@@ -25,9 +25,9 @@ public class SummaryController : ControllerBase
             
             var summary = await _summaryService.GetSummaryAsync(newsUrl);
             if(summary==null || summary=="İçerik bulunamadı"){
-                return Ok("summary is not found");
+                return Ok(new { message = "Özet bulunamadı" });
             }
-            return Ok(summary);
+            return Ok(new { message = "Özet başarıyla alındı", summary });
         }
         catch (Exception ex)
         {

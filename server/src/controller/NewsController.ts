@@ -2,6 +2,7 @@ import { Request,Response } from "express"
 import { Prisma, PrismaClient } from "@prisma/client"
 import { skip } from "node:test"
 import { GetNewsDto } from "../Dtos/NewsDtos"
+import axios from "axios"
 const prisma= new PrismaClient()
 
 
@@ -258,6 +259,66 @@ const searchNews=async(req:Request,res:Response)=>{
         return res.status(500).json({ error: e.message });
     }
 }
+const getSummaryByNewsId = async (req: Request, res: Response) => {
+    try {
+        const { newsId } = req.query;
+
+        if (!newsId || Array.isArray(newsId)) {
+            return res.status(400).json({ message: 'Geçersiz haber ID' });
+        }
+
+        const newsIdNumber: number = parseInt(newsId as string, 10);
+
+        // Haber veritabanında var mı kontrol et
+        const news = await prisma.news.findUnique({
+            where: { id: newsIdNumber }
+        });
+
+        if (!news) {
+            return res.status(404).json({ message: 'Haber bulunamadı' });
+        }
+
+        if (!news.link) {
+            return res.status(400).json({ message: 'Haberin geçerli bir linki yok' });
+        }
+        console.log(newsIdNumber);
+        console.log(news.link);
+        // Dış API'den özet alma
+        try {
+            const response = await axios.get("http://localhost:5134/api/summary/getSummary", {
+                params: { newsUrl: news.link }
+            });
+            console.log(response.data);
+            if (!response.data || !response.data.summary) {
+                return res.status(500).json({ message: 'Özet oluşturulurken hata oluştu' });
+            }
+            const updatedNews= await prisma.news.update({
+                where:{
+                    id:newsIdNumber
+                },
+                data:{
+                    summary:response.data.summary
+                }
+            })
+            return res.status(200).json({ message: 'Özet oluşturuldu', summary: response.data.summary,success:true });
+
+        } catch (apiError:any) {
+            console.error("API isteği sırasında hata oluştu:", apiError.message);
+
+            // Eğer API isteği başarısız olursa, kendi server'ınız bir yanıt dönecek
+            return res.json({ 
+                message: 'Özet oluşturulamadı daha sonra tekrar deneyiniz',
+                summary:'Özet bulunamadı',
+                success:false
+                
+            });
+        }
+
+    } catch (e: any) {
+        console.error("Hata:", e.message);
+        return res.status(500).json({ message: 'İç sunucu hatası', error: e.message });
+    }
+};
 
 
-export  {getNews,getNewsBySourceName,getNewsByCategoryName,searchNews}
+export  {getNews,getNewsBySourceName,getNewsByCategoryName,searchNews,getSummaryByNewsId}

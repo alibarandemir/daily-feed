@@ -8,6 +8,9 @@ import BottomButtons from './BottomButtons';
 import { api } from '@/config/axios';
 
 import debounce from "lodash.debounce";
+import { motion, AnimatePresence } from "framer-motion";
+import { showToast } from '@/utils/showToast';
+
 
 type NewsProps = {
   id:string;
@@ -25,7 +28,11 @@ type NewsProps = {
 };
 
 export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
-  
+  const [loading,setLoading]=useState<boolean>(false);
+  const [showButton, setShowButton] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [summary,setSummary]=useState('')
 
   const trackClick = debounce(async () => {
     try {
@@ -37,10 +44,68 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
       console.error(e.message);
     }
   }, 500); // 📌 500ms içinde tekrar eden istekleri engeller
+
+  const getSummary = async () => {
+    console.log('getSummary çalıştı')
+    if (summary) {
+      console.log('summary var')
+      setIsModalOpen(true);
+      return;
+    }
+  
+    setLoading(true);
+  
+    try {
+      console.log('try içinde')
+      if (newsContent.summary !== '') {
+        console.log('default summary')
+        setSummary(newsContent.summary);
+      } else {
+        console.log('istek atılacak')
+        const response = await api.get('/getSummary', { params: { newsId: newsContent.id } });
+        console.log(response.data)
+        setSummary(response.data.summary);
+        showToast(`${response.data.success ? 'success' : 'error'}`, response.data.message);
+      }
+    } catch (e: any) {
+      console.error(e.message);
+    } finally {
+      setLoading(false);
+      setIsModalOpen(true);  // Modal'ı en son açalım ki önce veri yüklensin
+    }
+  };
+  
+  // Modal kapatıldığında özeti temizleyelim
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSummary('');
+  };
   
 
   return (
-    <div className="flex flex-col w-96 min-h-[500px] border-2 border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl">
+    <div className="flex flex-col w-96 min-h-[500px] border-2 border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl"
+    onMouseEnter={() => setShowButton(true)}
+    onMouseLeave={() => setShowButton(false)}>
+       {/* Özet Yüklenirken Bulanıklaştırma */}
+       {loading && (
+          <div className="absolute inset-0 bg-white bg-opacity-30 flex items-center justify-center text-lg font-bold text-gray-800 rounded-lg">
+            Özet oluşturuluyor...
+          </div>
+        )}
+
+         {/* Özet Butonu (Sadece Hover Edildiğinde Göster) */}
+         {showButton &&  !loading && (
+          <button
+            className="absolute sm:hidden md:hidden -top-7 left-2 bg-appcolor hover:bg-opacity-40 text-white px-2 py-1 text-sm rounded shadow-md transition-opacity "
+            onClick={getSummary}
+          >
+            Özetle
+          </button>
+        )}
+
+        <div className='xl:hidden lg:hidden bg-appcolor absolute top-12 -right-8 rounded p-2 text-center font-bold cursor-pointer h-2/3 w-7 flex justify-center items-center'>
+            <p className='[writing-mode:vertical-lr] text-lg' onClick={getSummary}>Özetle</p>
+        </div>
       {/* Top Segment */}
       <div className="w-full flex-col items-center justify-between mb-2">
         {newsContent.isHot && (
@@ -79,10 +144,10 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
 
       {/* Image */}
       <div className="flex-grow mb-2">
-        <img
+        <Image
           src={newsContent.image}
           alt={newsContent.title}
-          //layout="responsive"
+          layout="responsive"
           width={300}
           height={150}
           className="rounded-lg"
@@ -94,6 +159,34 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
         <div className="text-sm text-gray-700 mb-2">{newsContent.description}</div>
         <BottomButtons upvote={newsContent.upvote} downvote={newsContent.downvote} actions={newsContent.actions} newsLink={newsContent.link} category={newsContent.categoryName} />
       </div>
+      <AnimatePresence>
+          {isModalOpen && (
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+            >
+              <motion.div
+                className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 50, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h2 className="text-lg font-semibold text-appcolor mb-2">Haber Özeti</h2>
+                <p className="text-gray-700">{summary}</p>
+                <button
+                  className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+                  onClick={closeModal}
+                >
+                  Kapat
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>  
     </div>
   );
 },(prevProps,nextProps)=>prevProps.isHot===nextProps.isHot

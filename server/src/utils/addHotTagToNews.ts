@@ -19,7 +19,7 @@ const addHotTagToNews = async() => {
             const actionsCount=news.upvote+news.downvote
             //console.log(clickCount,impressionCount)
             const hotScore=clickCount*0.7+actionsCount*0.3
-            console.log(news.id,clickCount,hotScore)
+           // console.log(news.id,clickCount,hotScore)
             if(hotScore>hotThreshOld){
                 console.log("hot tag eklendi")
                 await prisma.news.update({

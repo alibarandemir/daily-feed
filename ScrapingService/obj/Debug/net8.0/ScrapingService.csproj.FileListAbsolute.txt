@@ -40,3 +40,6 @@ C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\ScrapingService
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\obj\Debug\net8.0\staticwebassets\msbuild.ScrapingService.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
 C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\OpenAI.dll
+C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\System.ClientModel.dll
+C:\Users\USER\Desktop\dailyfeed\ScrapingService\bin\Debug\net8.0\System.Memory.Data.dll
