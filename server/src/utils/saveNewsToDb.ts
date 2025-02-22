@@ -17,17 +17,7 @@ export const saveNewsToDb = async (news: Inews[], sourceId: number, categoryId: 
                 continue
             } else {
                 console.log("saveNewsToDb içinde")
-                let summary: string | null = null;
-                try {
-                    const response = await axios.get("http://localhost:5134/api/summary/getSummary", {
-                        params: { newsUrl: anews.link }
-                    })
-                    console.log(response)
-                    summary = response.data;
-                } catch (error:any) {
-                    console.error("Summary API çağrısı başarısız oldu:", error.message);
-                }
-                console.log(summary)
+               
                 console.log("haberler dbye kaydediliyor..")
                 await prisma.news.create({
                     data: {
@@ -38,7 +28,7 @@ export const saveNewsToDb = async (news: Inews[], sourceId: number, categoryId: 
                         upvote: 0,
                         downvote: 0,
                         sourceId: sourceId,
-                        summary: summary,
+                        summary: null,
                         categoryId: categoryId,
                     }
                 })

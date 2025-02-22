@@ -22,6 +22,10 @@ public class SummaryService:ISummaryService
             }
         
         var summary = await _aiSummaryService.GenerateSummaryAsync(newsContent);
+        if(string.IsNullOrWhiteSpace(summary)){
+            return null;
+        }
+        Console.WriteLine(summary+"en üstteki summary cevabı");
         return summary;
     }
 }

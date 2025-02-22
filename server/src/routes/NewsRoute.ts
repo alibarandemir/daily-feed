@@ -1,5 +1,5 @@
 import express from "express"
-import { getNews, getNewsByCategoryName, getNewsBySourceName, searchNews } from "../controller/NewsController";
+import { getNews, getNewsByCategoryName, getNewsBySourceName, getSummaryByNewsId, searchNews } from "../controller/NewsController";
 import { redisCachingMiddleware } from "../middleware/redisCaching";
 import { getSavedNews, getUserFeed, saveNews, voteNews } from "../controller/UserController";
 import { verifyTokenMiddleware, verifyTokenRoute, optionalAuthMiddleware } from "../middleware/verifyToken";
@@ -16,6 +16,7 @@ NewsRouter.post('/voteNews',verifyTokenMiddleware,voteNews)
 NewsRouter.post('/saveNews',verifyTokenMiddleware,saveNews)
 NewsRouter.get('/getSavedNews',verifyTokenMiddleware,getSavedNews)
 NewsRouter.get('/getUserFeed',verifyTokenMiddleware,getUserFeed) 
+NewsRouter.get('/getSummary',getSummaryByNewsId)
 
 
 

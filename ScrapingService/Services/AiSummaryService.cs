@@ -1,60 +1,46 @@
 using System;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+using DotNetEnv;
+using OpenAI.Chat;
+using ScrapingService.Services;
 
-namespace ScrapingService.Services
+public class AiSummaryService : IAiSummaryService
 {
-    public class AiSummaryService : IAiSummaryService
+    public async Task<string> GenerateSummaryAsync(string content)
     {
-        public async Task<string> GenerateSummaryAsync(string content)
+        // .env dosyasını yükle
+        Env.Load();
+
+        // OpenAI API anahtarını al
+        var key = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        if (string.IsNullOrEmpty(key))
         {
-            try
-            {
-                DotNetEnv.Env.Load();
-                
-                string key = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
-                var url = "https://05200-m5030utp-swedencentral.cognitiveservices.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2024-08-01-preview";
+            Console.WriteLine("API key hatalı veya eksik!");
+            return "API key is missing or incorrect.";
+        }
 
-                using (var client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Add("api-key", key);
+        // OpenAI ChatClient oluştur (Doğru modeli kullan)
+        ChatClient client = new(model: "gpt-4-turbo", key); // veya "gpt-3.5-turbo"
+        
+        try
+        {
+            // OpenAI'ye özetleme için istek gönder
+            ChatCompletion completion = await client.CompleteChatAsync(
+                $"Lütfen aşağıdaki metni kısa bir şekilde özetle:\n\n{content}"
+            );
+            Console.WriteLine("Özetlenmeden önce içerik"+" "+completion.Content);
+            
+            // OpenAI'den dönen cevabı ekrana yazdır
+            Console.WriteLine("Özetlenen Metin: ");
+            Console.WriteLine(completion.Content[0].Text);
 
-                    var requestBody = new
-                    {
-                        messages = new[]
-                        {
-                            new { role = "system", content = "Kullanıcıların aradığı bilgiyi bulmasına yardımcı olan bir yapay zeka yardımcısısınız." },
-                            new { role = "user", content = content }
-                        },
-                       
-                        temperature = 0.7,
-                        top_p = 0.95,
-                        frequency_penalty = 0,
-                        presence_penalty = 0,
-                        max_tokens = 800,
-                        stop = (string)null
-                    };
-
-                    var json = JObject.FromObject(requestBody).ToString();
-                    var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var response = await client.PostAsync(url, httpContent);
-                    response.EnsureSuccessStatusCode();
-
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    var responseObject = JObject.Parse(responseContent);
-                    var summary= responseObject["choices"][0]["message"]["content"].ToString();
-                    Console.WriteLine(summary);
-                    return summary;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return $"Hata oluştu: {ex.Message}";
-            }
+            // Özetlenen metni döndür
+            return completion.Content[0].Text;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Hata oluştu: " + ex.Message);
+            return null;
         }
     }
 }
