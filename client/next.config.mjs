@@ -7,7 +7,11 @@ const nextConfig = {
       protocol:'https',
       hostname: 'res.cloudinary.com',
       pathname: '/**',
-    }]
+    },
+    {protocol:'https',
+      hostname: 'sozcu01.sozcucdn.com',
+      pathname: '/**',}
+  ]
   },
     redirects:
         () =>{

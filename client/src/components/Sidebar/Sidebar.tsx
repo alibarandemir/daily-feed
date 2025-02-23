@@ -133,7 +133,7 @@ export default function Sidebar() {
       {/* Sidebar Başlık */}
       {!isSideBarCollapsed && (
         <Link href={`/news`} className='flex items-center justify-center text-secondary font-extrabold text-3xl mb-4'>
-          SumFlood
+          Sum<span className='text-appcolor'>Flood</span>
         </Link>
       )}
 

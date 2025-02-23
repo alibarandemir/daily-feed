@@ -24,7 +24,7 @@ export default function Navbar() {
       {/* LEFT SIDE */}
       <div className='flex justify-between items-center gap-5  max-w-[60%]'>
         {/* Search Bar */}
-        <div className='flex items-center text-main bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 transition-all duration-300 w-full'>
+        <div className='flex items-center text-main bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 sm:focus:w-14 transition-all duration-300 w-full'>
             <SearchInput/>
         </div>
 

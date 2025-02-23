@@ -26,7 +26,8 @@ type NewsProps = {
   summary: string;
   actions:string[]
   isHot:boolean,
-  createdDate:string
+  createdDate:string,
+  blurHash:string
 };
 
 export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
@@ -82,6 +83,8 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
     setIsModalOpen(false);
     setSummary('');
   };
+  const placeholderBlurDataURL =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKElEQVRIDbXBAQEAAAABIP6PzgpVAAAAAAAAAAAAAAAAAAAAAPyfA8xAAQJZBSwAAAAASUVORK5CYII=';
   
 
   return (
@@ -146,14 +149,16 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
       </div>
 
       {/* Image */}
-      <div className="flex-grow mb-2">
+      <div className="flex-grow mb-2 mt-3 ">
         <Image
           src={newsContent.image}
           alt={newsContent.title}
-          layout="responsive"
-          width={300}
+          //layout="responsive"
+          width={340}
           height={150}
-          className="rounded-lg"
+          placeholder='blur'
+          blurDataURL={placeholderBlurDataURL}
+          className="rounded-lg object-cover mx-auto"
         />
       </div>
 
