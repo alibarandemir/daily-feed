@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Footer from './Footer'
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
-import { AppstoreOutlined, InboxOutlined, MenuFoldOutlined, MenuUnfoldOutlined, RocketOutlined } from '@ant-design/icons'
+import { AppstoreOutlined, InboxOutlined, MenuFoldOutlined, MenuUnfoldOutlined, MoonFilled, RocketOutlined, SunFilled } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
 import Sider from 'antd/es/layout/Sider'
-import { setIsSideBarCollapsed } from '@/stores/Global/GlobalSlice'
+import { changeDarkMode, setIsSideBarCollapsed } from '@/stores/Global/GlobalSlice'
 import Link from 'next/link'
 import { getResourcesforSideBar } from '@/stores/Global/actions'
 import Image from 'next/image'
@@ -13,15 +13,22 @@ import { useRouter,usePathname } from 'next/navigation'
 import '../../app/globals.css'
 import { slugify } from '@/utils/slugify'
 import Loading from '../Loading/Loading'
+import { useMediaQuery as useMediaQueryHook } from 'react-responsive'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 export default function Sidebar() {
   const router= useRouter()
   const pathname=usePathname()
+  const isMobile = useMediaQueryHook({ query: '(max-width: 768px)' }); // Kullanımda yeni isim
+  const collapsedWidth = isMobile ? '0' : '80'; // Genişlik ayarı
   const {isSideBarCollapsed,sideBarSources} = useAppSelector((state) => state.global)
   const dispatch = useAppDispatch()
   const [openKey, setOpenKey] = useState<string[]>([]);
+  const isDarkMode: boolean = useAppSelector((state) => state.global.isDarkMode)
+  const toggleDarkMode = () => {
+    dispatch(changeDarkMode())
+  }
   
 
   const onOpenChange = (keys: string[]) => {
@@ -117,23 +124,23 @@ export default function Sidebar() {
       collapsed={isSideBarCollapsed}
       onCollapse={() => dispatch(setIsSideBarCollapsed())}
       breakpoint="lg"
-      collapsedWidth="80"
+      collapsedWidth={collapsedWidth}
       trigger={null}
-      className='fixed bg-white h-full flex flex-col text-main'
+      className={`fixed bg-white h-screen flex flex-col text-main z-10`}
     >
       {/* Toggle Butonu */}
       <div className="flex items-center justify-center p-4 cursor-pointer">
         {isSideBarCollapsed ? (
-          <MenuUnfoldOutlined style={{ color: '#229799', fontSize: '40px' }} onClick={() => dispatch(setIsSideBarCollapsed())} />
+          <MenuUnfoldOutlined style={{ color: '#229799', fontSize: isMobile ? '30px' : '40px' }} onClick={() => dispatch(setIsSideBarCollapsed())} />
         ) : (
-          <MenuFoldOutlined style={{ color: '#1E201E', fontSize: '30px' }} onClick={() => dispatch(setIsSideBarCollapsed())} />
+          <MenuFoldOutlined style={{ color: '#1E201E', fontSize: isMobile ? '20px' : '30px' }} onClick={() => dispatch(setIsSideBarCollapsed())} />
         )}
       </div>
 
       {/* Sidebar Başlık */}
       {!isSideBarCollapsed && (
         <Link href={`/news`} className='flex items-center justify-center text-secondary font-extrabold text-3xl mb-4'>
-          SumFlood
+          Sum<span className='text-appcolor'>Flood</span>
         </Link>
       )}
 
@@ -149,14 +156,14 @@ export default function Sidebar() {
           <Link href={'/news/category/ekonomi'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Ekonomi</span>
           </Link>
-          <Link href={'/news/category/ekonomi'} className='w-full text-center text-3xl py-2'>
+          <Link href={'/news/category/yazilim'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Yazılım</span>
           </Link>
         </div>
       )}
 
       {/* Menü */}
-      <div className=' flex items-center justify-center '>
+      <div className={`${isMobile&&isSideBarCollapsed?'hidden':''} flex items-center justify-center `}>
         <Menu
           mode='inline'
           items={items}
@@ -168,7 +175,7 @@ export default function Sidebar() {
       </div>
 
       {/* Private routes */}
-      <div className=' flex-grow w-full flex flex-col justify-start text-lg '>
+      <div className={`${isMobile&&isSideBarCollapsed?'hidden':''} flex-grow w-full flex flex-col justify-start text-lg `}>
         <div className={`hover:text-xl flex items-center ${isSideBarCollapsed? 'justify-center':''} justify-start px-4 py-2 cursor-pointer`}>
           <RocketOutlined className={`hover:text-appcolor`} style={{ fontSize: '2rem', marginRight: '8px' }} />
           <Link className={`${isSideBarCollapsed? 'hidden my-20':'block'}`} href='/news/myfeed'>
@@ -184,8 +191,26 @@ export default function Sidebar() {
       </div>
 
       {/* Footer */}
+      {isSideBarCollapsed && !isMobile ? (
+        <div className='text-center flex justify-center absolute bottom-4 h-16 w-full'>
+          <Link href='/news'>
+            <Image objectFit='contain' width={60} height={40} quality={100} src='/assets/images/logo.png' alt='sumflood' className='object-cover'/>
+          </Link>
+        </div>
+      ) : (isMobile && isSideBarCollapsed ? null : <Footer />)}
 
-        {isSideBarCollapsed ? <div className='text-center flex justify-center absolute bottom-4 h-16 w-full'><Link href='/news'><Image objectFit='contain' width={60} height={40} quality={100} src='/assets/images/logo.png' alt='sumflood'/></Link></div> : <Footer />}
+      {/* Register and theme for mobile */}
+      {isMobile && !isSideBarCollapsed ? (
+        <>
+          <button className='w-full absolute bottom-96' onClick={toggleDarkMode}>
+            {isDarkMode ? (
+              <SunFilled className='cursor-pointer text-yellow-400 text-3xl' />
+            ) : (
+              <MoonFilled className='cursor-pointer text-gray-900 text-3xl' />
+            )}
+          </button>
+        </>
+      ) : null}
     </Sider>
   );
 }

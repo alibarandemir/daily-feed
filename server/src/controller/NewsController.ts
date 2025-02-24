@@ -18,12 +18,16 @@ const getNews = async (req: Request, res: Response) => {
         const offsetValue = parseInt(offset as string, 10); // offset değerini tam sayıya çeviriyoruz
 
         if (isNaN(offsetValue)) {
-            return res.status(400).json({ message: "Geçersiz offset değeri" });
+            return res.json({ message: "Geçersiz offset değeri" });
         }
         //kullanıcı auth olmuşsa haber gönderirken yaptığı actionı da gönder
         const results = await prisma.news.findMany({
             skip: offsetValue, // Offset'i number olarak kullan
             take: 9,
+            orderBy: [
+                { isHot: 'desc' },  // isHot haberler önce gelecek
+                { createdAt: 'desc' } // Daha sonra en yeni haberler listelenecek
+            ],
             include: {
                 source: true,
                 category:true,
@@ -64,9 +68,9 @@ const getNews = async (req: Request, res: Response) => {
             );
         });
 
-        return res.json({ news: news, message: "Haberler aktarıldı" });
+        return res.status(200).json({ news: news, message: "Haberler aktarıldı" });
     } catch (e: any) {
-        return res.status(500).json({ error: e.message });
+        return res.json({ error: e.message });
     }
 };
 
@@ -83,6 +87,10 @@ const getNewsBySourceName=async(req:Request,res:Response)=>{
         const results = await prisma.news.findMany({
             skip: offsetValue, // Offset'i number olarak kullan
             take: 9,
+            orderBy: [
+                { isHot: 'desc' },  // isHot haberler önce gelecek
+                { createdAt: 'desc' } // Daha sonra en yeni haberler listelenecek
+            ],
             where:{
                 source:{
                     name:{
@@ -138,6 +146,10 @@ const getNewsByCategoryName=async(req:Request,res:Response)=>{
         const results = await prisma.news.findMany({
             skip: offsetValue, // Offset'i number olarak kullan
             take: 9,
+            orderBy: [
+                { isHot: 'desc' },  // isHot haberler önce gelecek
+                { createdAt: 'desc' } // Daha sonra en yeni haberler listelenecek
+            ],
             where:{
                 category:{
                     categoryName:{

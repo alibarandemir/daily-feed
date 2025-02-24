@@ -21,7 +21,9 @@ interface NewsState {
 const NewsSlice= createSlice({
     name:'news',
     initialState:initialState,
-    reducers:{},
+    reducers:{
+      
+    },
     extraReducers:(builder)=>{
         builder.addCase(getNews.pending,(state,action)=>{
           state.loading=true;
@@ -32,6 +34,7 @@ const NewsSlice= createSlice({
         })
         builder.addCase(getNews.rejected,(state,action)=>{
           state.loading=false;
+          console.log(action.error.message)
           state.error=action.error.message||""
         })
         builder.addCase(getNewsBySourceName.pending,(state,action)=>{

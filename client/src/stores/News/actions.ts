@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const getNews= createAsyncThunk('news/getNews',async (offset:number,{rejectWithValue})=>{
     try{
-        const response= await api.get('getNews',{
+        const response= await api.get('/getNews',{
             params:{
                 offset:offset
             },withCredentials:true
@@ -17,9 +17,9 @@ export const getNews= createAsyncThunk('news/getNews',async (offset:number,{reje
     }
 })
 
-export const getNewsByCategoryName= createAsyncThunk('getNewsByCategoryName',async(data:{categoryName:string;offset:number},{rejectWithValue})=>{
+export const getNewsByCategoryName= createAsyncThunk('/getNewsByCategoryName',async(data:{categoryName:string;offset:number},{rejectWithValue})=>{
     try{
-        const response= await api.get('getNewsByCategoryName',{
+        const response= await api.get('/getNewsByCategoryName',{
             params:{
                 categoryName:data.categoryName,
                 offset:data.offset

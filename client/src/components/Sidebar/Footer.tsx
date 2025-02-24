@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { GithubFilled, LinkedinFilled, MediumCircleFilled } from '@ant-design/icons';
 import { Layout } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 const {Footer}= Layout
 
@@ -13,8 +14,9 @@ export default function FooterSidebar() {
     useEffect(()=>{
         setYear(new Date().getFullYear())
     },[])
+    const isMobile=useMediaQuery({query:'(max-width:524px)'})
   return (
-    <div className='w-full absolute  bottom-0 flex items-center flex-col  text-main'>
+    <div className={`w-full absolute  ${!isMobile?'bottom-0':''} flex items-center flex-col  text-main`}>
         
         <p>{`© ${year}.Ali Baran Demir.`}</p>
         <div className='flex gap-x-3'>

@@ -1,4 +1,4 @@
-const convertDateToString = (date: string): string => {
+export const convertDateToString = (date: string): string => {
     const inputDate = new Date(date);
     const now = new Date();
 
