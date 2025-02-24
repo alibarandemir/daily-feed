@@ -27,7 +27,7 @@ type NewsProps = {
   actions:string[]
   isHot:boolean,
   createdDate:string,
-  blurHash:string
+  
 };
 
 export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {

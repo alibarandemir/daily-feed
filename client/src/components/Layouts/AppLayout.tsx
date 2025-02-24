@@ -4,6 +4,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Navbar from "../Navbar/Navbar";
 import { useAppSelector } from "@/hooks/Redux";
 import { Row, Col, Pagination, Skeleton } from "antd";
+import { useMediaQuery } from "react-responsive";
 
 type Props = {};
 
@@ -15,6 +16,8 @@ export default function AppLayout({
   const isSideBarCollapsed = useAppSelector(
     (state) => state.global.isSideBarCollapsed
   );
+
+  const isMobile=useMediaQuery({query:'(max-width:527px)'})
  
 
   return (
@@ -22,8 +25,8 @@ export default function AppLayout({
       <Sidebar />
       <main
         className={`flex flex-col w-full h-full ${
-          isSideBarCollapsed ? "ml-24" : "ml-52"
-        } `}
+          isSideBarCollapsed && !isMobile ? "ml-24" : isMobile ? "ml-0" : "ml-52"
+        } ${isMobile ? 'mt-16' : ''} `}
       >
         <Navbar />
         <div className="h-screen">

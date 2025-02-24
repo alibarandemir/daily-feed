@@ -8,6 +8,7 @@ import SearchInput from '../SearchInput/SearchInput'
 import { useRouter } from 'next/navigation'
 import useAuth from '@/hooks/useAuth'
 import DropdownMenu from '../ui/Dropdown'
+import { useMediaQuery } from 'react-responsive'
 
 export default function Navbar() {
   const dispatch = useAppDispatch()
@@ -17,14 +18,15 @@ export default function Navbar() {
   const toggleDarkMode = () => {
     dispatch(changeDarkMode())
   }
+  const isMobile=useMediaQuery({query:'(max-width:527px)'})
   
   console.log(isAuthenticated)
   return (
-    <div className='flex items-center justify-between border-b-2 border-appcolor w-full px-4 h-24 '>
+    <div className='flex items-center justify-between border-b-2 border-appcolor w-full py-2 px-4 min-h-24 '>
       {/* LEFT SIDE */}
-      <div className='flex justify-between items-center gap-5  max-w-[60%]'>
+      <div className={`flex ${isMobile?'flex-col':''} justify-between items-center gap-5  max-w-[60%]`}>
         {/* Search Bar */}
-        <div className='flex items-center text-main bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 sm:focus:w-14 transition-all duration-300 w-full'>
+        <div className={`flex items-center text-main bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 sm:focus:w-14 transition-all duration-300 w-full ${isMobile? 'ml-2':''}`}>
             <SearchInput/>
         </div>
 
@@ -33,7 +35,7 @@ export default function Navbar() {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className='flex justify-between items-center gap-5'>
+      <div className={`flex justify-between ${isMobile?'hidden':''} items-center gap-5`}>
         {/* Dark Mode Toggle */}
         <button onClick={toggleDarkMode}>
           {isDarkMode ? (

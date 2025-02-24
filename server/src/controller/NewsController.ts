@@ -18,7 +18,7 @@ const getNews = async (req: Request, res: Response) => {
         const offsetValue = parseInt(offset as string, 10); // offset değerini tam sayıya çeviriyoruz
 
         if (isNaN(offsetValue)) {
-            return res.status(400).json({ message: "Geçersiz offset değeri" });
+            return res.json({ message: "Geçersiz offset değeri" });
         }
         //kullanıcı auth olmuşsa haber gönderirken yaptığı actionı da gönder
         const results = await prisma.news.findMany({
@@ -68,9 +68,9 @@ const getNews = async (req: Request, res: Response) => {
             );
         });
 
-        return res.json({ news: news, message: "Haberler aktarıldı" });
+        return res.status(200).json({ news: news, message: "Haberler aktarıldı" });
     } catch (e: any) {
-        return res.status(500).json({ error: e.message });
+        return res.json({ error: e.message });
     }
 };
 
