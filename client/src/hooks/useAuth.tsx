@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 
 const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { SettingOutlined, UserOutlined, DownOutlined } from '@ant-design/icons';
+import { SettingOutlined, UserOutlined, DownOutlined, LogoutOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import React from 'react'
 import { Button, ConfigProvider, Dropdown } from 'antd';
@@ -79,7 +79,7 @@ const items: MenuProps['items'] = [
   {
     key: '4',
     label: 'Çıkış Yap',
-    icon: <SettingOutlined />,
+    icon: <LogoutOutlined />,
     onClick: handleLogout,
   },
 ];
