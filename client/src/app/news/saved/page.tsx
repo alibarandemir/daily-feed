@@ -55,6 +55,7 @@ export default function NewsPage() {
         summary={item.summary}
         actions={item.actions}
         isHot={item.isHot}
+        createdDate={item.createdDate}
       />
     
       </Col>

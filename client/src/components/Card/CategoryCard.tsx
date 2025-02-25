@@ -54,7 +54,10 @@ export const SortableItem: React.FC<{
       item.from = from;
     },
     drop: (item: DraggableItem) => {
-      if (from === 'selected' || (from === 'available' && selectedCategories.length === 0)) {
+      if (from === 'available' ) {
+        console.log("Bırakılan öğe:", item);
+        moveCategory(item.index, index, item.from, from);
+      } else if (from === 'selected') {
         moveCategory(item.index, index, item.from, from);
       }
     },
@@ -71,7 +74,8 @@ export const SortableItem: React.FC<{
   });
 
   if (isEditing) {
-    drag(drop(ref));
+    //drag(drop(ref));
+    drag(ref)
   }
 
   return (

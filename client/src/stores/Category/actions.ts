@@ -12,7 +12,7 @@ export const getCategories = createAsyncThunk('category/getCategories', async (_
 });
 
 interface UpdateUserCategoriesPayload {
-    selectedCategories: string[];
+    selectedCategories: number[];
 }
 
 export const updateUserCategories = createAsyncThunk('category/updateUserCategories', async ({selectedCategories}: UpdateUserCategoriesPayload, { rejectWithValue }) => {

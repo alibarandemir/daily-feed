@@ -112,6 +112,7 @@ const updateUserCategories = async (req: Request, res: Response) => {
         });
     }
     catch (e: any) {
+        console.error(e.message+'hata')
         return res.status(500).json({ error: e.message });
     }
 }
