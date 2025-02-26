@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks/Redux';
 import { changePreferences } from '@/stores/Global/actions';
 import { toggleModal } from '@/stores/Global/GlobalSlice';
 import { Modal, Checkbox } from 'antd';
-import { parse } from 'path';
 import React, { useState, useEffect } from 'react';
 
 type Props = {
@@ -20,44 +19,27 @@ export default function InformationModal({
 }: Props) {
  
   const [doNotShowAgain, setDoNotShowAgain] = useState(false);
-  const {isModalVisible}=useAppSelector((state)=>state.global)
-  const dispatch=useAppDispatch();
+  const { isModalVisible, preferences } = useAppSelector((state) => state.global);
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    // LocalStorage'dan preferences bilgisini al
-    const preferences = localStorage.getItem("preferences");
-    const parsedPreferences = preferences ? JSON.parse(preferences) : {};
-    console.log(parsedPreferences)
     // Eğer preferenceKey'e göre modal gösterilmemesi gerekiyorsa, modalı kapat
-    if (parsedPreferences[preferenceKey] === false) {
-      console.log("selamlar")
+    if (preferences[preferenceKey] === false) {
       dispatch(toggleModal()); // Modal kapalı hale getirilir
     }
-  }, []);
+  }, [preferences, preferenceKey, dispatch]);
 
-  //kullanıcı tercihine göre bir şeyler döndüreceksin
-  
   const handleOk = async () => {
-    dispatch(toggleModal())
+    dispatch(toggleModal());
 
-    
     if (doNotShowAgain) {
-      //backende kullanıcı tercihini kayddettireceksin
-      dispatch(changePreferences({preferencesKey:preferenceKey,value:false}))
-      const preferences = localStorage.getItem("preferences");
-      const parsedPreferences = preferences ? JSON.parse(preferences) : {};
-      parsedPreferences[preferenceKey] = false;
-      localStorage.setItem("preferences", JSON.stringify(parsedPreferences));
-
+      // Backend'e kullanıcı tercihini kaydet
+      dispatch(changePreferences({ preferencesKey: preferenceKey, value: false }));
     }
-
-    
   };
-  const handleCancel = async () => {
-    dispatch(toggleModal())
 
-    
- 
-    
+  const handleCancel = async () => {
+    dispatch(toggleModal());
   };
 
   return (
@@ -67,8 +49,7 @@ export default function InformationModal({
       onOk={handleOk}
       okText='Tamam'
       onCancel={handleCancel}
-      
-      cancelText='iptal'
+      cancelText='İptal'
     >
       <p>{content}</p>
       <div className="flex items-center gap-x-1 mt-3">

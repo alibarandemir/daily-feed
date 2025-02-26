@@ -102,7 +102,7 @@ model Votes{
 }
 model Preferences{
   id Int @id @default(autoincrement())
-  userId Int
+  userId Int @unique
   language String?
   theme   String?
   showWelcomeMessagePopup Boolean @default(true)

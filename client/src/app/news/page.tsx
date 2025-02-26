@@ -7,6 +7,7 @@ import { getNews } from '@/stores/News/actions';
 import { Col, Row, Skeleton } from 'antd';
 import Pagination from '@/components/Pagination/Pagination';
 import NoNewsFound from '@/components/NoNewsFound';
+import WelcomeModal from '@/components/Modal/WelcomeModal';
 
 type Props = {};
 
@@ -14,6 +15,7 @@ export default function NewsPage() {
   const [currentPage,setCurrentPage]= useState<number>(1)
   const dispatch = useAppDispatch();
   const { loading, news, error } = useAppSelector((state) => state.news);
+  const {isLogIn}=useAppSelector((state)=>state.auth)
   useEffect(() => {
     dispatch(getNews((currentPage-1)*9));
   }, [dispatch,currentPage]);
@@ -66,7 +68,7 @@ export default function NewsPage() {
           />
         </Col>
     
-  
+        <WelcomeModal/>
       
        
      
