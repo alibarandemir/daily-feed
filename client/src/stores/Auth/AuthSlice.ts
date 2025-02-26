@@ -9,6 +9,7 @@ interface AuthState {
       loading:boolean,
       error:string|null,
       message:string|null
+      isLogIn:boolean|null
   }
   
   // Initial state
@@ -16,7 +17,8 @@ interface AuthState {
     success:false,
     loading:false,
     error: null,
-    message:null
+    message:null,
+    isLogIn:null
   };
 
 const AuthSlice= createSlice({
@@ -28,6 +30,10 @@ const AuthSlice= createSlice({
           state.loading=false
           state.message=null
           state.success=false
+          
+      },
+      resetIsLogIn:(state)=>{
+        state.isLogIn=null
       }
     },
     extraReducers:(builder)=>{
@@ -51,6 +57,7 @@ const AuthSlice= createSlice({
         state.loading=false;
         state.success=action.payload.success
         state.message=action.payload.message
+        state.isLogIn=true
       })
       builder.addCase(verifyEmail.rejected,(state,action)=>{
         state.loading=false;
@@ -64,6 +71,7 @@ const AuthSlice= createSlice({
         state.loading=false;
         state.success=action.payload.success
         state.message=action.payload.message
+        state.isLogIn=true
       })
       builder.addCase(login.rejected,(state,action)=>{
         state.loading=false;
@@ -118,5 +126,5 @@ const AuthSlice= createSlice({
 })
 
 
-export const { resetAuthState } = AuthSlice.actions;
+export const { resetAuthState,resetIsLogIn } = AuthSlice.actions;
 export default AuthSlice.reducer

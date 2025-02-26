@@ -23,7 +23,7 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
   const [isSaved,setIsSaved]=useState<boolean>(false)
   const [upvoteCount, setUpvoteCount] = useState(upvote);
   const [downvoteCount, setDownvoteCount] = useState(downvote);
-  const {isModalVisible}=useAppSelector((state)=>state.global)
+  const {isModalVisible,preferences}=useAppSelector((state)=>state.global)
   const dispatch = useAppDispatch();
   useEffect(() => {
     // Kullanıcının daha önce yaptığı işlemi belirle
@@ -40,6 +40,10 @@ export default function BottomButtons({upvote,downvote,actions,newsLink,category
     setIsSaved(isSaved)
     
   }, [actions]);
+  useEffect(()=>{
+      console.log(preferences)
+     
+  },[])
 
   useEffect(()=>{
       console.log("vote value değişti"+voteValue)

@@ -35,6 +35,10 @@ const GlobalSlice= createSlice({
         },
         toggleModal:(state)=>{
             state.isModalVisible=!state.isModalVisible
+        },
+        setPreferences:(state,action)=>{
+            state.preferences = { ...state.preferences, ...action.payload };
+            localStorage.setItem("preferences", JSON.stringify(state.preferences));
         }
     },
     extraReducers:(builder)=>{
@@ -45,10 +49,12 @@ const GlobalSlice= createSlice({
         builder.addCase(getPreferences.fulfilled,(state,action)=>{
             console.log(action.payload)
             state.preferences = action.payload.preferences;
+            console.log(action.payload.preferences)
             localStorage.setItem('preferences', JSON.stringify(action.payload.preferences));
         })
         builder.addCase(changePreferences.fulfilled,(state,action)=>{
-            state.preferences = { ...state.preferences, ...action.payload };
+            state.preferences = { ...state.preferences, ...action.payload.preferences };
+            console.log(action.payload.preferences)
             localStorage.setItem("preferences", JSON.stringify(state.preferences));
         })
     }
@@ -56,5 +62,5 @@ const GlobalSlice= createSlice({
 
 
 
-export const {changeDarkMode,setIsSideBarCollapsed,toggleModal}= GlobalSlice.actions
+export const {changeDarkMode,setIsSideBarCollapsed,toggleModal,setPreferences}= GlobalSlice.actions
 export default GlobalSlice.reducer;

@@ -292,11 +292,15 @@ const changePreferences= async(req:Request,res:Response)=>{
             where: {
               userId: userId,
             },
+            
             data: {
               [preferencesKey]: value,
             },
+            
           });
-          return res.status(200).json({ message: "Tercih başarıyla güncellendi." });
+          const preferences=await prisma.preferences.findUnique({where:{userId:userId}})
+          console.log(preferences)
+          return res.status(200).json({ message: "Tercih başarıyla güncellendi.",preferences:preferences });
     }
     catch(e:any){
         console.error("Tercih güncellenirken bir hata oluştu:", e.message);

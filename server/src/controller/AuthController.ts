@@ -133,11 +133,7 @@ const login = async (req: Request, res: Response) => {
             return res.json({ success:false,message: "Geçersiz şifre" });
         }
         generateToken(res,user.id)
-        await prisma.preferences.create({
-            data:{
-                userId:user.id
-            }
-        })
+       
         res.status(200).json({success:true, message: "Giriş başarılı", user: user.name });
     } catch (error) {
         console.error("Giriş sırasında hata:", error);
