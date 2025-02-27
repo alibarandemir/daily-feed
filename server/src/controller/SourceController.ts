@@ -41,6 +41,7 @@ const getAllResources = async (req: Request, res: Response) => {
   const resourceDtos = resources.map((resource) => {
     return new GetAllResourceDto(resource.name, resource.sourceImg);
   });
+  console.log(resourceDtos)
   res.status(200).json({ sources: resourceDtos,hasMore:hasMore });
 };
 

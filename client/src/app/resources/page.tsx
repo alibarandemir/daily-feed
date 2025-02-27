@@ -11,6 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import InfiniteScrollResources from "@/components/InfiniteScroll/InfiniteScrollForFeed";
 import '../globals.css'
 import { AuthLayout } from "@/components/Layouts/AuthLayout";
+import InfiniteScrollForResources from "@/components/InfiniteScroll/InfiniteScrollForResources";
 
 type Props = {};
 const { Content, Header } = Layout;
@@ -36,7 +37,7 @@ export default function ResourcesPage({}: Props) {
     <AuthLayout>
 
       <Content style={contentStyle}>
-        <InfiniteScrollResources items={sources} Card={ResourceCard} loading={loading} hasMore={hasMore} getCallback={(page)=>dispatch(getAllResources({ page }))}/>
+       <InfiniteScrollForResources/>
       </Content>
     </AuthLayout>
     

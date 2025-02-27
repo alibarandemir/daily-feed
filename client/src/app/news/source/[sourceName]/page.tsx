@@ -7,6 +7,7 @@ import { getNews, getNewsBySourceName } from '@/stores/News/actions';
 import { Col, Row, Skeleton } from 'antd';
 import Pagination from '@/components/Pagination/Pagination';
 import { slugDict } from '@/utils/slugify';
+import NoNewsFound from '@/components/NoNewsFound';
 
 type Props = {};
 
@@ -42,24 +43,27 @@ export default function NewsSourcePage() {
 
   return (
     <>
-      {news.map((item) => (
-        <Col style={{ width: '24rem' }} xs={24} xl={8} lg={12} md={12} span={8} >
-          <NewsCard
-          key={item.link}
-          id={item.id}
-            title={item.title}
-            link={item.link}
-            description={item.description}
-            image={item.image}
-            categoryName={item.categoryName}
-            sourceName={item.sourceName}
-            upvote={item.upvote}
-            downvote={item.downvote}
-            summary={item.summary}
-            isHot={item.isHot}
-          />
-        </Col>
-      ))}
+      {news&&news.length>0 ?(news.map((item) => (
+      <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8} key={item.id}>
+             <NewsCard key={item.id}
+             id={item.id} 
+        title={item.title}
+        link={item.link}
+        description={item.description}
+        image={item.image}
+        categoryName={item.categoryName}
+        sourceName={item.sourceName}
+        upvote={item.upvote}
+        downvote={item.downvote}
+        summary={item.summary}
+        actions={item.actions}
+        isHot={item.isHot}
+        createdDate={item.createdDate}
+        
+      />
+    
+      </Col>
+      ))):<NoNewsFound/>}
       <Col style={{ display: "flex", justifyItems: "center", justifyContent: "center", marginBottom: '20px' }} span={24}>
         <Pagination
           current={currentPage}
