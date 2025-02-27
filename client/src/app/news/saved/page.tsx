@@ -39,6 +39,7 @@ export default function NewsPage() {
     <>
     
       {/* Burada news card componentlerini render edeceksin */}
+      <h2 className='font-bold text-2xl text-center w-full'>Kaydedilenler</h2>
 
       {news&& news.length>0 ? (news.map((item) => (
       <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8}>
@@ -59,7 +60,7 @@ export default function NewsPage() {
       />
     
       </Col>
-      ))):<NoNewsFound/>}
+      ))):<NoNewsFound title='Haber bulunamadı' content='Henüz herhangi bir haber kaydetmemişsiniz.'/>}
       
       <Col style={{display:"flex",justifyItems:"center",justifyContent:"center",marginBottom:'20px'}}   span={24}>
           <Pagination

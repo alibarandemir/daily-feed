@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ScrapingService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf3295e1ce6cfac356ce19988e7224f0d524b10d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8fce9c164cf276e49dfb8e3c2550cd9fd744119")]
 [assembly: System.Reflection.AssemblyProductAttribute("ScrapingService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ScrapingService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

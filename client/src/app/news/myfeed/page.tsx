@@ -8,7 +8,7 @@ import { Col, Row, Skeleton } from "antd";
 import Pagination from "@/components/Pagination/Pagination";
 import Link from "next/link";
 import { getUserFeed } from "@/stores/News/actions";
-import InfiniteScrollResources from "@/components/InfiniteScroll/InfiniteScrollForFeed";
+import InfiniteScrollForFeed from "@/components/InfiniteScroll/InfiniteScrollForFeed";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -41,7 +41,7 @@ const MyFeedPage = () => {
           </span>
         </div>
 
-        <InfiniteScrollResources />
+        <InfiniteScrollForFeed/>
         
       </ProtectedRoute>
     </>
