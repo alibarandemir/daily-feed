@@ -26,16 +26,12 @@ namespace ScrapingService.Services
                 htmlDoc.LoadHtml(response);
 
                 // XPath ile id="content" olan div içindeki p etiketlerini seç
-                var contentNodes = htmlDoc.DocumentNode.SelectNodes("//*[@id='content']//p");
+                
 
-                if (contentNodes != null && contentNodes.Count > 0)
-                {
-                    // İçeriği birleştirip döndür
-                    string combinedContent = string.Join("\n", contentNodes.Select(node => node.InnerText.Trim()));
-                    return combinedContent;
-                }
+                var strategy = ScrapingStrategyFactory.GetStrategy(url);
 
-                return "İçerik bulunamadı.";
+            // Stratejiyi kullanarak içeriği çıkar
+                return strategy.extractContent(htmlDoc);
             }
             catch (Exception ex)
             {

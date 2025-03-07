@@ -34,7 +34,7 @@ model User {
   name                       String
   lastname                   String
   email                      String         @unique
-  password                   String
+  password                   String?
   createdAt                  DateTime       @default(now())
   updatedAt                  DateTime       @updatedAt
   role                       Role           @default(USER)

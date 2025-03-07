@@ -11,6 +11,7 @@ import debounce from "lodash.debounce";
 import { motion, AnimatePresence } from "framer-motion";
 import { showToast } from '@/utils/showToast';
 import { convertDateToString } from '@/utils/convertDateToString';
+import { truncateText } from '@/utils/truncateText';
 
 
 type NewsProps = {
@@ -164,7 +165,8 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
 
       {/* Bottom Segment */}
       <div className="flex flex-col flex-grow-0">
-        <div className="text-sm text-gray-700 mb-2">{newsContent.description}</div>
+
+        <div className="text-sm text-gray-700 mb-2">{truncateText(newsContent.description,400)}</div>
         <BottomButtons upvote={newsContent.upvote} downvote={newsContent.downvote} actions={newsContent.actions} newsLink={newsContent.link} category={newsContent.categoryName} />
       </div>
       <AnimatePresence>

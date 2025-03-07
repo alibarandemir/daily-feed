@@ -43,6 +43,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
     "object-hash": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
     "redis": "^4.7.0",
     "rss-parser": "^3.13.0"
   }

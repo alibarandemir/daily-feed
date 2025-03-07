@@ -5,6 +5,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import {sendResetPasswordEmail, sendVerificationEmail} from "../utils/sendVerificationEmail";
 import generateToken from "../utils/generateToken";
 import 'dotenv/config'
+import axios from "axios";
 
 
 
@@ -126,6 +127,9 @@ const login = async (req: Request, res: Response) => {
         if (!user) {
             return res.json({ message: "Böyle bir kullanıcı bulunamadı" });
         }
+        if(typeof(user.password)!=='string'){
+            return res.json({message:"Daha önce farklı bir yöntemle kayıt olmuşsunuz"})
+        }
 
         const isPasswordCorrect = await argon2.verify(user.password, password);
 
@@ -241,4 +245,55 @@ const resetPassword = async (req: Request, res: Response) => {
     }
 };
 
-export { register,verifyEmail ,login,logout,forgotPassword,resetPassword };
+const CLIENT_ID=process.env.CLIENT_ID
+const CLIENT_SECRET=process.env.CLIENT_SECRET
+
+
+const redirectGoogleAuth=(req:Request,res:Response)=>{
+    const redirectUri="http://localhost:5000/api/auth/callback/google"
+    const authUrl=`https://accounts.google.com/o/oauth2/auth?client_id=${CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
+    res.redirect(authUrl)
+}
+
+const googleAuthCallback=async(req:Request,res:Response)=>{
+   const {code}=req.query
+   if (!code) return res.status(400).json({ error: "Kod bulunamadı" });
+   console.log(code)
+   try{
+    const tokenResponse = await axios.post(
+        "https://oauth2.googleapis.com/token",
+        {
+          code,
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          redirect_uri: `http://localhost:5000/api/auth/callback/google`,
+          grant_type: "authorization_code",
+        }
+      );
+  
+      const { access_token } = tokenResponse.data;
+      // Google'dan kullanıcı bilgilerini al
+    const userInfo = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
+        headers: { Authorization: `Bearer ${access_token}` },
+      });
+      console.log(userInfo.data)
+      const { id, email, given_name, family_name } = userInfo.data;
+      let user= await prisma.user.findUnique({where:{email:email}})
+      if(!user){
+        user= await prisma.user.create({data:
+            {
+                name:given_name,
+                lastname:family_name,
+                email:email,
+            }
+        })
+      }
+      generateToken(res,user.id)
+      res.redirect(process.env.FRONTEND_URL??'')
+   }
+   catch(e){
+
+   }
+}
+
+export { register,verifyEmail ,login,logout,forgotPassword,resetPassword,redirectGoogleAuth,googleAuthCallback };
