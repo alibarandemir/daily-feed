@@ -60,7 +60,13 @@ cron.schedule("*/2 * * * *", () => {
   addHotTagToNews(); 
 });
 
-
+cron.schedule("0 */4 * * *",async()=>{
+  const rssFeeds=await prisma.rssFeed.findMany()
+  for(const rss of rssFeeds){
+      const news=await fetchRssFeeds(rss.rssUrl)
+      await saveNewsToDb(news,rss.sourceId,rss.categoryId)
+  }
+})
 
 
 
@@ -73,11 +79,7 @@ async function main (){
         console.error("Redis connection failed, but the application will continue without caching:", error);
        
       }
-    const rssFeeds=await prisma.rssFeed.findMany()
-    for(const rss of rssFeeds){
-        const news=await fetchRssFeeds(rss.rssUrl)
-        await saveNewsToDb(news,rss.sourceId,rss.categoryId)
-    }
+    
 }
 main()
 app.listen(5000,()=>{
