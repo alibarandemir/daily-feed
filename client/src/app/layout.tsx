@@ -2,8 +2,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "@/stores/store";
 import StoreProvider from "@/components/StoreProvider";
 import { ToastContainer } from "react-toastify";
 import ToastProvider from "@/components/ToastProvider";
@@ -39,13 +37,15 @@ export default function RootLayout({
     <html lang="en">
       
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-full`}>
+       
         <StoreProvider>
           <ToastProvider>
             {children}
           </ToastProvider>
         </StoreProvider>
+
+     
        
       </body>
     </html>

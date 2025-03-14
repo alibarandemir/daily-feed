@@ -86,7 +86,7 @@ export default function Sidebar() {
         <div>
           <Link href={`/news/source/${slugify(source.name)}`} className="flex items-center gap-x-2">
             <Image unoptimized quality={100} src={source.sourceImg} alt={source.name} width={30} height={30} style={{}}/>
-            <span>{source.name}</span>
+            <span className='text-gray-200 dark:text-gray-900'>{source.name}</span>
           </Link>
         </div>
       ),
@@ -117,7 +117,7 @@ export default function Sidebar() {
       children: dynamicMenuItems
     }
   ], [dynamicMenuItems, getIconColor]);
-  const categoryClasname = "relative inline-block text-black before:absolute before:left-0 before:bottom-0 before:h-[2px] before:w-0 before:bg-appcolor before:transition-all before:duration-300 hover:before:w-full cursor-pointer";
+  const categoryClasname = "relative inline-block text-gray-200 dark:text-black before:absolute before:left-0 before:bottom-0 before:h-[2px] before:w-0 before:bg-appcolor before:transition-all before:duration-300 hover:before:w-full cursor-pointer";
   return (
     <Sider
       collapsible
@@ -126,14 +126,14 @@ export default function Sidebar() {
       breakpoint="lg"
       collapsedWidth={collapsedWidth}
       trigger={null}
-      className={`fixed bg-white h-screen flex flex-col text-main z-10`}
+      className={`fixed bg-back dark:bg-white h-screen flex flex-col text-main z-10`}
     >
       {/* Toggle Butonu */}
       <div className="flex items-center justify-center p-4 cursor-pointer">
         {isSideBarCollapsed ? (
           <MenuUnfoldOutlined style={{ color: '#229799', fontSize: isMobile ? '30px' : '40px' }} onClick={() => dispatch(setIsSideBarCollapsed())} />
         ) : (
-          <MenuFoldOutlined style={{ color: '#1E201E', fontSize: isMobile ? '20px' : '30px' }} onClick={() => dispatch(setIsSideBarCollapsed())} />
+          <MenuFoldOutlined className=' text-gray-200 dark:text-[#1E201E]' style={{ color: '#1E201E', fontSize: isMobile ? '20px' : '30px' }} onClick={() => dispatch(setIsSideBarCollapsed())} />
         )}
       </div>
 
@@ -150,24 +150,24 @@ export default function Sidebar() {
           <Link href={'/news/category/gundem'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Gündem</span>
           </Link>
-          <Link href={'/news/category/bilim'} className='w-full text-center text-3xl py-2'>
-            <span className={categoryClasname}>Bilim</span>
+          <Link href={'/news/category/teknoloji'} className='w-full text-center text-3xl py-2'>
+            <span className={categoryClasname}>Teknoloji</span>
           </Link>
           <Link href={'/news/category/ekonomi'} className='w-full text-center text-3xl py-2'>
             <span className={categoryClasname}>Ekonomi</span>
           </Link>
-          <Link href={'/news/category/yazilim'} className='w-full text-center text-3xl py-2'>
-            <span className={categoryClasname}>Yazılım</span>
+          <Link href={'/news/category/spor'} className='w-full text-center text-3xl py-2'>
+            <span className={categoryClasname}>Spor</span>
           </Link>
         </div>
       )}
 
       {/* Menü */}
-      <div className={`${isMobile&&isSideBarCollapsed?'hidden':''} flex items-center justify-center `}>
+      <div className={`${isMobile&&isSideBarCollapsed?'hidden':''} flex items-center justify-center text-gray-200  `}>
         <Menu
           mode='inline'
           items={items}
-          className='text-xl'
+          className='text-xl text-gray-200 bg-back dark:bg-white dark:text-black'
           openKeys={openKey}
           onOpenChange={onOpenChange}
 
@@ -176,13 +176,13 @@ export default function Sidebar() {
 
       {/* Private routes */}
       <div className={`${isMobile&&isSideBarCollapsed?'hidden':''} flex-grow w-full flex flex-col justify-start text-lg `}>
-        <div className={`hover:text-xl flex items-center ${isSideBarCollapsed? 'justify-center':''} justify-start px-4 py-2 cursor-pointer`}>
+        <div className={`hover:text-xl flex items-center ${isSideBarCollapsed? 'justify-center':''} justify-start px-4 py-2 cursor-pointer text-gray-200 dark:text-black `}>
           <RocketOutlined className={`hover:text-appcolor`} style={{ fontSize: '2rem', marginRight: '8px' }} />
           <Link className={`${isSideBarCollapsed? 'hidden my-20':'block'}`} href='/news/myfeed'>
-            Akışım
+            Akışım 
           </Link>
         </div>
-        <div className={`hover:text-xl flex items-center  ${isSideBarCollapsed? 'justify-center':''}   px-4 py-2 cursor-pointer `}>
+        <div className={`hover:text-xl flex items-center  ${isSideBarCollapsed? 'justify-center':''}   px-4 py-2 cursor-pointer text-gray-200 dark:text-black `}>
           <InboxOutlined className='hover:text-appcolor' style={{ fontSize: '2rem', marginRight: '8px' }} />
           <Link className={`${isSideBarCollapsed? 'hidden':'block'}`} href='/news/saved'>
             Kaydedilenler

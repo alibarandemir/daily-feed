@@ -9,24 +9,23 @@ import { useRouter } from 'next/navigation'
 import useAuth from '@/hooks/useAuth'
 import DropdownMenu from '../ui/Dropdown'
 import { useMediaQuery } from 'react-responsive'
+import ThemeSwitcher from './ThemeSwitcher'
 
 export default function Navbar() {
   const dispatch = useAppDispatch()
-  const isDarkMode: boolean = useAppSelector((state) => state.global.isDarkMode)
+  
   const router= useRouter()
   const {isAuthenticated}= useAuth()
-  const toggleDarkMode = () => {
-    dispatch(changeDarkMode())
-  }
+ 
   const isMobile=useMediaQuery({query:'(max-width:527px)'})
   
   console.log(isAuthenticated)
   return (
-    <div className='flex items-center justify-between border-b-2 border-appcolor w-full py-2 px-4 min-h-24 '>
+    <div className='flex items-center justify-between border-b-2 bg-gray-200 dark:bg-back border-appcolor w-full py-2 px-4 min-h-24 '>
       {/* LEFT SIDE */}
       <div className={`flex ${isMobile?'flex-col':''} justify-between items-center gap-5  max-w-[60%]`}>
         {/* Search Bar */}
-        <div className={`flex items-center text-main bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 sm:focus:w-14 transition-all duration-300 w-full ${isMobile? 'ml-2':''}`}>
+        <div className={`flex items-center text-main border-2 border-gray-500 dark:border-none bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 sm:focus:w-14 transition-all duration-300 w-full ${isMobile? 'ml-2':''}`}>
             <SearchInput/>
         </div>
 
@@ -37,13 +36,7 @@ export default function Navbar() {
       {/* RIGHT SIDE */}
       <div className={`flex justify-between ${isMobile?'hidden':''} items-center gap-5`}>
         {/* Dark Mode Toggle */}
-        <button onClick={toggleDarkMode}>
-          {isDarkMode ? (
-            <SunFilled className='cursor-pointer text-yellow-400 text-3xl' />
-          ) : (
-            <MoonFilled className='cursor-pointer text-white text-3xl' />
-          )}
-        </button>
+          <ThemeSwitcher/>        
 
         {/* Register Link */}
         <div  className='text-lg font-medium'>

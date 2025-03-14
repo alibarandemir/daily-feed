@@ -89,7 +89,7 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
   
 
   return (
-    <div className="flex flex-col w-96 min-h-[500px] border-2 border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl"
+    <div className="flex flex-col w-96 min-h-[500px] border-2 bg-gray-200 dark:bg-back border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl"
     onMouseEnter={() => setShowButton(true)}
     onMouseLeave={() => setShowButton(false)}>
        {/* Özet Yüklenirken Bulanıklaştırma */}
@@ -146,7 +146,7 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
             <ExportOutlined className="ml-1" />
           </a>
         </div>
-        <h2 className="text-center font-bold text-title text-lg mt-2">{newsContent.title}</h2>
+        <h2 className="text-center font-bold text-main dark:text-title  text-lg mt-2">{newsContent.title}</h2>
       </div>
 
       {/* Image */}

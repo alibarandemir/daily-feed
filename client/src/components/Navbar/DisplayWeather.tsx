@@ -44,7 +44,7 @@ export const DisplayWeather = (props: Props) => {
         {weatherData?(
             <div className='flex flex-col justify-center items-center' >
                 <Image width={40} height={40} src={weatherIconUrl} alt={weatherData.description} />
-                <div className='flex gap-x-1'>
+                <div className='flex gap-x-1 text-main dark:text-gray-200'>
                   <p>{weatherData?.location}</p>
                   <p>{weatherData?.temp}°C</p>
                 </div>

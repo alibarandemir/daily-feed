@@ -23,6 +23,7 @@ export default function NewsSourcePage() {
       console.log(categoryNameKey)
       const originalCategoryName = slugDict[categoryNameKey];
       console.log(slugDict)
+      console.log(originalCategoryName)
       const offset = (currentPage - 1) * 9;
       dispatch(getNewsByCategoryName({ categoryName: originalCategoryName, offset }));
     }
@@ -58,6 +59,7 @@ export default function NewsSourcePage() {
             summary={item.summary}
             actions={item.actions}
             isHot={item.isHot}
+            createdDate={item.createdDate}
           />
         </Col>
       ))}

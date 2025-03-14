@@ -34,7 +34,7 @@ export default function SearchInput({}: Props) {
         router.push(`/news/search?q=${encodedSearchQuery}`)
     }
   return (
-    <form className='flex' onSubmit={onSearch}>
+    <form className='flex ' onSubmit={onSearch}>
         <SearchOutlined className='text-2xl text-gray-500' />
         <input
         ref={searchInputRef}
