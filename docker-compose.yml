@@ -1,0 +1,33 @@
+version: '3'
+services:
+  web:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    container_name: client
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    container_name: server
+  # redis:
+  #   image: "redis:alpine"
+  #   container_name: redis
+  postgres:
+    image: "postgres:alpine"
+    container_name: postgres
+  scrapingapi:
+    build: .
+    ports:
+      - "5001:5001"
+    container_name: scrapingapi
+    depends_on:
+      - postgres
+   
+
+  

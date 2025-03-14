@@ -27,7 +27,7 @@ export const slugify = (text: string | undefined | null) => {
 };
 
 const sources= ["Evrim Ağacı", "Sözcü","Euronews"]
-const categories= ["Gündem","Bilim","Ekonomi","Yazılım"]
+const categories= ["Gündem","Teknoloji","Ekonomi","Spor"]
 
 sources.forEach((source) => {
     slugify(source);

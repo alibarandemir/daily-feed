@@ -21,15 +21,15 @@ export default function AppLayout({
  
 
   return (
-    <div className="w-full  flex">
+    <div className="w-full h-full  flex">
       <Sidebar />
       <main
-        className={`flex flex-col w-full h-full ${
+        className={`flex flex-col items-center w-full ${
           isSideBarCollapsed && !isMobile ? "ml-24" : isMobile ? "ml-0" : "ml-52"
-        } ${isMobile ? 'mt-16' : ''} `}
+        } ${isMobile ? 'mt-16' : ''}  bg-gray-200 dark:bg-back`}
       >
         <Navbar />
-        <div className="h-screen">
+        <div className="h-screen ">
           {children}
         </div>
       </main>

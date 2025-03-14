@@ -18,8 +18,8 @@ export default function FooterSidebar() {
   return (
     <div className={`w-full absolute  ${!isMobile?'bottom-0':''} flex items-center flex-col  text-main`}>
         
-        <p>{`© ${year}.Ali Baran Demir.`}</p>
-        <div className='flex gap-x-3'>
+        <p className='text-gray-400 dark:text-main'>{`© ${year}.Ali Baran Demir.`}</p>
+        <div className='flex gap-x-3 text-gray-400 dark:text-main'>
             <Link className='hover:text-xl text-lg hover:text-appcolor'  href='https://github.com/alibarandemir' >
                 <GithubFilled />
             </Link>

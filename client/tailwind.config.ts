@@ -6,6 +6,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode:'class',
   theme: {
     extend: {
       colors: {
@@ -14,7 +15,8 @@ const config: Config = {
         main:"#1E201E",
         secondary:"#424242",
         appcolor:"#229799",
-        title:"#EDEDED"
+        title:"#EDEDED",
+        back:'#0E1217'
 
       },
       animation: {
