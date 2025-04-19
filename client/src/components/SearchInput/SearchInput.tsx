@@ -32,6 +32,7 @@ export default function SearchInput({}: Props) {
         const encodedSearchQuery= encodeURI(searchQuery)
         //dispatch(searchNews({q:searchQuery}))
         router.push(`/news/search?q=${encodedSearchQuery}`)
+        setSearchQuery('')
     }
   return (
     <form className='flex ' onSubmit={onSearch}>

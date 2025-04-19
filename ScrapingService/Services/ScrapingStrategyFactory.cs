@@ -15,6 +15,18 @@ public class ScrapingStrategyFactory
         else if(url.Contains("cumhuriyet.com")){
             return new CumhuriyetScrapingStrategy();
         }
+        else if(url.Contains("finansingundemi.com")){
+            return new FinansGundemiScrapingStrategy();
+        }
+        else if(url.Contains("sozcu.com.tr")){
+            return new SozcuScrapingStrategy();
+        }
+        else if(url.Contains("tr.euronews.com")){
+            return new EuroNewsScrapingStrategy();
+        }
+        else if(url.Contains("webrazzi.com")){
+            return new WebrazziScrapingStrategy();
+        }
         else
         {
             return new DefaultScrapingStrategy(); // Varsayılan bir scraping yöntemi

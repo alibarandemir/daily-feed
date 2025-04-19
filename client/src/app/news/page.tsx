@@ -32,13 +32,15 @@ export default function NewsPage() {
   }
   
   
+  
+  
    
 
   return (
     <>
       {/* Burada news card componentlerini render edeceksin */}
       {news&&news.length>0 ?(news.map((item) => (
-      <Col style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8} key={item.id}>
+      <Col className='flex justify-center' style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8} key={item.id}>
              <NewsCard key={item.id}
              id={item.id} 
         title={item.title}
@@ -57,7 +59,7 @@ export default function NewsPage() {
       />
     
       </Col>
-      ))):<NoNewsFound/>}
+      ))):<NoNewsFound title="" content=""/>}
       
       <Col style={{display:"flex",justifyItems:"center",justifyContent:"center",marginBottom:'20px'}}   span={24}>
           <Pagination

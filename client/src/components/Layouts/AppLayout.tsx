@@ -21,7 +21,7 @@ export default function AppLayout({
  
 
   return (
-    <div className="w-full h-full  flex">
+    <div className="w-full h-full bg-gray-200 dark:bg-back  flex">
       <Sidebar />
       <main
         className={`flex flex-col items-center w-full ${
