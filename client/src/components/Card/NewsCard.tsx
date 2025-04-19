@@ -35,39 +35,30 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
   const [loading,setLoading]=useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const [summary,setSummary]=useState('')
-  console.log(newsContent.createdDate)
   const trackClick = debounce(async () => {
     try {
       const response = await api.post("api/track-click", {
         newsId: newsContent.id,
       });
-      console.log(response.data);
     } catch (e: any) {
       console.error(e.message);
     }
   }, 500); // 📌 500ms içinde tekrar eden istekleri engeller
 
   const getSummary = async () => {
-    console.log('getSummary çalıştı')
     if (summary) {
-      console.log('summary var')
       setIsModalOpen(true);
       return;
     }
-  
     setLoading(true);
   
     try {
       console.log('try içinde')
       if (newsContent.summary !== '') {
-        console.log('default summary')
         setSummary(newsContent.summary);
       } else {
-        console.log('istek atılacak')
         const response = await api.get('/getSummary', { params: { newsId: newsContent.id } });
-        console.log(response.data)
         setSummary(response.data.summary);
         showToast(`${response.data.success ? 'success' : 'error'}`, response.data.message);
       }
@@ -89,7 +80,7 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
   
 
   return (
-    <div className="flex flex-col w-96 min-h-[500px] border-2 bg-gray-200 dark:bg-back border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl"
+    <div className="flex flex-col w-96 min-w-80 min-h-[500px] border-2 bg-gray-200 dark:bg-back border-appcolor rounded-lg p-3 shadow-lg transition-transform transform hover:shadow-xl"
     onMouseEnter={() => setShowButton(true)}
     onMouseLeave={() => setShowButton(false)}>
        {/* Özet Yüklenirken Bulanıklaştırma */}
@@ -109,8 +100,8 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
           </button>
         )}
 
-        <div className='xl:hidden lg:hidden bg-appcolor absolute top-12 -right-8 rounded p-2 text-center font-bold cursor-pointer h-2/3 w-7 flex justify-center items-center'>
-            <p className='[writing-mode:vertical-lr] text-lg' onClick={getSummary}>Özetle</p>
+        <div className='xl:hidden lg:hidden bg-appcolor absolute top-12 -right-8 rounded p-2 text-center font-bold cursor-pointer h-2/3 w-7 flex justify-center items-center' onClick={getSummary}>
+            <p className='[writing-mode:vertical-lr] text-lg' >Özetle</p>
         </div>
       {/* Top Segment */}
       <div className="w-full flex-col items-center justify-between mb-2">

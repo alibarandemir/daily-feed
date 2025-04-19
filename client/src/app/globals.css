@@ -86,3 +86,10 @@ body,html {
   z-index: 1;
 }
 
+.ant-menu-title-content{
+  color: #e5e7eb;
+}
+.dark .ant-menu-title-content{
+  color:#0E1217;
+}
+

@@ -35,7 +35,7 @@ const MyFeedPage = () => {
       <ProtectedRoute>
         
         <div className="flex items-center justify-center w-full gap-x-1">
-          <h2 className="font-bold text-2xl">Senin Dünyan</h2>
+          <h2 className="font-bold text-2xl text-back dark:text-gray-200">Senin Dünyan</h2>
           <span role="img" aria-label="world">
             🌍
           </span>

@@ -17,10 +17,11 @@ export function AuthLayout({
     const router = useRouter();
    //ant design layout tanımlanacak
     return (
-      <Layout style={{ minHeight: "100vh", backgroundColor: "#0E1217" }}>
+    <div className='bg-gray-200 dark:bg-back'>
+      <Layout  style={{ minHeight: "100vh",background:"none" }}>
       <Header
         style={{
-          backgroundColor: "#0E1217",
+          background:"none",
           display: "flex",
           alignItems: "end",
         }}
@@ -44,6 +45,7 @@ export function AuthLayout({
       </Header>
       {children}
     </Layout>
+    </div>
     )
   
 }

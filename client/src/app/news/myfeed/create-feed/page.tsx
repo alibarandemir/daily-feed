@@ -80,13 +80,13 @@ export default function CreateFeedPage() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className='min-h-screen w-full flex flex-col'>
-        <div className='flex justify-end p-4'>
+        <div className='flex justify-end text-main dark:text-gray-200 p-4'>
           {!isEditing ? (
             <button className='btn btn-primary flex gap-x-2 p-2 rounded-sm items-center hover:bg-appcolor transition-transform duration-300 transform hover:scale-105' onClick={handleEdit}>
               <EditOutlined /> Düzenle
             </button>
           ) : (
-            <div className='flex gap-x-3'>
+            <div className='flex gap-x-3 text-gray-200 '>
               <button className='btn btn-secondary bg-gray-600 rounded-sm p-2 hover:bg-opacity-70' onClick={handleCancel}>Vazgeç</button>
               <button className='btn btn-primary bg-green-600 p-2 text-lg rounded-sm hover:bg-opacity-75' onClick={handleSave}><SaveOutlined /> Kaydet</button>
             </div>
@@ -130,8 +130,8 @@ const CategoryDropArea: React.FC<{
         </div>
       )}
 
-      <div className="relative z-10 text-center w-full max-w-4xl">
-        <h3 className="text-2xl font-bold text-white mb-6">{title}</h3>
+      <div className="relative  text-center w-full max-w-4xl">
+        <h3 className="text-2xl font-bold text-main dark:text-gray-200  mb-6">{title}</h3>
         <div
           ref={ref}
           className={`flex flex-wrap justify-center gap-4 border-2 border-dashed p-4 rounded-lg shadow-lg ${title==='Uygun Kategoriler'?'bg-white bg-opacity-60':''} ${

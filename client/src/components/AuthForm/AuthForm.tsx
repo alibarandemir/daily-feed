@@ -73,7 +73,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
     return (<Loading/>)
   }
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center  min-h-screen ">
       <div className="w-full max-w-md p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           {isRegister ? "Kayıt Ol" : "Giriş Yap"}
@@ -86,7 +86,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
               <div>
                 <label className="block text-gray-700">Ad</label>
                 <input
-                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
                   {...register("name", { required: "Ad gereklidir" })}
                 />
                 {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
@@ -94,7 +94,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
               <div>
                 <label className="block text-gray-700">Soyad</label>
                 <input
-                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
                   {...register("surname", { required: "Soyad gereklidir" })}
                 />
                 {errors.surname && <p className="text-sm text-red-500">{errors.surname.message}</p>}
@@ -107,7 +107,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
             <label className="block text-gray-700">Email</label>
             <input
               type="email"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
               {...register("email", {
                 required: "Email gereklidir",
                 pattern: { value: /^\S+@\S+$/i, message: "Geçerli bir email adresi girin" }
@@ -122,7 +122,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
                 {...register("password", {
                   required: "Şifre gereklidir",
                   minLength: { value: 8, message: "Şifre en az 8 karakter olmalıdır" }

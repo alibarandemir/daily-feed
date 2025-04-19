@@ -15,6 +15,9 @@ import { slugify } from '@/utils/slugify'
 import Loading from '../Loading/Loading'
 import { useMediaQuery as useMediaQueryHook } from 'react-responsive'
 
+import '../../app/globals.css';
+import ThemeSwitcher from '../Navbar/ThemeSwitcher'
+
 type MenuItem = Required<MenuProps>['items'][number];
 
 export default function Sidebar() {
@@ -43,7 +46,7 @@ export default function Sidebar() {
     dispatch(getResourcesforSideBar())
   },[])
   const getIconColor = (menuKey: string) => {
-    return openKey.includes(menuKey) ? '#229799' : '#000';
+    return openKey.includes(menuKey) ? '#229799' : '#a6aca6';
   };
   // const dynamicMenuItems: MenuItem[] = sideBarSources.map((source, index) => ({
   //   key: `source-${index}`,
@@ -112,8 +115,8 @@ export default function Sidebar() {
   const items: MenuItem[] = useMemo(() => [
     {
       key: 'sub1',
-      label: <h2 style={{padding:0}} className='text-2xl  text-black'>Kaynaklar</h2>,
-      icon: <AppstoreOutlined style={{ fontSize: '2rem', color: getIconColor('sub1'), marginLeft:'-10px' }} />,
+      label: <h2 style={{padding:0}} className='text-2xl text-gray-200 dark:text-back '>Kaynaklar</h2>,
+      icon: <AppstoreOutlined className='text-gray-200 dark:text-back' style={{ fontSize: '2rem', color: getIconColor('sub1'), marginLeft:'-10px' }} />,
       children: dynamicMenuItems
     }
   ], [dynamicMenuItems, getIconColor]);
@@ -167,7 +170,7 @@ export default function Sidebar() {
         <Menu
           mode='inline'
           items={items}
-          className='text-xl text-gray-200 bg-back dark:bg-white dark:text-black'
+          className='text-xl   bg-back dark:bg-white '
           openKeys={openKey}
           onOpenChange={onOpenChange}
 
@@ -190,6 +193,13 @@ export default function Sidebar() {
         </div>
       </div>
 
+      {/* Register and theme for mobile */}
+      {isMobile && !isSideBarCollapsed ? (
+        <div className='flex items-center justify-center'>
+          <ThemeSwitcher/>
+        </div>
+      ) : null}
+
       {/* Footer */}
       {isSideBarCollapsed && !isMobile ? (
         <div className='text-center flex justify-center absolute bottom-4 h-16 w-full'>
@@ -199,18 +209,7 @@ export default function Sidebar() {
         </div>
       ) : (isMobile && isSideBarCollapsed ? null : <Footer />)}
 
-      {/* Register and theme for mobile */}
-      {isMobile && !isSideBarCollapsed ? (
-        <>
-          <button className='w-full absolute bottom-96' onClick={toggleDarkMode}>
-            {isDarkMode ? (
-              <SunFilled className='cursor-pointer text-yellow-400 text-3xl' />
-            ) : (
-              <MoonFilled className='cursor-pointer text-gray-900 text-3xl' />
-            )}
-          </button>
-        </>
-      ) : null}
+      
     </Sider>
   );
 }

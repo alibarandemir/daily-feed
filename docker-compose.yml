@@ -18,16 +18,18 @@ services:
   # redis:
   #   image: "redis:alpine"
   #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
   postgres:
     image: "postgres:alpine"
     container_name: postgres
-  scrapingapi:
-    build: .
-    ports:
-      - "5001:5001"
-    container_name: scrapingapi
-    depends_on:
-      - postgres
+  # scrapingapi:
+  #   build: .
+  #   ports:
+  #     - "5001:5001"
+  #   container_name: scrapingapi
+  #   depends_on:
+  #     - postgres
    
 
   

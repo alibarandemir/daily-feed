@@ -29,7 +29,6 @@ const nextConfig = {
     redirects:
         () =>{
           return [
-            // Basic redirect
             {
               source: '/',
               destination: '/news',

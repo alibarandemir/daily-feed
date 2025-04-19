@@ -7,7 +7,7 @@ const parser = new Parser({
       ['enclosure', 'enclosure', { keepArray: false }], 
       ['thumbnail', 'thumbnail', { keepArray: false }],
       ['image','image',{keepArray:false}],
-      ['content','content',{keepArray:false}]
+      ['content','content',{keepArray:true}]
     ]
   }
 });
@@ -26,7 +26,7 @@ export const fetchRssFeeds = async (rssUrl: string) => {
                        item.image|| // 'thumbnail' etiketinden al
                        item.content||
                        "";
-
+      console.log(item.content);
       return {
         title: item.title || "",
         link: item.link || "",

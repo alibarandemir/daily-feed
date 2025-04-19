@@ -1,20 +1,23 @@
-# Use the official Node.js image as the base image
-FROM node:14
+FROM node:18-bullseye
 
-# Set the working directory
-WORKDIR /usr/src/app
+# Çalışma dizini
+WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Paketleri yükle
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Tüm dosyaları kopyala
 COPY . .
 
-# Expose the port the app runs on
+# Prisma client'ı generate et (doğru ortam için)
+RUN npx prisma generate --schema ./src/prisma/schema.prisma
+
+# TypeScript build
+RUN npx tsc
+
+# Uygulama portu
 EXPOSE 5000
 
-# Command to run the application
-CMD ["node", "app.js"]
+# Başlatma komutu
+CMD ["node", "dist/app.js"]

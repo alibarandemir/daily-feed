@@ -50,6 +50,7 @@ export default function Search({}: Props) {
           summary={item.summary}
           actions={item.actions}
           isHot={item.isHot}
+          createdDate={item.createdDate}
         />
       
         </Col>

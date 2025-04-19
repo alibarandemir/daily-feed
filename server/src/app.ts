@@ -18,22 +18,22 @@ const app= express()
 app.use(express.json())
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Frontend'in çalıştığı adres
+    origin: 'http://localhost:3000', 
     credentials: true,
     methods:'GET,POST,PUT,DELETE'
   }));
 app.use(cookieParser())
 
-// const limiter= rateLimit({
-//     windowMs:15*60*1000,
-//     limit:1000,
+const limiter= rateLimit({
+    windowMs:10*60*1000,
+    limit:300,
 
 
-//     message:'Çok fazla istek yapıldı',
-//     standardHeaders:true,
-//     legacyHeaders:false
-// })
-// app.use(limiter)
+    message:'Çok fazla istek yapıldı',
+    standardHeaders:true,
+    legacyHeaders:false
+})
+app.use(limiter)
 
 
 app.use('/',router)
@@ -56,7 +56,6 @@ app.post('/api/track-click',(req,res)=>{
 
 
 cron.schedule("*/2 * * * *", () => {
-  console.log("Cron job çalıştı: addHotTagToNews");
   addHotTagToNews(); 
 });
 
@@ -70,11 +69,18 @@ cron.schedule("0 */4 * * *",async()=>{
 
 
 
+
+
 //node cron uygulanacak
 async function main (){
     try {
         //redis olmadığında hata veriyor şuan
         //await initializeRedisClient();
+        const rssFeeds=await prisma.rssFeed.findMany()
+  for(const rss of rssFeeds){
+      const news=await fetchRssFeeds(rss.rssUrl)
+      await saveNewsToDb(news,rss.sourceId,rss.categoryId)
+  }
       } catch (error) {
         console.error("Redis connection failed, but the application will continue without caching:", error);
        

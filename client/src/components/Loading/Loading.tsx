@@ -6,13 +6,13 @@ type Props = {}
 
 export default function Loading({}: Props) {
   return (
-    <>
-        <div className='h-1/2 flex flex-col justify-end items-center mb-10'>
+    <div className='flex flex-col gap-y-3'>
+        <div className=' flex flex-col justify-end items-center'>
             <EyeOutlined className='text-appcolor' style={{fontSize:'32px'}}/>
-            <h2 className='text-white font-extrabold text-xl'>Biraz göz dinlendirmesi</h2>
+            <h2 className='font-extrabold text-xl text-gray-600 dark:text-white'>Biraz göz dinlendirmesi</h2>
         </div>
       
-      <Spin fullscreen />
-    </>
+      <Spin />
+    </div>
   )
 }

@@ -8,14 +8,14 @@ export default function NewsLayout({
     children: React.ReactNode;
   }>) {
     return (
-      <ThemeProvider attribute="class">
+     
         <AppLayout>
            {/*grid yapısı ve pagination buraya eklenecek*/}
-          <Row className="bg-gray-200 dark:bg-back" style={{marginTop:"30px"}} justify="start" gutter={[24, 40]}>
+          <Row className="bg-gray-200 dark:bg-back" style={{marginTop:"30px"}} justify="center" gutter={[24, 40]}>
             
             {children}
           </Row>
         </AppLayout>
-        </ThemeProvider>
+        
     );
   }
