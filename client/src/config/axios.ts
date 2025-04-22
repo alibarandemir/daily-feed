@@ -7,7 +7,7 @@ export const api= axios.create({
 }) 
 
 export const apiRoute= axios.create({
-    baseURL:'http://localhost:3000/api'
+    baseURL:'https://sumflood-client.onrender.com//api'
 })
 
 
