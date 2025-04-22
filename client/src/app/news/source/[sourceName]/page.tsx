@@ -63,7 +63,7 @@ export default function NewsSourcePage() {
       />
     
       </Col>
-      ))):<NoNewsFound/>}
+      ))):<NoNewsFound title="İçerik Boş" content="Bu kaynakta ilgili haber bulunamadı"/>}
       <Col style={{ display: "flex", justifyItems: "center", justifyContent: "center", marginBottom: '20px' }} span={24}>
         <Pagination
           current={currentPage}
