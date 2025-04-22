@@ -83,6 +83,7 @@ export default function Sidebar() {
   // ];
   //useMemo kullanarak gereksiz renderı önle
   const dynamicMenuItems = useMemo(() => {
+    if (!Array.isArray(sideBarSources)) return []; 
     const items: MenuItem[] = sideBarSources.map((source, index) => ({
       key: `source-${index}`,
       label: (
