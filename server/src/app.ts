@@ -23,6 +23,8 @@ app.use(cors({
     methods:'GET,POST,PUT,DELETE'
   }));
 app.use(cookieParser())
+app.set('trust proxy', 1); // Heroku veya proxy arkasındaki uygulamalar için
+
 
 const limiter= rateLimit({
     windowMs:10*60*1000,
