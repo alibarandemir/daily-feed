@@ -9,8 +9,6 @@ export const getNews= createAsyncThunk('news/getNews',async (offset:number,{reje
                 offset:offset
             },withCredentials:true
         },)
-        console.log("Tam URL:", `${response.config?.baseURL ?? ''}${response.config?.url ?? ''}`);
-        console.log("Gelen veri:", response.data);
         return response.data;
     }
     catch(e:any){

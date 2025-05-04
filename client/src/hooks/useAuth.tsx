@@ -14,7 +14,6 @@ const useAuth = () => {
   const checkAuth = async () => {
     try {
       const response = await api.get('/verifyToken', { withCredentials: true });
-      console.log('Auth response:', response.data);
       setIsAuthenticated(response.data.isAuthenticated);
     } catch (error) { 
       console.error('Auth check error:', error);

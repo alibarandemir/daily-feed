@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Footer from './Footer'
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
-import { AppstoreOutlined, InboxOutlined, MenuFoldOutlined, MenuUnfoldOutlined, MoonFilled, RocketOutlined, SunFilled } from '@ant-design/icons'
+import { AppstoreOutlined, InboxOutlined, MenuFoldOutlined, MenuUnfoldOutlined, MoonFilled, RocketOutlined, SunFilled, UserAddOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from '@/hooks/Redux'
 import Sider from 'antd/es/layout/Sider'
 import { changeDarkMode, setIsSideBarCollapsed } from '@/stores/Global/GlobalSlice'
@@ -17,6 +17,7 @@ import { useMediaQuery as useMediaQueryHook } from 'react-responsive'
 
 import '../../app/globals.css';
 import ThemeSwitcher from '../Navbar/ThemeSwitcher'
+import GradientButton from '../ui/GradientButton'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -196,8 +197,10 @@ export default function Sidebar() {
 
       {/* Register and theme for mobile */}
       {isMobile && !isSideBarCollapsed ? (
-        <div className='flex items-center justify-center'>
+        <div className='flex flex-col items-center justify-center gap-y-3'>
+
           <ThemeSwitcher/>
+          <GradientButton icon={<UserAddOutlined/>} text='Giriş Yap' action={()=>{router.push('/login')}} />
         </div>
       ) : null}
 

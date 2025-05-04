@@ -23,15 +23,17 @@ export default function Navbar() {
   return (
     <div className='flex items-center justify-between border-b-2 bg-gray-200 dark:bg-back border-appcolor w-full py-2 px-4 min-h-24 '>
       {/* LEFT SIDE */}
-      <div className={`flex ${isMobile?'flex-col':''} justify-between items-center gap-5  max-w-[60%]`}>
-        {/* Search Bar */}
-        <div className={`flex items-center text-main border-2 border-gray-500 dark:border-none bg-gray-200 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 sm:focus:w-14 transition-all duration-300 w-full ${isMobile? 'ml-2':''}`}>
-            <SearchInput/>
-        </div>
+      <div className={`flex ${isMobile ? 'w-full justify-center' : 'max-w-[60%]'} items-center gap-5`}>
+  <div
+    className={`flex items-center text-main border-2 border-gray-500 dark:border-none bg-gray-200 rounded-lg p-2 w-full max-w-[500px] ${
+      isMobile ? 'justify-center' : ''
+    }`}
+  >
+    <SearchInput />
+  </div>
 
-        {/* Weather Display */}
-        <DisplayWeather />
-      </div>
+  {!isMobile && <DisplayWeather />}
+</div>
 
       {/* RIGHT SIDE */}
       <div className={`flex justify-between ${isMobile?'hidden':''} items-center gap-5`}>
