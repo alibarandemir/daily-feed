@@ -9,7 +9,7 @@ export const getNews= createAsyncThunk('news/getNews',async (offset:number,{reje
                 offset:offset
             },withCredentials:true
         },)
-        console.log(response.data)
+        console.log("haberler",response.data)
         return response.data;
     }
     catch(e:any){
