@@ -297,7 +297,7 @@ const getSummaryByNewsId = async (req: Request, res: Response) => {
         console.log(news.link);
         // Dış API'den özet alma
         try {
-            const response = await axios.get("http://localhost:5134/api/summary/getSummary", {
+            const response = await axios.get("scraping-service-aqh2crana6bqfefm.francecentral-01.azurewebsites.net/api/summary/getSummary", {
                 params: { newsUrl: news.link }
             });
             console.log(response.data);

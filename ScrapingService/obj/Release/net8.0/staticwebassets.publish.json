@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "1eT00QJI2xdnJqaJmXQ5ywnA2xJByn5l45SMIm4vUFw=",
+  "Source": "ScrapingService",
+  "BasePath": "_content/ScrapingService",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
