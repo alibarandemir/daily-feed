@@ -150,7 +150,7 @@ const AuthForm = ({ isRegister }: { isRegister: boolean }) => {
 
         {/* Google ile giriş butonu */}
         <button
-          onClick={() => window.location.href="http://localhost:5000/auth/google"}
+          onClick={() => window.location.href="https://sumflood-server-76fc91a2eefa.herokuapp.com/auth/google"}
           className="w-full flex items-center justify-center py-2 mt-4 border bg-red-600 border-gray-300 rounded-md hover:bg-opacity-80 focus:outline-none"
         >
           <GoogleOutlined className="mr-2" size={20} />
