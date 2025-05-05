@@ -28,6 +28,7 @@ type NewsProps = {
   actions:string[]
   isHot:boolean,
   createdDate:string,
+  index:number
   
 };
 
@@ -115,14 +116,7 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
            </div>
          </div>
         )}
-        <div className="absolute -top-6 right-2 z-10">
-           <div className="relative">
-             <span className="text-white text-xs font-bold px-2 py-1  bg-gradient-to-r from-orange-900 to-red-500 animate-pulse -z-20">
-               HOT
-             </span>
-             <span className="absolute -inset-1 bg-gradient-to-r from-red-400 to-red-900 opacity-5 blur animate-fire"></span>
-           </div>
-         </div>
+        
         
         <div className="flex justify-between items-center">
           <div className="text-gray-500 font-medium">{newsContent.sourceName}</div>
@@ -151,6 +145,7 @@ export const NewsCard: React.FC<NewsProps> = React.memo((newsContent) => {
           placeholder='blur'
           blurDataURL={placeholderBlurDataURL}
           className="rounded-lg object-cover mx-auto"
+          priority={newsContent.index<5}
         />
       </div>
 
