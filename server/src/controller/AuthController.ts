@@ -188,7 +188,7 @@ const forgotPassword=async(req:Request,res:Response)=>{
      // 1 saat geçerli olacak JWT token oluştur
     const token = jwt.sign({ id: user.id }, process.env.JWT_RESET_PASS??'SLALSDDLSDSL', { expiresIn: '1h' });
 
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const resetLink = `https://sumflood-client.onrender.com/reset-password?token=${token}`;
 
 
     
@@ -250,7 +250,7 @@ const CLIENT_SECRET=process.env.CLIENT_SECRET
 
 
 const redirectGoogleAuth=(req:Request,res:Response)=>{
-    const redirectUri="http://localhost:5000/api/auth/callback/google"
+    const redirectUri="https://sumflood-server-76fc91a2eefa.herokuapp.com/api/auth/callback/google"
     const authUrl=`https://accounts.google.com/o/oauth2/auth?client_id=${CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=email profile`;
     res.redirect(authUrl)
 }
@@ -266,7 +266,7 @@ const googleAuthCallback=async(req:Request,res:Response)=>{
           code,
           client_id: CLIENT_ID,
           client_secret: CLIENT_SECRET,
-          redirect_uri: `http://localhost:5000/api/auth/callback/google`,
+          redirect_uri: `https://sumflood-server-76fc91a2eefa.herokuapp.com/api/auth/callback/google`,
           grant_type: "authorization_code",
         }
       );
