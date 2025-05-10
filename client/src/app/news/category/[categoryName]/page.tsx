@@ -43,7 +43,7 @@ export default function NewsSourcePage() {
 
   return (
     <>
-      {news.map((item) => (
+      {news.map((item,index) => (
         <Col style={{ width: '24rem' }} xs={24} xl={8} lg={12} md={12} span={8} >
           <NewsCard
           key={item.link}
@@ -60,6 +60,7 @@ export default function NewsSourcePage() {
             actions={item.actions}
             isHot={item.isHot}
             createdDate={item.createdDate}
+            index={index}
           />
         </Col>
       ))}
