@@ -39,7 +39,7 @@ export default function NewsPage() {
   return (
     <>
       {/* Burada news card componentlerini render edeceksin */}
-      {news&&news.length>0 ?(news.map((item) => (
+      {news&&news.length>0 ?(news.map((item,index) => (
       <Col className='flex justify-center' style={{width:'24rem'}} xs={24} xl={8} lg={12} md={12} span={8} key={item.id}>
              <NewsCard key={item.id}
              id={item.id} 
@@ -55,6 +55,7 @@ export default function NewsPage() {
         actions={item.actions}
         isHot={item.isHot}
         createdDate={item.createdDate}
+        index={index}
         
       />
     
