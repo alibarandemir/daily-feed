@@ -3,7 +3,7 @@ import { getAllResources, getResourcesSome } from "../controller/SourceControlle
 import { forgotPassword, googleAuthCallback, login, logout, redirectGoogleAuth, register, resetPassword, verifyEmail } from "../controller/AuthController";
 import  { verifyTokenRoute } from "../middleware/verifyToken";
 import {verifyTokenMiddleware} from "../middleware/verifyToken";
-import { changePreferences, getPreferences } from "../controller/UserController";
+import { changePreferences, getMe, getPreferences } from "../controller/UserController";
 
 
 const UserRouter= express.Router()
@@ -19,6 +19,7 @@ UserRouter.get('/auth/google',redirectGoogleAuth)
 UserRouter.get('/api/auth/callback/google',googleAuthCallback)
 UserRouter.get('/getPreferences',verifyTokenMiddleware,getPreferences)
 UserRouter.put('/changePreferences',verifyTokenMiddleware,changePreferences)
+UserRouter.get('/me',verifyTokenMiddleware,getMe)
 
 
 export  {UserRouter};

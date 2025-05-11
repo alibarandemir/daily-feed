@@ -1,6 +1,31 @@
 import { Request, Response } from "express"
 import { PrismaClient,Prisma,ActionType } from "@prisma/client";
 const prisma =new PrismaClient();
+
+
+const getMe=async(req:Request,res:Response)=>{
+    try{
+        const userId=req.userId;
+        const user = await prisma.user.findUnique({
+      where: { id:userId },
+      select: {
+        name: true,
+        lastname: true,
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı' });
+    }
+
+    return res.status(200).json({ success: true, data: user });
+    }
+    catch(e:any){
+        console.error(e.message);
+        res.status(400).json({message:"Bir hata oluştu."})
+    }
+}
+
 const voteNews= async(req:Request,res:Response)=>{
     try{
         const {type,newsLink}= req.body;
@@ -387,4 +412,4 @@ const getUserFeed = async (req: Request, res: Response) => {
 };
 
 
-export {voteNews,saveNews,getSavedNews,getPreferences,changePreferences,getUserFeed}
+export {voteNews,saveNews,getSavedNews,getPreferences,changePreferences,getUserFeed,getMe}

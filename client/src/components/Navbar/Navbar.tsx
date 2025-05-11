@@ -10,6 +10,7 @@ import useAuth from '@/hooks/useAuth'
 import DropdownMenu from '../ui/Dropdown'
 import { useMediaQuery } from 'react-responsive'
 import ThemeSwitcher from './ThemeSwitcher'
+import useUserName from '@/hooks/useUserName'
 
 export default function Navbar() {
   const dispatch = useAppDispatch()
@@ -19,7 +20,7 @@ export default function Navbar() {
  
   const isMobile=useMediaQuery({query:'(max-width:527px)'})
   
-  console.log(isAuthenticated)
+  const userName=useUserName();
   return (
     <div className='flex items-center justify-between border-b-2 bg-gray-200 dark:bg-back border-appcolor w-full py-2 px-4 min-h-24 '>
       {/* LEFT SIDE */}
